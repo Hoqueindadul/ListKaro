@@ -2,7 +2,7 @@ import express from 'express'
 
 const app = express()
 
-app.get("/", (req, res) => {
+app.get("/home", (req, res) => {
     res.send("hello world!")
 })
 app.listen(2004, () =>{
