@@ -1,0 +1,33 @@
+.listcontainer{
+    background-color: white;
+    width: 80%;
+    height: 550px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+#uploadtitle{
+    color: black;
+    font-size: 20px;
+    margin: 20px;
+}
+
+.listbox{
+    display: grid;
+    grid-template-columns: 1fr 0.1fr 1.5fr;
+    gap: 5px;
+    height: 100%;
+    padding: 30px;
+}
+
+.dragndrop{
+    border: 1px solid red;
+}
+.or{
+    margin: auto;
+}
+.listform{
+    border: 1px solid red;
+}
+
