@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import connectDB from "./connection/dbConnection.js";
+import connectDB from "./connection/db.js";
 import uploadRoute from "./routers/upload_route.js";
 import searchProductRoute from "./routers/searchProduct.route.js";
 
