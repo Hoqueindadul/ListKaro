@@ -23,6 +23,10 @@
 
 .dragndrop{
     border: 1px solid red;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 .or{
     margin: auto;
@@ -31,3 +35,37 @@
     border: 1px solid red;
 }
 
+#fileId {
+    display: none;
+}
+
+.filelabel {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin: 10px;
+}
+
+.filelabel:hover {
+    background-color: #45a049;
+}
+
+.filesubmit{
+    display: inline-block;
+    border: none;
+    padding: 5px 20px;
+    background-color: rgb(94, 94, 255);
+    color: white;
+    font-size: 16px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.filesubmit:hover{
+    background-color: rgb(20, 20, 255);
+}
