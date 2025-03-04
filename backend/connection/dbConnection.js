@@ -8,12 +8,12 @@
 
 import mongoose from "mongoose";
 
-const connectDB = () => {
-    mongoose.connect("mongodb://localhost:27017/ListKaro", {
+const connectDB = (uri) => {
+    mongoose.connect(uri, {
         // useNewUrlParser: true,
         // useUnifiedTopology: true,
     })
-    .then(() => console.log("List Karo is Connected"))
+    .then(() => console.log("List Karo is Connected to database"))
     .catch((error) => {
         console.error("MongoDB Connection Error:", error);
         process.exit(1);

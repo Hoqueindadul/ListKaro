@@ -144,21 +144,21 @@ a{ all:unset;}
 }
 
 #electronics {
-    background-image: url('../assets/electronics.jpg');
+    background-image: url('/images/electronics.jpg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
 }
 
 #groceries {
-    background-image: url('../assets/groceries.jpg');
+    background-image: url('/images/groceries.jpg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
 }
 
 #snacks {
-    background-image: url('../assets/snacks.jpg');
+    background-image: url('/images/snacks.jpg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -166,7 +166,7 @@ a{ all:unset;}
 
 
 .graphic {
-        background-image: url('../assets/shopping.jpg');
+        background-image: url('/images/shopping.jpg');
         width: 100%;
         min-height: 100vh;
         background-position: center;

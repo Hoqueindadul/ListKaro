@@ -1,7 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import path from 'path';
-import ImageModel from '../Models/image_model.js';
+import ImageModel from '../models/image_model.js';
 
 const router = express.Router();
 const upload = multer({
