@@ -5,6 +5,7 @@ import connectDB from "./connection/dbConnection.js";
 import uploadRoute from "./routers/upload_route.js";
 import searchProductRoute from "./routers/searchProduct.route.js";
 import productsRoute from "./routers/products.route.js"
+import errorHandleMiddleware from "./middleware/error.js";
 
 dotenv.config(); 
 
@@ -23,6 +24,7 @@ app.use(express.json());
 app.use("/api", uploadRoute);
 app.use("/api/search", searchProductRoute);
 app.use("/api/products", productsRoute)
+app.use(errorHandleMiddleware)
 
 // Start Server
 app.listen(port, () => {
