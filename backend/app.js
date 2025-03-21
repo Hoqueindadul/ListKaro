@@ -11,10 +11,14 @@ import uploadRoute from "./routers/upload_route.js";
 >>>>>>> 60f21a9 (working on product serach from image list)
 import searchProductRoute from "./routers/searchProduct.route.js";
 import productsRoute from "./routers/products.route.js"
+<<<<<<< HEAD
 import ocrRoute from './routers/ocr_route.js';
 import authRoutes from './routers/auth_routes.js'
 import newsletterRoute from "./routers/newsletter_route.js";
 import paymentRoute from './routers/payment_route.js'
+=======
+import errorHandleMiddleware from "./middleware/error.js";
+>>>>>>> 1301830 (work in product api)
 
 dotenv.config(); 
 
@@ -43,11 +47,15 @@ app.use("/api", uploadRoute);
 app.use('/api', ocrRoute);
 app.use("/api/search", searchProductRoute);
 app.use("/api/products", productsRoute)
+<<<<<<< HEAD
 app.use("/api/auth", authRoutes)
 app.use('/api', newsletterRoute);
 app.use("/api", paymentRoute);
 
 
+=======
+app.use(errorHandleMiddleware)
+>>>>>>> 1301830 (work in product api)
 
 // Start Server
 app.listen(port, () => {

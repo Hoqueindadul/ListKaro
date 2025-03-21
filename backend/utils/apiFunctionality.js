@@ -28,6 +28,7 @@ class APIFunctionality {
         this.query = this.query.find(queryCopy)
         return this
     }
+<<<<<<< HEAD
     pagination(resultPerPage) {
         const currentPage = Number(this.queryStr.page  || 1);
         const skip = resultPerPage * (currentPage -1);
@@ -35,6 +36,8 @@ class APIFunctionality {
         return this;
         
     }
+=======
+>>>>>>> 1301830 (work in product api)
 }
 
 export default APIFunctionality;
