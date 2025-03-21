@@ -15,6 +15,7 @@ export const createProduct = async (req, res, next) => {
 
 // SEARCH PRODUCTS BY KEYWORDS
 export const searchProductsByKeyword = handleAsyncError(async (req, res, next) => {
+<<<<<<< HEAD
     const resultPerPage = 3; // Number of products per page
     const apiFeatures = new APIFunctionality(Products.find(), req.query).search().filter();
 
@@ -25,6 +26,11 @@ export const searchProductsByKeyword = handleAsyncError(async (req, res, next) =
     if(page>totalpages && productCount){
         return next(new HandleError("This page does not exist", 404));
     }
+=======
+
+    const apiFeatures = new APIFunctionality(Products.find(), req.query).search().filter();
+
+>>>>>>> 1301830 (work in product api)
     const allProducts = await apiFeatures.query;
 
     if (!allProducts || allProducts.length === 0) {
@@ -35,10 +41,14 @@ export const searchProductsByKeyword = handleAsyncError(async (req, res, next) =
         success: true,
         totalProduct: allProducts.length,
         message: "Products fetched successfully",
+<<<<<<< HEAD
         data: allProducts,
         productCount,
         resultperPage: resultPerPage,
         currentPage: page,
+=======
+        data: allProducts
+>>>>>>> 1301830 (work in product api)
     });
 });
 

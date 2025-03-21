@@ -41,12 +41,14 @@ app.use("/api", uploadRoute);
 app.use('/api', ocrRoute);
 app.use("/api/search", searchProductRoute);
 app.use("/api/products", productsRoute)
-app.use("/api", userRoute)
+app.use("/api/auth", authRoutes)
+app.use('/api', newsletterRoute);
+app.use("/api", paymentRoute);
+
+
+=======
 app.use(errorHandleMiddleware)
-
-
-
-
+>>>>>>> 1301830 (work in product api)
 
 // Start Server
 app.listen(port, () => {
