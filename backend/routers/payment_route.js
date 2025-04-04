@@ -6,8 +6,8 @@ dotenv.config();
 const paymentRoute = express.Router();
 
 const instance = new Razorpay({
-    key_id: process.env.Razor_Key_Id,
-    key_secret: process.env.Razor_Sec_Key,
+    key_id: process.env.AZURE_ENDPOINT,
+    key_secret: process.env.AZURE_KEY,
 });
 
 paymentRoute.post('/payment', async(req, res)=> {
