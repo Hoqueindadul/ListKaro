@@ -1,10 +1,17 @@
-import express from "express";
-import User from "../models/users.model.js";
-import sendEmail from "../utils/sendEmail.js";
+import express from 'express';
+const router = express.Router();
+import { verifyToken } from '../middleware/verifyToken.js';
+import { signup, login, logout, varifyEmail, forgotPassword, resetPassword, checkAuth } from '../controlers/user.controlers.js';
 
-const authRoutes = express.Router();
+router.get("/check-auth", verifyToken, checkAuth);
 
-const generateOTP = () => Math.floor(1000 + Math.random() * 9000).toString();
+router.post("/signup", signup);
+router.post("/login", login);
+router.post("/logout", logout);
+
+router.post("/verify-email", varifyEmail);
+router.post("/forgot-password", forgotPassword);
+router.post("/reset-password/:token", resetPassword);
 
 
-export default authRoutes;
+export default router;
