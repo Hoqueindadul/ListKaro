@@ -9,7 +9,7 @@ const upload = multer({
         destination: './uploads/',
         filename: (req, file, cb) => {
             const ext = path.extname(file.originalname).toLowerCase();
-            if (!['.jpg', '.png'].includes(ext)) 
+            if (!['.jpg', '.png','.jpeg'].includes(ext)) 
                 return cb(new Error('Only .png and .jpg allowed!'));
             cb(null, `list${ext}`);
         }
