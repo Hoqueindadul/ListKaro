@@ -11,8 +11,7 @@ import uploadRoute from "./routers/upload_route.js";
 >>>>>>> 60f21a9 (working on product serach from image list)
 import searchProductRoute from "./routers/searchProduct.route.js";
 import productsRoute from "./routers/products.route.js"
-import errorHandleMiddleware from "./middleware/error.js";
->>>>>>> 1301830 (work in product api)
+import ocrRoute from './routers/ocr_route.js';
 
 dotenv.config(); 
 
