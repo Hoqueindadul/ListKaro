@@ -25,7 +25,11 @@
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.10.0",
     "nodemon": "^3.1.9",
+<<<<<<< HEAD
     "razorpay": "^2.9.6",
     "tesseract.js": "^6.0.0"
+=======
+    "tesseract.js": "^4.1.4"
+>>>>>>> 60f21a9 (working on product serach from image list)
   }
 }

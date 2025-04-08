@@ -5,6 +5,10 @@ import cookieParser from 'cookie-parser';
 import path from 'path';
 
 import connectDB from "./connection/dbConnection.js";
+<<<<<<< HEAD
+=======
+import uploadRoute from "./routers/upload_route.js"; 
+>>>>>>> 60f21a9 (working on product serach from image list)
 import searchProductRoute from "./routers/searchProduct.route.js";
 import productsRoute from "./routers/products.route.js"
 import ocrRoute from './routers/ocr_route.js';
@@ -35,7 +39,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 // Routes
-// app.use("/api", uploadRoute); 
+app.use("/api", uploadRoute); 
 app.use('/api', ocrRoute);
 app.use("/api/search", searchProductRoute);
 app.use("/api/products", productsRoute)
