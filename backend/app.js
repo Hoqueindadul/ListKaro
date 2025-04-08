@@ -41,6 +41,7 @@ app.use('/api', newsletterRoute);
 app.use("/api", paymentRoute);
 
 
+app.use(errorHandleMiddleware)
 
 // Start Server
 app.listen(port, () => {
