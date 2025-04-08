@@ -6,6 +6,7 @@ import uploadRoute from "./routers/upload_route.js";
 import searchProductRoute from "./routers/searchProduct.route.js";
 import productsRoute from "./routers/products.route.js"
 import ocrRoute from './routers/ocr_route.js';
+import userRoute from "./routers/user.route.js";
 
 dotenv.config(); 
 
