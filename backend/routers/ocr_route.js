@@ -3,8 +3,12 @@ import axios from 'axios';
 import multer from 'multer';
 import fs from 'fs';
 import dotenv from 'dotenv';
+<<<<<<< HEAD
 dotenv.config();
 import Products from '../models/products.model.js';
+=======
+dotenv.config(); 
+>>>>>>> 2b3644b (working on product serach from image list)
 
 const router = express.Router();
 
@@ -85,6 +89,32 @@ router.post('/upload-ocr', upload.single('image'), async (req, res) => {
         console.error(error);
         res.status(500).json({ error: 'Something went wrong during OCR.' });
     }
+<<<<<<< HEAD
+=======
+
+    fs.unlinkSync(imagePath); 
+
+
+    const lines = result.flatMap(page => page.lines.map(line => line.text));
+    const parsedItems = lines.map(text => {
+      // Split on first match of -, =, :, →, or -> (with or without surrounding spaces)
+      const match = text.match(/^(.*?)\s*[-=:→]\s*(.*)$/);
+      if (match) {
+        const item = match[1].trim();
+        const quantity = match[2].trim();
+        return { item, quantity };
+      } else {
+        return { item: text, quantity: null }; // fallback if no separator
+      }
+    });
+    
+    res.json({ parsedItems });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Something went wrong during OCR.' });
+  }
+>>>>>>> 2b3644b (working on product serach from image list)
 });
 
 export default router;

@@ -10,6 +10,7 @@ function UpList() {
                 return alert("Please upload a valid JPG or PNG image");
             }
         let formFile = new FormData()
+<<<<<<< HEAD
         formFile.append("image", file)
 
         try{
@@ -19,6 +20,16 @@ function UpList() {
             })
             const result = await response.json();
             console.log(result.parsedItems);
+=======
+        formFile.append("file", file)
+
+        try{
+            const response = await fetch("http://localhost:5000/api/upload", {
+                method:'POST',
+                body:formFile,
+            })
+            console.log(response)
+>>>>>>> 2b3644b (working on product serach from image list)
             alert("Upload Successful")
         }
         catch{

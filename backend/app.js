@@ -5,7 +5,6 @@ import cookieParser from 'cookie-parser';
 import path from 'path';
 
 import connectDB from "./connection/dbConnection.js";
-import uploadRoute from "./routers/upload_route.js"; 
 import searchProductRoute from "./routers/searchProduct.route.js";
 import productsRoute from "./routers/products.route.js"
 import ocrRoute from './routers/ocr_route.js';
