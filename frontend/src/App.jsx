@@ -1,9 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min";
+
 import './App.css'
 
-import SideBar from "./pages/Sidebar";
 import Home from './pages/Home'
 import UpList from "./pages/UpList";
+import Profile from "./pages/Profile"
 
 
 function App() {
@@ -12,10 +15,11 @@ function App() {
     <>
     <Router>
       <Routes>
-          <Route path="/" element={<SideBar />}>
+
           <Route index element={<Home />} />
-          <Route path="/uploadlist" element={<UpList />} />
-        </Route>
+          <Route path="/uploadlist" element={ <UpList />} />
+          <Route path="/profile" element={ <Profile/> } />
+
       </Routes>
     </Router>
     </>
