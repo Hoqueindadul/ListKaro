@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import connectDB from "./connection/dbConnection.js";
-// import uploadRoute from "./routers/upload_route.js"; 
+import uploadRoute from "./routers/upload_route.js"; 
 import searchProductRoute from "./routers/searchProduct.route.js";
 import productsRoute from "./routers/products.route.js"
 import ocrRoute from './routers/ocr_route.js';
@@ -21,7 +21,7 @@ app.use(cors());
 app.use(express.json()); 
 
 // Routes
-// app.use("/api", uploadRoute); 
+app.use("/api", uploadRoute); 
 app.use('/api', ocrRoute);
 app.use("/api/search", searchProductRoute);
 app.use("/api/products", productsRoute)

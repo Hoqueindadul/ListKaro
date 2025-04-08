@@ -2,12 +2,16 @@ import express from 'express';
 import axios from 'axios';
 import multer from 'multer';
 import fs from 'fs';
+import dotenv from 'dotenv';
+dotenv.config(); 
 
 const router = express.Router();
 
-const AZURE_KEY = '341qYo40r0EeSr32UoRv3IYnxACap3Oc0qd4OXPSAv7TAv8ttADdJQQJ99BDACGhslBXJ3w3AAAFACOGlGwA';
-const AZURE_ENDPOINT = 'https://jabedindadualocr.cognitiveservices.azure.com/';
-const AZURE_OCR_URL = AZURE_ENDPOINT + 'vision/v3.2/read/analyze';
+const AZURE_KEY = process.env.AZURE_KEY;
+const AZURE_ENDPOINT = process.env.AZURE_ENDPOINT;
+const AZURE_OCR_URL = `${AZURE_ENDPOINT}vision/v3.2/read/analyze`;
+
+
 
 const upload = multer({ dest: 'uploads/' });
 
@@ -46,8 +50,19 @@ router.post('/upload-ocr', upload.single('image'), async (req, res) => {
 
 
     const lines = result.flatMap(page => page.lines.map(line => line.text));
-
-    res.json({ lines });
+    const parsedItems = lines.map(text => {
+      // Split on first match of -, =, :, →, or -> (with or without surrounding spaces)
+      const match = text.match(/^(.*?)\s*[-=:→]\s*(.*)$/);
+      if (match) {
+        const item = match[1].trim();
+        const quantity = match[2].trim();
+        return { item, quantity };
+      } else {
+        return { item: text, quantity: null }; // fallback if no separator
+      }
+    });
+    
+    res.json({ parsedItems });
 
   } catch (error) {
     console.error(error);
