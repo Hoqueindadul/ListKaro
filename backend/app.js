@@ -25,6 +25,8 @@ app.use("/api", uploadRoute);
 app.use('/api', ocrRoute);
 app.use("/api/search", searchProductRoute);
 app.use("/api/products", productsRoute)
+app.use("/api", userRoute)
+app.use(errorHandleMiddleware)
 
 
 
