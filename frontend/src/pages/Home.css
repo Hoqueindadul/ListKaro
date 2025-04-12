@@ -228,22 +228,213 @@ transition: opacity ease 250ms;
 }
 
 .signupcontainer {
-  position: fixed;
+  position: fixed; 
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 400px;
-  width: 400px;
+  height: 500px;
+  width: 500px;
   background-color: #ffffff;
-  border-radius: 30px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); 
-  padding: 20px;
-  transition: all 0.3s ease-in-out;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); 
+  padding: 40px;
   z-index: 10; 
+}
+.signheader{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  align-items: center;
+}
+.signupcontainer input{
+  padding: 7px;
+  font-size: 16px;
+  border-radius: 5px;
+  margin-bottom: 12px;
+  width: 100%;
+  border:0.5px solid gray;
+}
+.signheader .signuptitle{
+  font-size: 26px;
+  font-weight: bold;
+}
+.signheader .close{
+  font-size: 20px;
+  cursor: pointer;
+  font-weight: 400;
+  transition: all 0.3s ease;
+  color: green;
+}
+.close:hover{
+  color: red;
+}
+
+.signupbtn{
+  background-color: blue;
+  color: white;
+  margin-top: 10px;
+  max-width: 100px;
+  transition: all 0.3s ease;
+
+}
+.signupbtn:hover{
+  transform: scale(0.9);
+  background-color: green;
 }
 
 
+.categoriestitle{
+  margin: 0px 60px;
+  padding: 10px;
+
+}
+.categories{
+  margin: 0px 50px;
+  padding: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  
+}
+
+.circontainer{
+  text-align: center;
+}
+.circontainer p{
+  margin-top: 20px;
+  font-weight: bold;
+  font-size: 20px;
+}
+.cirimage{
+  height: 120px;
+  width: 120px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.5s ease;
+}
+.cirimage:hover{
+  transform: scale(1.1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.299);
+}
+
+.offer{
+  background-color: orange;
+  height: auto;
+  margin: 0px 50px; 
+  border-radius: 30px;
+  text-align: start;
+  display: flex;
+  justify-content: space-around;
+}
+.offercontainer{
+  margin: 50px;
+  padding: 20px;
+  font-weight: bold;
+  color: whitesmoke;
+}
+.offercontainer h3{
+  font-size: 40px;
+  font-weight: bold;
+}
+.offercontainer p{
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+}
+.offercontainer #price{
+  font-size: 28px;
+  font-weight:bold;
+  color: yellow;
+}
+.offercontainer #star{
+  color: rgba(0, 0, 0, 0.358);
+}
+.offercontainer input{
+  width: 120px;
+  border-radius: 10px;
+  border: none;
+  padding: 10px;
+  background-color: rgba(0, 0, 255, 0.8);
+  color: white;
+  font-weight: bold;
+  transition: transform 0.3s ease;
+}
+.offercontainer input:hover{
+  background-color: blue;
+  transform: scale(0.9);
+  
+}
+.newsletter{
+  margin: 50px;
+  padding: 20px;
+  border-radius: 40px;
+  font-weight: bold;
+  background-color: white;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.newsletter h3{
+  font-size: 35px;
+  font-weight: bold;
+}
+.newsletter .emailbox{
+  width: 250px;
+  font-size: 16px;
+  border-radius: 10px;
+  padding: 10px;
+  margin-right: 10px;
+
+}
+.newsletter .emailbtn{
+  font-size: 16px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color:#ffa600d9;
+  border: none;
+  color: white;
+  font-weight: bold;
+  width: 100px;
+  transition: transform 0.3s ease;
+}
+.emailbtn:hover{
+  background-color:#ffa500;
+  transform: scale(0.9);
+}
+
+footer{
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  padding: 20px; 
+  margin: 20px;
+
+}
+footer .products,.aboutus, .consumers, .programs{
+  display: flex;
+  flex-direction: column;
+
+}
+footer p{
+  font-size: 18px;
+  font-weight: bold;
+}
+footer a{
+  text-decoration: none;
+  color: black;
+  margin-bottom: 5px;
+}
+footer a:hover{
+  color: red;
+  font-weight: 300;
+}
+
+hr{
+  opacity: 0.2;
+}
+
+
+/* Signup  */

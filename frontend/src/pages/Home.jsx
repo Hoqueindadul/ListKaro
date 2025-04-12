@@ -1,11 +1,13 @@
 import React from "react";
 import "./Home.css";
 
+
 function Home() {
   const [showPopup, setShowPopup] = React.useState(false);
 
   return (
     <> 
+
     <nav className="navbar my-navbar ">
       <div className="container d-flex justify-content-between align-items-center">
 
@@ -69,36 +71,38 @@ function Home() {
     </nav>
 
     {     
-    
-    showPopup && (
-      <div className="signupcontainer">
-          <div className="signheader">
-            <h3>Sign Up</h3>
-            <span onClick={ ()=> setShowPopup(false)}> Close </span>
-          </div>
+      showPopup && (
+        <div className="signupcontainer">
+            <div className="signheader">
+              <span className="signuptitle">  Sign Up </span>
+              <span onClick={ ()=> setShowPopup(false)} className="close"> X </span>
+            </div>
 
-          <form action="" method="post">
-          <input type="text" placeholder="Enter your name " required/>
-          <input type="email" placeholder="Enter you email"  required />
-          <input type="password" placeholder="Set a password" required />
-          <input type="number" placeholder="Phone Number (Optional)" />
-          <input class="form-check-input" type="checkbox" value="" id="checkDefault"/>  Agree to the terms and conditions
-          <input type="submit" value={"Signup"} />
-          </form>
-      </div>
-    )
+            <form action="" method="post">
+              <input type="text" placeholder="Enter your name " required/> <br/>
+              <input type="email" placeholder="Enter you email"  required  autocomplete="off" />  <br/>
+              <input type="password" placeholder="Set a password" required autocomplete="off" />  <br/>
+              <input type="number" placeholder="Phone Number (Optional)" />  <br/>
+              By Signing up you agree to our <a href="" style={{textDecoration:'none'}}> terms and conditions  </a> <br/> <br/>
+              <input type="submit" value={"Signup"} className="signupbtn" />
+            </form>
+
+            <p style={{textAlign:'center'}}>Already have an account? <a href="" style={{textDecoration:'none'}}>Log in</a></p>
+
+        </div>
+      )
     
     }
 
 
-<div className="offer-banner">
-  <div className="offer-text">
-    <span>🚚 Get Your Order Delivered in Just 45 Minutes!</span>
-    <span>📝 Upload Your Grocery List & Buy Everything at Once</span>
-    <span>📦 Free Delivery on Orders Above ₹499</span>
-    <span>🧀 Exclusive Discounts on All Dairy Products!</span>
-  </div>
-</div>
+    <div className="offer-banner">
+      <div className="offer-text">
+        <span>🚚 Get Your Order Delivered in Just 45 Minutes!</span>
+        <span>📝 Upload Your Grocery List & Buy Everything at Once</span>
+        <span>📦 Free Delivery on Orders Above ₹499</span>
+        <span>🧀 Exclusive Discounts on All Dairy Products!</span>
+      </div>
+    </div>
 
     <section className="carocontainer">
 
@@ -121,7 +125,10 @@ function Home() {
         <div className="card-body">
           <h5 className="card-title">Snacks</h5>
           <p className="card-text">
-            Ekhane Likhe dis kichu
+            Tasty Bites, Anytime! <br />
+            Explore our wide range of snacks – from crispy chips to healthy munchies. <br />
+            Perfect for your cravings, anytime, anywhere! <br /> <br /> 
+            <strong style={{fontSize:'16px'}}>Get 20% off: Use Code "<em>IamHungry</em>" </strong> <br /> <br />
           </p>
           <a href="#" className="card-button">Buy Now</a>
         </div>
@@ -132,7 +139,10 @@ function Home() {
         <div className="card-body">
           <h5 className="card-title">Groceries</h5>
           <p className="card-text">
-          Ekhane Likhe dis kichu
+              Daily Essentials, Delivered Fresh! <br />
+              From farm-fresh vegetables to pantry staples – get everything you need in one place. <br /> 
+              Quality you trust, prices you'll love! <br /> <br /> 
+              <strong  style={{fontSize:'16px'}}>Get 10% off: use code "<em>FreshStart</em>" </strong> <br /> <br />
           </p>
           <a href="#" className="card-button">Buy Now</a>
         </div>
@@ -142,6 +152,151 @@ function Home() {
 
     </section>
     <hr/>
+
+    <h3 className="categoriestitle">Categories</h3>
+
+    <section className="categories">
+
+        <div className="circontainer">
+          <img src="/images/c1.jpg" alt=""  className="cirimage"/>
+          <p>Dairy Products</p>
+        </div>
+
+        <div className="circontainer">
+          <img src="/images/c2.jpg" alt=""  className="cirimage"/>
+          <p>Dairy Products</p>
+        </div>
+
+        <div className="circontainer">
+          <img src="/images/c3.jpg" alt=""  className="cirimage"/>
+          <p>Dairy Products</p>
+        </div>
+
+        <div className="circontainer">
+          <img src="/images/c1.jpg" alt=""  className="cirimage"/>
+          <p>Dairy Products</p>
+        </div>
+
+        <div className="circontainer">
+          <img src="/images/c2.jpg" alt=""  className="cirimage"/>
+          <p>Dairy Products</p>
+        </div>
+
+        <div className="circontainer">
+          <img src="/images/c3.jpg" alt=""  className="cirimage"/>
+          <p>Dairy Products</p>
+        </div>
+
+
+    </section>
+    
+    <section className="categories">
+
+        <div className="circontainer">
+          <img src="/images/c1.jpg" alt=""  className="cirimage"/>
+          <p>Dairy Products</p>
+        </div>
+
+        <div className="circontainer">
+          <img src="/images/c2.jpg" alt=""  className="cirimage"/>
+          <p>Dairy Products</p>
+        </div>
+
+        <div className="circontainer">
+          <img src="/images/c3.jpg" alt=""  className="cirimage"/>
+          <p>Dairy Products</p>
+        </div>
+
+        <div className="circontainer">
+          <img src="/images/c1.jpg" alt=""  className="cirimage"/>
+          <p>Dairy Products</p>
+        </div>
+
+        <div className="circontainer">
+          <img src="/images/c2.jpg" alt=""  className="cirimage"/>
+          <p>Dairy Products</p>
+        </div>
+
+        <div className="circontainer">
+          <img src="/images/c3.jpg" alt=""  className="cirimage"/>
+          <p>Dairy Products</p>
+        </div>
+
+
+    </section>
+
+    <hr />
+
+    <section className="offer"> 
+      <div className="offerimage">
+        <img src="/images/juice.png" alt=""  className="offerimg"/>
+      </div>
+      <div className="offercontainer">
+      <h3>GET REFRESHED THIS SUMMER! ☀️</h3>
+      <p>Buy 2 bottle of Orange juice and get one orange juice for Free</p>
+      <p id="star">*Terms and Conditions applicable</p>
+      <p id="price">Price : <del>99/-</del> Now only : 79/-</p>
+      <a href="" > <input type="button" value={'Buy Now'} /> </a>
+      </div>
+
+
+    </section>
+
+    <hr />
+
+    <section className="newsletter">
+      <form className="newsletterhead">
+        <h3>Get top deals, latest trends, and more.</h3>
+        <p>Join our email subscription now to get updates on promotions and coupons.</p>
+        <input type="email" placeholder="Enter email address" className="emailbox"/>
+        <input type="submit" value={'Join now'} className="emailbtn"/>
+      </form>
+      <img src="/images/model.png" alt=""  height={'400px'} width={'300px'}/>
+
+    </section>
+
+    <hr />
+
+    <footer>
+      <div className="products">
+        <p>Caterogies</p>
+        <a href="">Dairy Products</a>
+        <a href="">Fruits</a>
+        <a href="">Vegies</a>
+        <a href="">Canned Products</a>
+        <a href="">Sweets</a>
+        <a href="">Snacks</a>
+        <a href="">Cookies</a>
+        <a href="">Cakes</a>
+
+      </div>
+
+      <div className="aboutus">
+        <p>About us</p>
+        <a href="">Company</a>
+        <a href="">Developers</a>
+        <a href="">Blog</a>
+        <a href="">Contact</a>
+      </div>
+      <div className="consumers">
+      <p>Customers</p>
+        <a href="">Payment</a>
+        <a href="">Delivery</a>
+        <a href="">Return </a>
+        <a href="">FAQ</a>
+      </div>
+      <div className="programs">
+      <p>Programs</p>
+        <a href="">Offers</a>
+        <a href="">Gift Cards</a>
+        <a href="">Vouchars </a>
+        <a href="">Career</a>
+      </div>
+    </footer>
+
+    <hr />
+
+
 
     </>
   );
