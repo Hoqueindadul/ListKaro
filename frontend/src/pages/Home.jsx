@@ -1,13 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Home.css";
 
-
 function Home() {
-  const [showPopup, setShowPopup] = React.useState(false);
+  const [showPopup, setShowPopup] = useState(false);
 
   return (
     <> 
-
     <nav className="navbar my-navbar ">
       <div className="container d-flex justify-content-between align-items-center">
 
@@ -70,29 +68,28 @@ function Home() {
       </div>
     </nav>
 
-    {     
-      showPopup && (
+    {showPopup && (
         <div className="signupcontainer">
-            <div className="signheader">
-              <span className="signuptitle">  Sign Up </span>
-              <span onClick={ ()=> setShowPopup(false)} className="close"> X </span>
-            </div>
+          <div className="signheader">
+            <span className="signuptitle">Sign Up</span>
+            <span onClick={() => setShowPopup(false)} className="close"> X </span>
+          </div>
 
-            <form action="" method="post">
-              <input type="text" placeholder="Enter your name " required/> <br/>
-              <input type="email" placeholder="Enter you email"  required  autocomplete="off" />  <br/>
-              <input type="password" placeholder="Set a password" required autocomplete="off" />  <br/>
-              <input type="number" placeholder="Phone Number (Optional)" />  <br/>
-              By Signing up you agree to our <a href="" style={{textDecoration:'none'}}> terms and conditions  </a> <br/> <br/>
-              <input type="submit" value={"Signup"} className="signupbtn" />
-            </form>
+          <form>
+            <input name="name" type="text" placeholder="Enter your name" required /><br />
+            <input name="email" type="email" placeholder="Enter your email" required autoComplete="off" /><br />
+            <input name="password" type="password" placeholder="Set a password" required autoComplete="off" /><br />
+            <input name="phone" type="number" placeholder="Phone Number (Optional)" /><br />
+            By signing up, you agree to our <a href="" style={{ textDecoration: 'none' }}>terms and conditions</a><br /><br />
+            <input style={{width:'200px', marginRight:'20px'}} name="otp" type="number" placeholder="Enter OTP" required  />
+            <input s type="submit" value="Send OTP" className="signupbtn" /> <br/>
+            <input type="submit" value="Signup" className="signupbtn" />
 
-            <p style={{textAlign:'center'}}>Already have an account? <a href="" style={{textDecoration:'none'}}>Log in</a></p>
+          </form>
 
+          <p style={{ textAlign: 'center' }}>Already have an account? <a href="" style={{ textDecoration: 'none' }}>Log in</a></p>
         </div>
-      )
-    
-    }
+      )}
 
 
     <div className="offer-banner">

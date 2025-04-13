@@ -2,10 +2,10 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import connectDB from "./connection/dbConnection.js";
-// import uploadRoute from "./routers/upload_route.js"; 
 import searchProductRoute from "./routers/searchProduct.route.js";
 import productsRoute from "./routers/products.route.js"
 import ocrRoute from './routers/ocr_route.js';
+import authRoutes from './routers/auth_routes.js'
 
 dotenv.config(); 
 
@@ -25,8 +25,7 @@ app.use(express.json());
 app.use('/api', ocrRoute);
 app.use("/api/search", searchProductRoute);
 app.use("/api/products", productsRoute)
-
-
+app.use("/api/auth", authRoutes)
 
 
 
