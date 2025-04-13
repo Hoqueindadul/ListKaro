@@ -6,7 +6,7 @@ function Home() {
 
   return (
     <> 
-    <nav className="navbar my-navbar ">
+    <nav className="navbar my-navbar">
       <div className="container d-flex justify-content-between align-items-center">
 
         <div className="d-flex align-items-center">
@@ -61,7 +61,7 @@ function Home() {
                 </ul>
               </li>
               <li className="nav-item"><a className="nav-link" href="/uploadlist">Upload List</a></li>
-              <li className="nav-item"><a className="nav-link" href="https://your-about-page.com" target="_blank" rel="noopener noreferrer">About</a></li>
+              <li className="nav-item"><a className="nav-link" href="/about" target="_blank" rel="noopener noreferrer">About</a></li>
               <li className="nav-item"><a className="nav-link" href="/profile">Profile</a></li></ul>
           </div>
         </div>
