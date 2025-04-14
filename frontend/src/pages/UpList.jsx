@@ -68,11 +68,16 @@ function UpList() {
   return (
     <>
       <div className="listcontainer">
-        <p id="uploadtitle">Upload Files</p>
+        <p id="uploadtitle">Upload Your List or Fill the Form</p>
+        <p id='instruction'>Please upload list as the <i> <strong> .jpg or .png  </strong> </i> format</p>
         <hr />
 
         <div className="listbox">
           <div className="dragndrop">
+            <div className="imagecontainer">
+              <img src="/images/m.jpg" alt="" />
+            </div>
+
             <label htmlFor="fileId" className="filelabel">Choose File</label>
             <input type="file" id="fileId" accept="image/png, image/jpeg" />
             <button onClick={upload} className="filesubmit">Submit</button>
