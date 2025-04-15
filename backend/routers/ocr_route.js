@@ -3,7 +3,8 @@ import axios from 'axios';
 import multer from 'multer';
 import fs from 'fs';
 import dotenv from 'dotenv';
-dotenv.config(); 
+dotenv.config();
+import Products from '../models/products.model.js';
 
 const router = express.Router();
 
@@ -16,58 +17,74 @@ const AZURE_OCR_URL = `${AZURE_ENDPOINT}vision/v3.2/read/analyze`;
 const upload = multer({ dest: 'uploads/' });
 
 router.post('/upload-ocr', upload.single('image'), async (req, res) => {
-  try {
-    const imagePath = req.file.path;
-    const imageData = fs.readFileSync(imagePath);
+    try {
+        if (!req.file) {
+            return res.status(400).json({ error: 'No file uploaded.' });
+        }
 
-    const headers = {
-      'Ocp-Apim-Subscription-Key': AZURE_KEY,
-      'Content-Type': 'application/octet-stream',
-    };
+        const imagePath = req.file.path;
+        const imageData = fs.readFileSync(imagePath);
 
-    const response = await axios.post(AZURE_OCR_URL, imageData, { headers });
-    const operationLocation = response.headers['operation-location'];
+        const headers = {
+            'Ocp-Apim-Subscription-Key': AZURE_KEY,
+            'Content-Type': 'application/octet-stream',
+        };
 
-    let result;
-    let attempts = 0;
-    while (attempts < 10) {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      const resultRes = await axios.get(operationLocation, {
-        headers: { 'Ocp-Apim-Subscription-Key': AZURE_KEY },
-      });
+        const response = await axios.post(AZURE_OCR_URL, imageData, { headers });
+        const operationLocation = response.headers['operation-location'];
 
-      if (resultRes.data.status === 'succeeded') {
-        result = resultRes.data.analyzeResult.readResults;
-        break;
-      } else if (resultRes.data.status === 'failed') {
-        return res.status(400).json({ error: 'OCR failed.' });
-      }
+        let result;
+        let attempts = 0;
+        while (attempts < 10) {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            const resultRes = await axios.get(operationLocation, {
+                headers: { 'Ocp-Apim-Subscription-Key': AZURE_KEY },
+            });
 
-      attempts++;
+            if (resultRes.data.status === 'succeeded') {
+                result = resultRes.data.analyzeResult.readResults;
+                break;
+            } else if (resultRes.data.status === 'failed') {
+                return res.status(400).json({ error: 'OCR failed.' });
+            }
+
+            attempts++;
+        }
+
+        fs.unlinkSync(imagePath);
+
+
+        const lines = result.flatMap(page => page.lines.map(line => line.text));
+        const parsedItems = lines.map(text => {
+            // Split on first match of -, =, :, →, or -> (with or without surrounding spaces)
+            const match = text.match(/^(.*?)\s*[-=:→]\s*(.*)$/);
+            if (match) {
+                const item = match[1].trim();
+                const quantity = match[2].trim();
+                return { item, quantity };
+            } else {
+                return { item: text, quantity: null }; // fallback if no separator
+            }
+        });
+
+        const matchedProducts = [];
+
+        for (const { item, quantity } of parsedItems) {
+            const product = await Products.findOne({
+                name: { $regex: new RegExp(item, 'i') } // case-insensitive search
+            });
+
+            matchedProducts.push({
+                matchedProduct: product || null
+            });
+        }
+
+        res.json({ parsedItems, matchedProducts });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Something went wrong during OCR.' });
     }
-
-    fs.unlinkSync(imagePath); 
-
-
-    const lines = result.flatMap(page => page.lines.map(line => line.text));
-    const parsedItems = lines.map(text => {
-      // Split on first match of -, =, :, →, or -> (with or without surrounding spaces)
-      const match = text.match(/^(.*?)\s*[-=:→]\s*(.*)$/);
-      if (match) {
-        const item = match[1].trim();
-        const quantity = match[2].trim();
-        return { item, quantity };
-      } else {
-        return { item: text, quantity: null }; // fallback if no separator
-      }
-    });
-    
-    res.json({ parsedItems });
-
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Something went wrong during OCR.' });
-  }
 });
 
 export default router;

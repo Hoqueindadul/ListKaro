@@ -10,14 +10,15 @@ function UpList() {
                 return alert("Please upload a valid JPG or PNG image");
             }
         let formFile = new FormData()
-        formFile.append("file", file)
+        formFile.append("image", file)
 
         try{
-            const response = await fetch("http://localhost:5000/api/upload", {
+            const response = await fetch("http://localhost:5000/api/upload-ocr", {
                 method:'POST',
                 body:formFile,
             })
-            console.log(response)
+            const result = await response.json();
+            console.log(result.parsedItems);
             alert("Upload Successful")
         }
         catch{

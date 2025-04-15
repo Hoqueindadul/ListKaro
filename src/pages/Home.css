@@ -1,3 +1,4 @@
+<<<<<<< HEAD:src/pages/Home.css
 @import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap');
 
 body {
@@ -247,3 +248,447 @@ transition: opacity ease 250ms;
 }
 
 
+=======
+
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap');
+
+body {
+  background-color: #FAF1E6; 
+  font-family: "Titillium Web", sans-serif;
+  font-weight: 200;
+  font-style: normal;
+}
+
+.my-navbar {
+  background-color: #99BC85;
+}
+
+.logo{ 
+  height: 45px;
+  width: 45px;
+  margin: 2px;
+  cursor: pointer;
+}
+.my-brand {
+  color: #FDFAF6;
+  font-weight: bold;
+  font-size: 28px;
+}
+.my-brand:hover {
+  color: #fdf6f6ae; 
+}
+
+.my-navbar .nav-link {
+  color: white;
+  padding: 10px 15px; 
+  font-size: 1rem;
+}
+
+.searchbar{
+  font-size: 19px;
+  border: none;
+  border-radius: 15px;
+  padding-left: 20px;
+  margin-right: 20px;
+  width: 250px;
+}
+
+
+.custom-sidebar {
+  background-color: #E4EFE7; 
+  color: black; 
+}
+
+.custom-sidebar .offcanvas-header {
+  background-color: #E4EFE7;
+}
+
+.custom-sidebar .nav-link {
+  color: black; 
+  font-size: 1rem;
+  padding: 10px 15px;
+}
+
+.custom-sidebar .nav-link:hover {
+  background-color: #99BC85;
+  color: white;
+  border-radius: 5px;
+}
+
+
+.custom-sidebar .dropdown-menu {
+  background-color: #FDFAF6;
+  border: none;
+}
+
+.custom-sidebar .dropdown-item {
+  color: black;
+}
+
+.custom-sidebar .dropdown-item:hover {
+  background-color: #99BC85;
+  color: white;
+  border-radius: 5px;
+}
+
+
+/* MIDSECTION  */
+.carocontainer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2rem; 
+  width: 100%;
+  height: auto;
+  flex-wrap: wrap; 
+  margin-right: 20px;
+
+}
+
+.slide-wrapper {
+  flex: 1; 
+  margin-left: 20px;
+  max-width: 50rem;
+}
+
+
+.slider{
+  display: flex;
+  width: 100%;
+  height: 500px; 
+  aspect-ratio: unset; 
+  overflow-x: auto;
+  scroll-snap-type: x mandatory; 
+  scroll-behavior: smooth;
+  border-radius: 0.5rem;
+
+  scrollbar-width: none;  /* slider hidden for firefox */
+  -ms-overflow-style: none;  /* slider hidden for edge */
+}
+.slider::-webkit-scrollbar {
+  display: none; /* slider hidden for Chrome Safari */
+}
+
+.slider img{
+  flex: 1 0 100%;
+  scroll-snap-align: start;
+  object-fit: cover;
+}
+
+.slider-nav{
+  display: flex;
+  column-gap: 1rem;
+  position: absolute;
+  left: 30%;
+  transform: translate(-50%);  
+  z-index: 1;
+  margin-top: 28rem;
+}
+
+.slider-nav a{
+height: 0.6rem;
+width: 0.6rem;
+border-radius: 50%;
+background-color: white ;
+box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.9);
+opacity: 0.5;
+transition: opacity ease 250ms;
+}
+.slider-nav a:hover{
+  opacity: 1;
+}
+
+/* CARDS SECTION  */
+
+.card-container {
+  width: 18rem;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  transition: transform 0.3s ease;
+}
+
+
+.card-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.card-body {
+  padding: 16px;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.card-text {
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 16px;
+}
+
+.card-button {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.card-button:hover {
+  background-color: #0056b3;
+}
+
+
+/* Scrolling Text  */
+.offer-banner {
+  background-color: #fef9f0;
+  border-top: 2px solid #ffa500;
+  border-bottom: 2px solid #ffa500;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 10px 0;
+  font-size: 16px;
+  color: #333;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.offer-text {
+  display: inline-block;
+  padding-left: 100%;
+  animation: scrollLeft 30s linear infinite;
+}
+.offer-text span {
+  margin-right: 500px; 
+}
+
+@keyframes scrollLeft {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.signupcontainer {
+  position: fixed; 
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  height: 550px;
+  width: 500px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); 
+  padding: 40px;
+  z-index: 10; 
+}
+.signheader{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  align-items: center;
+}
+.signupcontainer input{
+  padding: 7px;
+  font-size: 16px;
+  border-radius: 5px;
+  margin-bottom: 12px;
+  width: 100%;
+  border:0.5px solid gray;
+}
+.signheader .signuptitle{
+  font-size: 26px;
+  font-weight: bold;
+}
+.signheader .close{
+  font-size: 20px;
+  cursor: pointer;
+  font-weight: 400;
+  transition: all 0.3s ease;
+  color: green;
+}
+.close:hover{
+  color: red;
+}
+
+.signupbtn{
+  background-color: blue;
+  color: white;
+  margin-top: 10px;
+  max-width: 100px;
+  transition: all 0.3s ease;
+
+}
+.signupbtn:hover{
+  transform: scale(0.9);
+  background-color: green;
+}
+
+
+.categoriestitle{
+  margin: 0px 60px;
+  padding: 10px;
+
+}
+.categories{
+  margin: 0px 50px;
+  padding: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  
+}
+
+.circontainer{
+  text-align: center;
+}
+.circontainer p{
+  margin-top: 20px;
+  font-weight: bold;
+  font-size: 20px;
+}
+.cirimage{
+  height: 120px;
+  width: 120px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.5s ease;
+}
+.cirimage:hover{
+  transform: scale(1.1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.299);
+}
+
+.offer{
+  background-color: orange;
+  height: auto;
+  margin: 0px 50px; 
+  border-radius: 30px;
+  text-align: start;
+  display: flex;
+  justify-content: space-around;
+}
+.offercontainer{
+  margin: 50px;
+  padding: 20px;
+  font-weight: bold;
+  color: whitesmoke;
+}
+.offercontainer h3{
+  font-size: 40px;
+  font-weight: bold;
+}
+.offercontainer p{
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+}
+.offercontainer #price{
+  font-size: 28px;
+  font-weight:bold;
+  color: yellow;
+}
+.offercontainer #star{
+  color: rgba(0, 0, 0, 0.358);
+}
+.offercontainer input{
+  width: 120px;
+  border-radius: 10px;
+  border: none;
+  padding: 10px;
+  background-color: rgba(0, 0, 255, 0.8);
+  color: white;
+  font-weight: bold;
+  transition: transform 0.3s ease;
+}
+.offercontainer input:hover{
+  background-color: blue;
+  transform: scale(0.9);
+  
+}
+.newsletter{
+  margin: 50px;
+  padding: 20px;
+  border-radius: 40px;
+  font-weight: bold;
+  background-color: white;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.newsletter h3{
+  font-size: 35px;
+  font-weight: bold;
+}
+.newsletter .emailbox{
+  width: 250px;
+  font-size: 16px;
+  border-radius: 10px;
+  padding: 10px;
+  margin-right: 10px;
+
+}
+.newsletter .emailbtn{
+  font-size: 16px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color:#ffa600d9;
+  border: none;
+  color: white;
+  font-weight: bold;
+  width: 100px;
+  transition: transform 0.3s ease;
+}
+.emailbtn:hover{
+  background-color:#ffa500;
+  transform: scale(0.9);
+}
+
+footer{
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  padding: 20px; 
+  margin: 20px;
+
+}
+footer .products,.aboutus, .consumers, .programs{
+  display: flex;
+  flex-direction: column;
+
+}
+footer p{
+  font-size: 18px;
+  font-weight: bold;
+}
+footer a{
+  text-decoration: none;
+  color: black;
+  margin-bottom: 5px;
+}
+footer a:hover{
+  color: red;
+  font-weight: 300;
+}
+
+hr{
+  opacity: 0.2;
+}
+
+/* Signup  */
+>>>>>>> 00e4ab41afe25d326c45662f843b88f66c7c3a27:frontend/src/pages/Home.css
