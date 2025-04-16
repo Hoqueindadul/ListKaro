@@ -6,8 +6,14 @@ import uploadRoute from "./routers/upload_route.js";
 import searchProductRoute from "./routers/searchProduct.route.js";
 import productsRoute from "./routers/products.route.js"
 import ocrRoute from './routers/ocr_route.js';
+<<<<<<< HEAD
 import userRoute from "./routers/user.route.js";
 import errorHandleMiddleware from "./middleware/error.js";
+=======
+import authRoutes from './routers/auth_routes.js'
+import newsletterRoute from "./routers/newsletter_route.js";
+import paymentRoute from './routers/payment_route.js'
+>>>>>>> 1e83f0efeeb6ba67ed990377dcfb8b55d33c595f
 
 dotenv.config(); 
 
@@ -27,10 +33,16 @@ app.use("/api", uploadRoute);
 app.use('/api', ocrRoute);
 app.use("/api/search", searchProductRoute);
 app.use("/api/products", productsRoute)
+<<<<<<< HEAD
 app.use("/api", userRoute)
 app.use(errorHandleMiddleware)
 
 
+=======
+app.use("/api/auth", authRoutes)
+app.use('/api', newsletterRoute);
+app.use("/api", paymentRoute);
+>>>>>>> 1e83f0efeeb6ba67ed990377dcfb8b55d33c595f
 
 
 
