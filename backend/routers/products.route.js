@@ -1,13 +1,16 @@
 import express from 'express';
-import { createProduct, getProducts, updateProduct, deleteProduct, getSingleProduct } from '../controlers/products.controler.js';
+import { createProduct, searchProductsByKeyword, getAllProducts, updateProduct, deleteProduct, getSingleProduct } from '../controlers/products.controler.js';
 
 const router = express.Router();
 
 // Route to create a new product
 router.post('/createProduct', createProduct);
 
+// Route to get products by keyword
+router.get('/searchProductsByKeyword', searchProductsByKeyword);
+
 // Route to get all products
-router.get('/getAllProducts', getProducts);
+router.get('/getAllProducts', getAllProducts);
 
 // Route to get a single product by ID
 router.get('/singleProduct/:id', getSingleProduct);
