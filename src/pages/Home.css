@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 <<<<<<< HEAD:frontend/src/pages/Home.css
 
+=======
+>>>>>>> a21a9db (some changes)
 @import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap');
 
 body {
@@ -10,7 +13,11 @@ body {
 }
 
 .my-navbar {
+<<<<<<< HEAD
   background-color: #99BC85; 
+=======
+  background-color: #99BC85;
+>>>>>>> a21a9db (some changes)
 }
 
 .logo{ 
@@ -23,13 +30,19 @@ body {
   color: #FDFAF6;
   font-weight: bold;
   font-size: 28px;
+<<<<<<< HEAD
   transition: all 0.3s ease-in;
+=======
+>>>>>>> a21a9db (some changes)
 }
 .my-brand:hover {
   color: #fdf6f6ae; 
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> a21a9db (some changes)
 .my-navbar .nav-link {
   color: white;
   padding: 10px 15px; 
@@ -43,16 +56,28 @@ body {
   padding-left: 20px;
   margin-right: 20px;
   width: 250px;
+<<<<<<< HEAD
 
 }
 
 .custom-sidebar {
   background-color: #e4efe7; 
+=======
+}
+
+
+.custom-sidebar {
+  background-color: #E4EFE7; 
+>>>>>>> a21a9db (some changes)
   color: black; 
 }
 
 .custom-sidebar .offcanvas-header {
+<<<<<<< HEAD
   background-color: #bcd2c2;
+=======
+  background-color: #E4EFE7;
+>>>>>>> a21a9db (some changes)
 }
 
 .custom-sidebar .nav-link {
@@ -100,9 +125,14 @@ body {
 .slide-wrapper {
   flex: 1; 
   margin-left: 20px;
+<<<<<<< HEAD
   max-width: 50rem;
 }
 
+=======
+  max-width: 50rem; 
+}
+>>>>>>> a21a9db (some changes)
 .slider{
   display: flex;
   width: 100%;
@@ -161,6 +191,10 @@ transition: opacity ease 250ms;
   transition: transform 0.3s ease;
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> a21a9db (some changes)
 .card-image {
   width: 100%;
   height: 180px;
@@ -189,7 +223,10 @@ transition: opacity ease 250ms;
   padding: 8px 16px;
   background-color: #007bff;
   color: white;
+<<<<<<< HEAD
   font-weight: 500;
+=======
+>>>>>>> a21a9db (some changes)
   text-decoration: none;
   border-radius: 6px;
   transition: background-color 0.2s ease;
@@ -233,12 +270,17 @@ transition: opacity ease 250ms;
 }
 
 .signupcontainer {
+<<<<<<< HEAD
   position: fixed; 
+=======
+  position: fixed;
+>>>>>>> a21a9db (some changes)
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
+<<<<<<< HEAD
   height: 550px;
   width: 500px;
   background-color: #ffffff;
@@ -737,3 +779,18 @@ transition: opacity ease 250ms;
 
 
 >>>>>>> 60f21a9 (working on product serach from image list):src/pages/Home.css
+=======
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  width: 400px;
+  background-color: #ffffff;
+  border-radius: 30px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); 
+  padding: 20px;
+  transition: all 0.3s ease-in-out;
+  z-index: 10; 
+}
+
+
+>>>>>>> a21a9db (some changes)
