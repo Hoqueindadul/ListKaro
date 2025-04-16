@@ -1,8 +1,77 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
+import axios from 'axios';
+
 import "./Home.css";
+import './HomeDark.css';
 
 function Home() {
   const [showPopup, setShowPopup] = useState(false);
+  const [offerPopup,setofferPopup] = useState(false);
+  const [offerPopupClose, setofferPopupClose] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [email, setEmail] = useState("");
+  const [LightMode, setLightMode] = useState(true);
+
+  useEffect( ()=> {
+    const waiting = 3000;
+    setTimeout(() => {
+      if (!offerPopupClose) {
+        setofferPopup(true);
+      }
+    }, waiting);
+
+  }, [offerPopupClose]);
+
+  const closeOfferPopup = () => {
+    setofferPopup(false);
+    setofferPopupClose(true);
+  };
+
+  const copytext = () =>{
+    navigator.clipboard.writeText('J&M')
+    .then(() => {
+      setCopied(true);
+      setTimeout(() => {
+        setCopied(false);
+      }, 3000);
+    })
+  }
+
+  const handleEmailSubmission = async (e) => {
+    e.preventDefault();
+  
+    if (!email) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+  
+    try {
+      const res = await axios.post("http://localhost:5000/api/subscribe", { email });
+      alert(res.data.message);
+      setEmail("");
+    } catch (err) {
+      alert(err.response?.data?.message || "Failed! Something went wrong.");
+    }
+  };
+  
+  const OnDarkMode = () =>{
+    const DarkMode = !LightMode;
+    setLightMode(DarkMode);
+    document.body.classList.toggle('dark');
+    localStorage.setItem('theme', DarkMode ? 'light' : 'dark');
+  }
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      setLightMode(false);
+      document.body.classList.add('dark');
+    } else {
+      setLightMode(true);
+      document.body.classList.remove('dark');
+    }
+  }, []);
+  
 
   return (
     <> 
@@ -36,9 +105,12 @@ function Home() {
               width="25px"
               style={{ marginLeft: "20px", marginRight: "20px" }}
               alt="User"
+              className="profileicon"
             />
         </div>
-
+        {/* <button onClick={OnDarkMode}>{DarkMode ? 'LightMode' : 'DarkMode' }</button>  */}
+        <img src={LightMode? '/images/sun.png' : '/images/moon.png'} onClick={OnDarkMode} alt="Image" className="sunmoonicon" />
+        
         </div>
 
 
@@ -68,6 +140,22 @@ function Home() {
       </div>
     </nav>
 
+    {
+      offerPopup && (
+        <div>
+            <div className="offerPopupContainer">
+
+              <div className="offerPopupContent">
+                <p onClick={closeOfferPopup} style={{position:'absolute', right:'15px', cursor:'pointer'}}>Close</p> 
+                <h3>GET 50% OFF</h3>
+                <p>Use Code <i>J&M</i></p>
+                <button onClick={copytext} > {copied ? <i> Copied </i> : 'Copy Code'}</button>
+              </div>
+            </div>
+        </div>
+      )
+    }
+
     {showPopup && (
         <div className="signupcontainer">
           <div className="signheader">
@@ -90,7 +178,6 @@ function Home() {
           <p style={{ textAlign: 'center' }}>Already have an account? <a href="" style={{ textDecoration: 'none' }}>Log in</a></p>
         </div>
       )}
-
 
     <div className="offer-banner">
       <div className="offer-text">
@@ -155,33 +242,33 @@ function Home() {
     <section className="categories">
 
         <div className="circontainer">
-          <img src="/images/c1.jpg" alt=""  className="cirimage"/>
-          <p>Dairy Products</p>
+          <img src="/images/fruits.jpg" alt=""  className="cirimage"/>
+          <p>Fruits</p>
         </div>
 
         <div className="circontainer">
-          <img src="/images/c2.jpg" alt=""  className="cirimage"/>
-          <p>Dairy Products</p>
-        </div>
-
-        <div className="circontainer">
-          <img src="/images/c3.jpg" alt=""  className="cirimage"/>
-          <p>Dairy Products</p>
-        </div>
-
-        <div className="circontainer">
-          <img src="/images/c1.jpg" alt=""  className="cirimage"/>
-          <p>Dairy Products</p>
-        </div>
-
-        <div className="circontainer">
-          <img src="/images/c2.jpg" alt=""  className="cirimage"/>
-          <p>Dairy Products</p>
+          <img src="/images/vege.jpg" alt=""  className="cirimage"/>
+          <p>Vegetables</p>
         </div>
 
         <div className="circontainer">
           <img src="/images/c3.jpg" alt=""  className="cirimage"/>
           <p>Dairy Products</p>
+        </div>
+
+        <div className="circontainer">
+          <img src="/images/meat.jpg" alt=""  className="cirimage"/>
+          <p>Meat </p>
+        </div>
+
+        <div className="circontainer">
+          <img src="/images/snacks.jpg" alt=""  className="cirimage"/>
+          <p>Snacks </p>
+        </div>
+
+        <div className="circontainer">
+          <img src="/images/drink.jpg" alt=""  className="cirimage"/>
+          <p>Drinks</p>
         </div>
 
 
@@ -190,33 +277,33 @@ function Home() {
     <section className="categories">
 
         <div className="circontainer">
-          <img src="/images/c1.jpg" alt=""  className="cirimage"/>
-          <p>Dairy Products</p>
+          <img src="/images/frozen.jpg" alt=""  className="cirimage"/>
+          <p>Frozen Foods</p>
         </div>
 
         <div className="circontainer">
-          <img src="/images/c2.jpg" alt=""  className="cirimage"/>
-          <p>Dairy Products</p>
+          <img src="/images/sweet.jpg" alt=""  className="cirimage"/>
+          <p>Sweets & Desserts</p>
         </div>
 
         <div className="circontainer">
-          <img src="/images/c3.jpg" alt=""  className="cirimage"/>
-          <p>Dairy Products</p>
+          <img src="/images/canned.jpg" alt=""  className="cirimage"/>
+          <p>Canned Foods</p>
         </div>
 
         <div className="circontainer">
-          <img src="/images/c1.jpg" alt=""  className="cirimage"/>
-          <p>Dairy Products</p>
+          <img src="/images/cake.jpg" alt=""  className="cirimage"/>
+          <p>Cakes and Breads</p>
         </div>
 
         <div className="circontainer">
-          <img src="/images/c2.jpg" alt=""  className="cirimage"/>
-          <p>Dairy Products</p>
+          <img src="/images/rice.jpg" alt=""  className="cirimage"/>
+          <p>Rice</p>
         </div>
 
         <div className="circontainer">
-          <img src="/images/c3.jpg" alt=""  className="cirimage"/>
-          <p>Dairy Products</p>
+          <img src="/images/biscuit.jpg" alt=""  className="cirimage"/>
+          <p>Biscuits</p>
         </div>
 
 
@@ -242,14 +329,13 @@ function Home() {
     <hr />
 
     <section className="newsletter">
-      <form className="newsletterhead">
+      <form className="newsletterhead" onSubmit={handleEmailSubmission}>
         <h3>Get top deals, latest trends, and more.</h3>
         <p>Join our email subscription now to get updates on promotions and coupons.</p>
-        <input type="email" placeholder="Enter email address" className="emailbox"/>
+        <input type="email" placeholder="Enter email address" className="emailbox" value={email} onChange={(e) => setEmail(e.target.value)}/>
         <input type="submit" value={'Join now'} className="emailbtn"/>
       </form>
       <img src="/images/model.png" alt=""  height={'400px'} width={'300px'}/>
-
     </section>
 
     <hr />
@@ -270,10 +356,10 @@ function Home() {
 
       <div className="aboutus">
         <p>About us</p>
-        <a href="">Company</a>
-        <a href="">Developers</a>
-        <a href="">Blog</a>
-        <a href="">Contact</a>
+        <a href="/about">Company</a>
+        <a href="/about">Developers</a>
+        <a href="/about">Blog</a>
+        <a href="/about">Contact</a>
       </div>
       <div className="consumers">
       <p>Customers</p>

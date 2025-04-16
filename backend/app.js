@@ -6,6 +6,8 @@ import searchProductRoute from "./routers/searchProduct.route.js";
 import productsRoute from "./routers/products.route.js"
 import ocrRoute from './routers/ocr_route.js';
 import authRoutes from './routers/auth_routes.js'
+import newsletterRoute from "./routers/newsletter_route.js";
+import paymentRoute from './routers/payment_route.js'
 
 dotenv.config(); 
 
@@ -26,6 +28,8 @@ app.use('/api', ocrRoute);
 app.use("/api/search", searchProductRoute);
 app.use("/api/products", productsRoute)
 app.use("/api/auth", authRoutes)
+app.use('/api', newsletterRoute);
+app.use("/api", paymentRoute);
 
 
 

@@ -9,7 +9,7 @@ body {
 }
 
 .my-navbar {
-  background-color: #99BC85;
+  background-color: #99BC85; 
 }
 
 .logo{ 
@@ -22,10 +22,12 @@ body {
   color: #FDFAF6;
   font-weight: bold;
   font-size: 28px;
+  transition: all 0.3s ease-in;
 }
 .my-brand:hover {
   color: #fdf6f6ae; 
 }
+
 
 .my-navbar .nav-link {
   color: white;
@@ -40,16 +42,16 @@ body {
   padding-left: 20px;
   margin-right: 20px;
   width: 250px;
+
 }
 
-
 .custom-sidebar {
-  background-color: #E4EFE7; 
+  background-color: #e4efe7; 
   color: black; 
 }
 
 .custom-sidebar .offcanvas-header {
-  background-color: #E4EFE7;
+  background-color: #bcd2c2;
 }
 
 .custom-sidebar .nav-link {
@@ -99,7 +101,6 @@ body {
   margin-left: 20px;
   max-width: 50rem;
 }
-
 
 .slider{
   display: flex;
@@ -159,7 +160,6 @@ transition: opacity ease 250ms;
   transition: transform 0.3s ease;
 }
 
-
 .card-image {
   width: 100%;
   height: 180px;
@@ -188,6 +188,7 @@ transition: opacity ease 250ms;
   padding: 8px 16px;
   background-color: #007bff;
   color: white;
+  font-weight: 500;
   text-decoration: none;
   border-radius: 6px;
   transition: background-color 0.2s ease;
@@ -317,6 +318,7 @@ transition: opacity ease 250ms;
   border-radius: 50%;
   cursor: pointer;
   transition: transform 0.5s ease;
+  object-fit: cover;
 }
 .cirimage:hover{
   transform: scale(1.1);
@@ -368,8 +370,8 @@ transition: opacity ease 250ms;
 .offercontainer input:hover{
   background-color: blue;
   transform: scale(0.9);
-  
 }
+
 .newsletter{
   margin: 50px;
   padding: 20px;
@@ -439,4 +441,47 @@ hr{
   opacity: 0.2;
 }
 
-/* Signup  */
+/* OfferPopup */
+.offerPopupContainer {
+  background-image: url('/images/offerPopup.jpg');
+  height: 250px;
+  width: 350px;
+  position: fixed;
+  z-index: 10;
+  bottom: 30px;
+  right: 30px;
+  border-radius: 30px;
+  background-repeat: no-repeat;
+  background-size: cover; 
+  background-position: center;
+  overflow: hidden;
+}
+
+.offerPopupContent{
+  color: white;
+  font-size: 18px;
+  padding: 40px;
+}
+.offerPopupContent h3{
+  font-weight: bold;
+  font-size: 35px;
+}
+.offerPopupContent button{
+  background-color: white;
+  color: black;
+  padding: 5px;
+  font-weight: 500;
+  width:100px;
+  border-radius: 10px;
+  border: none;
+}
+
+.sunmoonicon{
+  height: 30px;
+  width: 30px;
+  cursor:pointer;
+  transition: all 0.3s ease-in;
+}
+.sunmoonicon:hover{
+  transform: scale(0.9);
+}

@@ -1,0 +1,174 @@
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap');
+
+body.dark{
+    background-color: #0d0d2b;
+    color: #f0f0f5;
+}
+
+body.dark .my-navbar {
+    background-color: #1a1a3e;
+    color: white;
+}
+
+body.dark .my-brand {
+    color: white;
+    transition: all 0.3s ease-in;
+  }
+body.dark .my-brand:hover {
+    color: #6a9bd0;
+  }
+body.dark .searchbar{
+    background-color: #1a1a3e;
+    border: 1px solid #6a9bd0;
+    color: #f0f0f5;
+}
+body.dark .searchbar::placeholder{
+    color: #a6a6c1;
+}
+
+body.dark .navbar-toggler{
+    background-color: #6a9bd0;
+    border-radius: 5px;
+    border: none;
+}
+
+body.dark .profileicon{
+    filter: invert(100%);
+}
+
+body.dark .custom-sidebar {
+    background-color: #121212;
+    color: #f0f0f5;
+  }
+  
+  body.dark .custom-sidebar .offcanvas-header {
+    background-color: #1a1a1a;
+    color: #f0f0f5;
+  }
+  
+body.dark .custom-sidebar .nav-link {
+    color: #f0f0f5;
+    font-size: 1rem;
+    padding: 10px 15px;
+  }
+  
+body.dark .custom-sidebar .nav-link:hover {
+    background-color: #6a9bd0;
+    color: white;
+  }
+  
+body.dark .custom-sidebar .dropdown-menu {
+    background-color: #222222;
+}
+  
+body.dark .custom-sidebar .dropdown-item {
+    color: #f0f0f5;
+}
+  
+body.dark .custom-sidebar .dropdown-item:hover {
+    background-color: #6a9bd0;
+    color: white;
+
+}
+
+body.dark .card-container{
+    background-color:  #1a1a1a;
+}
+
+body.dark .card-title {
+    background-color: #121212; 
+    border-radius: 20px;
+    color: #f0f0f5
+  }
+  
+body.dark  .card-text {
+    background-color: #1a1a1a; 
+    color: #f0f0f5;
+  }
+  
+body.dark .card-button {
+    background-color: #67a0dd;
+    color: #f0f0f5;
+    font-weight: 500;
+  }
+body.dark .card-button:hover {
+    background-color: #32779c; 
+    color: #ffffff;
+  }
+body.dark .offer{
+    background-color:#2b2d42;
+  }
+  body.dark .offercontainer {
+    color: #e0e0e0; /* Soft light grey */
+  }
+  
+  body.dark .offercontainer h3 {
+    color: #ffd369; 
+  }
+  
+  body.dark .offercontainer p {
+    color: #f0f0f5; 
+  }
+  
+  body.dark .offercontainer #price {
+    color: #ff6f61; 
+  }
+  
+  body.dark .offercontainer #star {
+    color: #4e4e4e; /* Muted dark grey */
+  }
+  
+  body.dark .offercontainer input {
+    background-color: #3a3f70; 
+    color: #f0f0f5; 
+  }
+  
+  body.dark .offercontainer input:hover {
+    background-color: #5568a2; 
+  }
+ body.dark .offerimg{
+    filter: invert(100%) brightness(80%);
+  }
+
+body.dark .newsletter{
+    background-color: #1f2235;
+}
+
+body.dark .newsletter .emailbox{
+    background-color: #1a1a3e;
+    border: 1px solid #6a9bd0;
+    color: #f0f0f5;
+}
+
+body.dark .newsletter .emailbox::placeholder{
+    color: #a6a6c1;
+}
+
+body.dark .newsletter .emailbtn{
+    background-color: #ff6f61;
+    border: 1px solid #6a9bd0;
+    color: white;
+}
+body.dark .emailbtn:hover{
+    background-color:#e94560;
+    box-shadow: 0 0 15px rgba(233, 69, 96, 0.5);
+  }
+
+  body.dark  footer a{
+    color: white;
+  }
+  body.dark  footer a:hover{
+    color: #6a9bd0;
+    font-weight: 300;
+  }
+
+  body.dark .offer-banner {
+  background-color: #2b2d42;
+  box-shadow: 0 0 15px rgba(255, 211, 105, 0.2);
+  border: 1px solid #6a9bd02d ;
+}
+
+body.dark .offer-banner .offer-text span {
+  color: #f0f0f5;
+}
+
