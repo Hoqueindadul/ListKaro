@@ -172,3 +172,34 @@ body.dark .offer-banner .offer-text span {
   color: #f0f0f5;
 }
 
+body.dark .signupcontainer {
+  background-color: #1a1a2e;
+  box-shadow: 0 10px 25px rgba(255, 255, 255, 0.1);
+}
+
+body.dark .signupcontainer input {
+  background-color: #2b2d42;
+  color: #ffffff;
+  border: 0.5px solid #888;
+}
+
+body.dark .signheader .signuptitle {
+  color: #ffd369;
+}
+
+body.dark .signheader .close {
+  color: #00ffae;
+}
+
+body.dark .close:hover {
+  color: #ff4b5c;
+}
+
+body.dark .signupbtn {
+  background-color: #3a3f70;
+  color: #ffffff;
+}
+
+body.dark .signupbtn:hover {
+  background-color: #2ecc71;
+}

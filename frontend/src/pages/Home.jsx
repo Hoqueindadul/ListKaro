@@ -3,17 +3,18 @@ import axios from 'axios';
 
 import "./Home.css";
 import './HomeDark.css';
+import Navbar from "./Navbar";
 
 function Home() {
-  const [showPopup, setShowPopup] = useState(false);
+  // const [showPopup, setShowPopup] = useState(false); 
   const [offerPopup,setofferPopup] = useState(false);
   const [offerPopupClose, setofferPopupClose] = useState(false);
   const [copied, setCopied] = useState(false);
   const [email, setEmail] = useState("");
-  const [LightMode, setLightMode] = useState(true);
+  // const [LightMode, setLightMode] = useState(true); 
 
   useEffect( ()=> {
-    const waiting = 3000;
+    const waiting = 15000;
     setTimeout(() => {
       if (!offerPopupClose) {
         setofferPopup(true);
@@ -33,7 +34,7 @@ function Home() {
       setCopied(true);
       setTimeout(() => {
         setCopied(false);
-      }, 3000);
+      }, 15000);
     })
   }
 
@@ -54,28 +55,28 @@ function Home() {
     }
   };
   
-  const OnDarkMode = () =>{
-    const DarkMode = !LightMode;
-    setLightMode(DarkMode);
-    document.body.classList.toggle('dark');
-    localStorage.setItem('theme', DarkMode ? 'light' : 'dark');
-  }
+  // const OnDarkMode = () =>{
+  //   const DarkMode = !LightMode;
+  //   setLightMode(DarkMode);
+  //   document.body.classList.toggle('dark');
+  //   localStorage.setItem('theme', DarkMode ? 'light' : 'dark');
+  // }
 
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-      setLightMode(false);
-      document.body.classList.add('dark');
-    } else {
-      setLightMode(true);
-      document.body.classList.remove('dark');
-    }
-  }, []);
+  // useEffect(() => {
+  //   const savedTheme = localStorage.getItem('theme');
+  //   if (savedTheme === 'dark') {
+  //     setLightMode(false);
+  //     document.body.classList.add('dark');
+  //   } else {
+  //     setLightMode(true);
+  //     document.body.classList.remove('dark');
+  //   }
+  // }, []);
   
 
   return (
     <> 
-    <nav className="navbar my-navbar">
+    {/* <nav className="navbar my-navbar">
       <div className="container d-flex justify-content-between align-items-center">
 
         <div className="d-flex align-items-center">
@@ -108,7 +109,7 @@ function Home() {
               className="profileicon"
             />
         </div>
-        {/* <button onClick={OnDarkMode}>{DarkMode ? 'LightMode' : 'DarkMode' }</button>  */}
+
         <img src={LightMode? '/images/sun.png' : '/images/moon.png'} onClick={OnDarkMode} alt="Image" className="sunmoonicon" />
         
         </div>
@@ -138,7 +139,9 @@ function Home() {
           </div>
         </div>
       </div>
-    </nav>
+    </nav> */}
+
+    <Navbar />
 
     {
       offerPopup && (
@@ -156,7 +159,7 @@ function Home() {
       )
     }
 
-    {showPopup && (
+    {/* {showPopup && (
         <div className="signupcontainer">
           <div className="signheader">
             <span className="signuptitle">Sign Up</span>
@@ -177,7 +180,7 @@ function Home() {
 
           <p style={{ textAlign: 'center' }}>Already have an account? <a href="" style={{ textDecoration: 'none' }}>Log in</a></p>
         </div>
-      )}
+      )} */}
 
     <div className="offer-banner">
       <div className="offer-text">
@@ -363,10 +366,10 @@ function Home() {
       </div>
       <div className="consumers">
       <p>Customers</p>
-        <a href="">Payment</a>
+        <a href="/completepayment">Payment</a>
         <a href="">Delivery</a>
         <a href="">Return </a>
-        <a href="">FAQ</a>
+        <a href="/faq">FAQ</a>
       </div>
       <div className="programs">
       <p>Programs</p>

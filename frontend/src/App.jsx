@@ -9,7 +9,7 @@ import UpList from "./pages/UpList";
 import Profile from "./pages/Profile"
 import About from "./pages/About";
 import PaymentForm from './pages/PaymentForm'
-
+import FAQ from './pages/FAQ'
 function App() {
   
   return (
@@ -22,6 +22,8 @@ function App() {
           <Route path="/profile" element={ <Profile/> } />
           <Route path="/about" element={ <About/> } />
           <Route path="/completepayment" element={ <PaymentForm/> } />
+          <Route path="/faq" element={ <FAQ/> } />
+
 
 
       </Routes>

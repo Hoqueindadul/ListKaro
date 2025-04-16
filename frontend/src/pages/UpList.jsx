@@ -1,5 +1,7 @@
 import './UpList.css';
+import './UpListDark.css'
 import { useState } from 'react';
+import Navbar from './Navbar'
 
 function UpList() {
   const [ocrText, setOcrText] = useState([]); 
@@ -97,7 +99,7 @@ function UpList() {
 
   return (
     <>
-      <nav className="navbar my-navbar">
+      {/* <nav className="navbar my-navbar">
         <div className="container d-flex justify-content-between align-items-center">
           <div className="d-flex align-items-center">
             <img src="/images/logo.png" alt="logo" className="logo" />
@@ -134,7 +136,11 @@ function UpList() {
         </div>
 
 
-      </nav>
+      </nav> */}
+
+      <Navbar/>
+
+      
 
       <div className="listcontainer">
         <p id="uploadtitle">Upload Your List or Fill the Form</p>
