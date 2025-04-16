@@ -4,15 +4,10 @@ import cors from "cors";
 import connectDB from "./connection/dbConnection.js";
 import searchProductRoute from "./routers/searchProduct.route.js";
 import productsRoute from "./routers/products.route.js"
-<<<<<<< HEAD
 import ocrRoute from './routers/ocr_route.js';
 import authRoutes from './routers/auth_routes.js'
 import newsletterRoute from "./routers/newsletter_route.js";
 import paymentRoute from './routers/payment_route.js'
-=======
-import userRoute from "./routers/user.route.js";
-import errorHandleMiddleware from "./middleware/error.js";
->>>>>>> 14fa4a71f7b4adc465183547e68d92b1ab1aff0b
 
 dotenv.config(); 
 
@@ -32,16 +27,11 @@ app.use(express.json());
 app.use('/api', ocrRoute);
 app.use("/api/search", searchProductRoute);
 app.use("/api/products", productsRoute)
-<<<<<<< HEAD
 app.use("/api/auth", authRoutes)
 app.use('/api', newsletterRoute);
 app.use("/api", paymentRoute);
 
 
-=======
-app.use("/api", userRoute)
-app.use(errorHandleMiddleware)
->>>>>>> 14fa4a71f7b4adc465183547e68d92b1ab1aff0b
 
 // Start Server
 app.listen(port, () => {
