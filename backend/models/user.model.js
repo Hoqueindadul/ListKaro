@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 import validator from "validator";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
+import dotenv from 'dotenv'
+dotenv.config();
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -25,13 +27,14 @@ const userSchema = new mongoose.Schema({
     avatar: {
         public_id: {
             type: String,
-            required: true
-          },
-          url: {
+            required: false, // Make it optional
+        },
+        url: {
             type: String,
-            required: true
-          }
+            required: false, // Make it optional
+        },
     },
+
     role: {
         type: String,
         default: "User"
@@ -42,17 +45,39 @@ const userSchema = new mongoose.Schema({
 
 
 // Encrypting password before saving
-userSchema.pre("save", async function(next){
-    this.password = await bcrypt.hash(this.password, 10);
-    if(!this.isModified("password")) {
+// userSchema.pre("save", async function(next){
+//     this.password = await bcrypt.hash(this.password, 10);
+//     if(!this.isModified("password")) {
+//         return next();
+//     }
+// })
+
+userSchema.pre("save", async function(next) {
+    if (!this.isModified("password")) {
         return next();
     }
-})
+    this.password = await bcrypt.hash(this.password, 10);
+    next();
+});
+
 
 // JWT token
-userSchema.methods.getJWTToken = function(){
-    return jwt.sign({id: this._id}, process.env.JWT_SECRET_KEY, {
+// userSchema.methods.getJWTToken = function(){
+//     return jwt.sign({id: this._id}, process.env.JWT_SECRET_KEY, {
+//         expiresIn: process.env.JWT_EXPIRES_TIME
+//     })
+// }
+// export default mongoose.model("User", userSchema);
+
+
+userSchema.methods.getJWTToken = function() {
+    if (!process.env.JWT_SECRET_KEY || !process.env.JWT_EXPIRES_TIME) {
+        throw new Error("JWT secret key or expiry time not defined in environment variables.");
+    }
+    return jwt.sign({ id: this._id }, process.env.JWT_SECRET_KEY, {
         expiresIn: process.env.JWT_EXPIRES_TIME
-    })
-}
+    });
+};
+
+
 export default mongoose.model("User", userSchema);
