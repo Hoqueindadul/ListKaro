@@ -1,0 +1,20 @@
+body.dark .aboutcontainer ul a {
+    color: #ffffff;
+  }
+  
+  body.dark .aboutcontainer ul li {
+    color: #ffffff;
+  }
+  
+  body.dark .aboutcontainer ul li:hover {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  
+  body.dark .companydetails {
+    color: #e0e0e0;
+  }
+  
+  body.dark .projectcontainer {
+    color: #dddddd;
+  }
+  
