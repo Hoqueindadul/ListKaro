@@ -35,7 +35,6 @@ if (process.env.NODE_ENV === "production") {
 app.use('/api', ocrRoute);
 app.use("/api/search", searchProductRoute);
 app.use("/api/products", productsRoute)
-app.use(errorHandleMiddleware)
 
 // Start Server
 app.listen(port, () => {
