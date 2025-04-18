@@ -28,10 +28,7 @@ class APIFunctionality {
         this.query = this.query.find(queryCopy)
         return this
     }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 3f6e797 (finish the working on proudct and start on user)
+
     pagination(resultPerPage) {
         const currentPage = Number(this.queryStr.page  || 1);
         const skip = resultPerPage * (currentPage -1);
@@ -39,11 +36,6 @@ class APIFunctionality {
         return this;
         
     }
-<<<<<<< HEAD
-=======
->>>>>>> 1301830 (work in product api)
-=======
->>>>>>> 3f6e797 (finish the working on proudct and start on user)
 }
 
 export default APIFunctionality;
