@@ -7,7 +7,7 @@ import path from 'path';
 import connectDB from "./connection/dbConnection.js";
 import searchProductRoute from "./routers/searchProduct.route.js";
 import productsRoute from "./routers/products.route.js"
-import errorHandleMiddleware from "./middleware/error.js";
+import ocrRoute from './routers/ocr_route.js';
 
 dotenv.config(); 
 
@@ -32,15 +32,9 @@ if (process.env.NODE_ENV === "production") {
 }
 
 // Routes
-app.use("/api", uploadRoute); 
 app.use('/api', ocrRoute);
 app.use("/api/search", searchProductRoute);
 app.use("/api/products", productsRoute)
-app.use("/api/auth", authRoutes)
-app.use('/api', newsletterRoute);
-app.use("/api", paymentRoute);
-
-
 app.use(errorHandleMiddleware)
 
 // Start Server
