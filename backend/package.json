@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+<<<<<<< HEAD
     "axios": "^1.8.4",
 <<<<<<< HEAD
     "bcrypt": "^5.1.1",
@@ -19,10 +20,13 @@
     "bcryptjs": "^3.0.2",
     "cookie-parser": "^1.4.7",
 >>>>>>> a7e91e4 (commit on indadul branch)
+=======
+>>>>>>> 1a2381d (finish the working on proudct and start on user)
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+<<<<<<< HEAD
     "jimp": "^1.6.0",
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -51,5 +55,10 @@
     "tesseract.js": "^4.1.4"
 >>>>>>> 60f21a9 (working on product serach from image list)
 >>>>>>> 2b3644b (working on product serach from image list)
+=======
+    "mongoose": "^8.10.1",
+    "multer": "^1.4.5-lts.1",
+    "nodemon": "^3.1.9"
+>>>>>>> 1a2381d (finish the working on proudct and start on user)
   }
 }

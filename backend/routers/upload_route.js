@@ -4,8 +4,11 @@ import path from 'path';
 import ImageModel from '../models/image_model.js';
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
+=======
+>>>>>>> 1a2381d (finish the working on proudct and start on user)
 // const router = express.Router();
 // const upload = multer({
 //     storage: multer.diskStorage({
@@ -18,6 +21,7 @@ import ImageModel from '../models/image_model.js';
 //         }
 //     })
 // });
+<<<<<<< HEAD
 =======
 >>>>>>> 2b3644b (working on product serach from image list)
 const router = express.Router();
@@ -36,6 +40,8 @@ const upload = multer({
 =======
 >>>>>>> 60f21a9 (working on product serach from image list)
 >>>>>>> 2b3644b (working on product serach from image list)
+=======
+>>>>>>> 1a2381d (finish the working on proudct and start on user)
 
 router.post('/upload', upload.single('file'), async (req, res) => {
     if (!req.file) return res.status(400).json({ message: 'Invalid file!' });
