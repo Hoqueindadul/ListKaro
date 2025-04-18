@@ -9,6 +9,8 @@ import authRoutes from './routers/auth_routes.js'
 import newsletterRoute from "./routers/newsletter_route.js";
 import paymentRoute from './routers/payment_route.js'
 
+
+
 dotenv.config(); 
 
 const app = express();
@@ -21,6 +23,10 @@ connectDB(uri);
 // Middleware
 app.use(cors());
 app.use(express.json()); 
+app.use('/productimages', express.static('productimages'));
+
+
+
 
 // Routes
 // app.use("/api", uploadRoute); 
@@ -30,7 +36,6 @@ app.use("/api/products", productsRoute)
 app.use("/api/auth", authRoutes)
 app.use('/api', newsletterRoute);
 app.use("/api", paymentRoute);
-
 
 
 // Start Server

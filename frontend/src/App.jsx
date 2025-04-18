@@ -10,11 +10,15 @@ import Profile from "./pages/Profile"
 import About from "./pages/About";
 import PaymentForm from './pages/PaymentForm'
 import FAQ from './pages/FAQ'
+import Dashboard from "./adminpanel/Dashboard";
+import Products from "./pages/Products";
+
 function App() {
   
   return (
     <>
     <Router>
+
       <Routes>
 
           <Route index element={<Home />} />
@@ -23,7 +27,8 @@ function App() {
           <Route path="/about" element={ <About/> } />
           <Route path="/completepayment" element={ <PaymentForm/> } />
           <Route path="/faq" element={ <FAQ/> } />
-
+          <Route path="/adminpanel" element={ <Dashboard/> } />
+          <Route path="/products" element={ <Products/> } />
 
 
       </Routes>

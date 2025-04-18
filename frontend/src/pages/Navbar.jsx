@@ -79,15 +79,16 @@ export default function Navbar(){
                             <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Products</a>
                                 <ul className="dropdown-menu">
-                                <li><a className="dropdown-item" href="#">Dairy</a></li>
-                                <li><a className="dropdown-item" href="#">Packed</a></li>
-                                <li><a className="dropdown-item" href="#">Veggies & Fruits</a></li>
-                                <li><a className="dropdown-item" href="#">Sweets</a></li>
+                                <li><a className="dropdown-item" href="/products">Dairy</a></li>
+                                <li><a className="dropdown-item" href="/products">Packed</a></li>
+                                <li><a className="dropdown-item" href="/products">Veggies & Fruits</a></li>
+                                <li><a className="dropdown-item" href="/products">Sweets</a></li>
                                 </ul>
                             </li>
+                            <li className="nav-item"><a className="nav-link" href="/products">View All Products</a></li>
                             <li className="nav-item"><a className="nav-link" href="/uploadlist">Upload List</a></li>
                             <li className="nav-item"><a className="nav-link" href="/about" target="_blank" rel="noopener noreferrer">About</a></li>
-                            <li className="nav-item"><a className="nav-link" href="/profile">Profile</a></li></ul>
+                            <li className="nav-item"><a className="nav-link" href="/adminpanel">Admin Panel</a></li></ul>
                         </div>
                         </div>
                     </div>
