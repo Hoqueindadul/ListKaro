@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap');
 
 body {
@@ -44,6 +45,12 @@ body {
 
 .custom-sidebar {
   background-color: #e4efe7; 
+
+}
+
+
+.custom-sidebar {
+  background-color: #E4EFE7; 
   color: black; 
 }
 
@@ -93,7 +100,6 @@ body {
 .slide-wrapper {
   flex: 1; 
   margin-left: 20px;
-  max-width: 50rem; 
 }
 .slider{
   display: flex;
@@ -218,16 +224,28 @@ body {
 
 /* Signup container */
 .signupcontainer {
+
   position: fixed;
+
+  position: fixed; 
+
+  position: fixed;
+
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
+
   justify-content: center;
   align-items: center;
   height: 400px;
   width: 400px;
+
+
+  height: 550px;
+  width: 500px;
+
   background-color: #ffffff;
   border-radius: 30px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); 
@@ -428,3 +446,4 @@ hr {
 .sunmoonicon:hover {
   transform: scale(0.9);
 }
+

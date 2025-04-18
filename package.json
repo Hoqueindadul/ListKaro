@@ -1,7 +1,11 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD:frontend/package.json
 >>>>>>> 2b3644b (working on product serach from image list)
+=======
+<<<<<<< HEAD:frontend/package.json
+>>>>>>> dde4edb5a9e409e6d9b6f0d3963bca7200dd1176
 {
   "name": "frontend",
   "private": true,
@@ -15,12 +19,18 @@
   },
   "dependencies": {
 <<<<<<< HEAD
+<<<<<<< HEAD
     "bootstrap": "^5.3.3",
 =======
     "axios": "^1.8.4",
     "bootstrap": "^5.3.3",
     "mongoose": "^8.13.2",
 >>>>>>> 2b3644b (working on product serach from image list)
+=======
+    "axios": "^1.8.4",
+    "bootstrap": "^5.3.3",
+    "mongoose": "^8.13.2",
+>>>>>>> dde4edb5a9e409e6d9b6f0d3963bca7200dd1176
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.2.0"
@@ -39,7 +49,10 @@
   }
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> dde4edb5a9e409e6d9b6f0d3963bca7200dd1176
 =======
 {
   "name": "frontend",
@@ -72,4 +85,7 @@
   }
 }
 >>>>>>> 60f21a9 (working on product serach from image list):package.json
+<<<<<<< HEAD
 >>>>>>> 2b3644b (working on product serach from image list)
+=======
+>>>>>>> dde4edb5a9e409e6d9b6f0d3963bca7200dd1176

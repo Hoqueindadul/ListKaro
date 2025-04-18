@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import React from "react";
 import "./Home.css";
 
@@ -9,6 +10,8 @@ function Home() {
     <> 
     <nav className="navbar my-navbar ">
 =======
+=======
+>>>>>>> dde4edb5a9e409e6d9b6f0d3963bca7200dd1176
 <<<<<<< HEAD:frontend/src/pages/Home.jsx
 import React, { useState , useEffect} from "react";
 import axios from 'axios';
@@ -472,7 +475,10 @@ export default Home;
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> dde4edb5a9e409e6d9b6f0d3963bca7200dd1176
 =======
 import React from "react";
 import "./Home.css";
@@ -627,4 +633,7 @@ export default Home;
 
 
 >>>>>>> 60f21a9 (working on product serach from image list):src/pages/Home.jsx
+<<<<<<< HEAD
 >>>>>>> 2b3644b (working on product serach from image list)
+=======
+>>>>>>> dde4edb5a9e409e6d9b6f0d3963bca7200dd1176

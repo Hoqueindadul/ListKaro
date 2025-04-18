@@ -8,8 +8,14 @@ import './App.css'
 import Home from './pages/Home'
 import UpList from "./pages/UpList";
 import Profile from "./pages/Profile"
+<<<<<<< HEAD
 
 
+=======
+import About from "./pages/About";
+import PaymentForm from './pages/PaymentForm'
+import FAQ from './pages/FAQ'
+>>>>>>> dde4edb5a9e409e6d9b6f0d3963bca7200dd1176
 function App() {
   
   return (
@@ -20,6 +26,14 @@ function App() {
           <Route index element={<Home />} />
           <Route path="/uploadlist" element={ <UpList />} />
           <Route path="/profile" element={ <Profile/> } />
+<<<<<<< HEAD
+=======
+          <Route path="/about" element={ <About/> } />
+          <Route path="/completepayment" element={ <PaymentForm/> } />
+          <Route path="/faq" element={ <FAQ/> } />
+
+
+>>>>>>> dde4edb5a9e409e6d9b6f0d3963bca7200dd1176
 
       </Routes>
     </Router>
