@@ -1,7 +1,8 @@
 import React, { useState , useEffect} from "react";
+import SignUp from "./Signup";
 
 export default function Navbar(){
-        const [showPopup, setShowPopup] = useState(false);
+        const [showPopup, setShowPopup] = useState(false); 
         const [LightMode, setLightMode] = useState(true);
 
         const OnDarkMode = () =>{
@@ -10,7 +11,7 @@ export default function Navbar(){
             document.body.classList.toggle('dark');
             localStorage.setItem('theme', DarkMode ? 'light' : 'dark');
           }
-          useEffect(() => {
+        useEffect(() => {
             const savedTheme = localStorage.getItem('theme');
             if (savedTheme === 'dark') {
               setLightMode(false);
@@ -20,6 +21,10 @@ export default function Navbar(){
               document.body.classList.remove('dark');
             }
           }, []);
+
+        const handleRegistration = () => {
+
+        }
 
     return(
         <>
@@ -74,42 +79,24 @@ export default function Navbar(){
                             <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Products</a>
                                 <ul className="dropdown-menu">
-                                <li><a className="dropdown-item" href="#">Dairy</a></li>
-                                <li><a className="dropdown-item" href="#">Packed</a></li>
-                                <li><a className="dropdown-item" href="#">Veggies & Fruits</a></li>
-                                <li><a className="dropdown-item" href="#">Sweets</a></li>
+                                <li><a className="dropdown-item" href="/products">Dairy</a></li>
+                                <li><a className="dropdown-item" href="/products">Packed</a></li>
+                                <li><a className="dropdown-item" href="/products">Veggies & Fruits</a></li>
+                                <li><a className="dropdown-item" href="/products">Sweets</a></li>
                                 </ul>
                             </li>
+                            <li className="nav-item"><a className="nav-link" href="/products">View All Products</a></li>
                             <li className="nav-item"><a className="nav-link" href="/uploadlist">Upload List</a></li>
                             <li className="nav-item"><a className="nav-link" href="/about" target="_blank" rel="noopener noreferrer">About</a></li>
-                            <li className="nav-item"><a className="nav-link" href="/profile">Profile</a></li></ul>
+                            <li className="nav-item"><a className="nav-link" href="/adminpanel">Admin Panel</a></li></ul>
                         </div>
                         </div>
                     </div>
                 </nav>
 
-                {showPopup && (
-                    <div className="signupcontainer">
-                    <div className="signheader">
-                        <span className="signuptitle">Sign Up</span>
-                        <span onClick={() => setShowPopup(false)} className="close"> X </span>
-                    </div>
+                <SignUp showPopup={showPopup} setShowPopup={setShowPopup} />
 
-                    <form>
-                        <input name="name" type="text" placeholder="Enter your name" required /><br />
-                        <input name="email" type="email" placeholder="Enter your email" required autoComplete="off" /><br />
-                        <input name="password" type="password" placeholder="Set a password" required autoComplete="off" /><br />
-                        <input name="phone" type="number" placeholder="Phone Number (Optional)" /><br />
-                        By signing up, you agree to our <a href="" style={{ textDecoration: 'none' }}>terms and conditions</a><br /><br />
-                        <input style={{width:'200px', marginRight:'20px'}} name="otp" type="number" placeholder="Enter OTP" required  />
-                        <input s type="submit" value="Send OTP" className="signupbtn" /> <br/>
-                        <input type="submit" value="Signup" className="signupbtn" />
-
-                    </form>
-
-                    <p style={{ textAlign: 'center' }}>Already have an account? <a href="" style={{ textDecoration: 'none' }}>Log in</a></p>
-                    </div>
-                )}
+                
         </>
     )
 }
