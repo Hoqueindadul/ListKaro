@@ -43,8 +43,8 @@
 }
 
 .logocontainer img{
-    height: 100px;
-    width: 100px;
+    height: 80px;
+    width: 80px;
 }
 
 .companydetails{
@@ -52,12 +52,13 @@
     justify-content: space-around;
     padding: 20px;
     margin: 20px;
-    font-size: 22px;
+    font-size: 20px;
 }
 .companydetails img{
     border-radius: 10px;
     margin-bottom: 10px;
     transition: all 0.3s ease-in-out;
+    height: 500px;
 }
 .companydetails img:hover{
     transform: scale(0.9);

@@ -16,6 +16,18 @@ const productSchema = new mongoose.Schema({
       required: [true, 'Please enter product price'],
       min: [0, 'Price cannot be less than 0']
     },
+    quantity: {
+      value: {
+        type: Number,
+        required: true
+      },
+      unit: {
+        type: String,
+        enum: ['kg', 'g', 'litre', 'ml', 'pcs'],
+        required: true
+      }
+    },
+    
     ratings: {
       type: Number,
       default: 0,

@@ -5,7 +5,6 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 
 import connectDB from "./connection/dbConnection.js";
-import uploadRoute from "./routers/upload_route.js"; 
 import searchProductRoute from "./routers/searchProduct.route.js";
 import productsRoute from "./routers/products.route.js"
 import ocrRoute from './routers/ocr_route.js';
@@ -33,7 +32,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Routes
-app.use("/api", uploadRoute); 
+// app.use("/api", uploadRoute); 
 app.use('/api', ocrRoute);
 app.use("/api/search", searchProductRoute);
 app.use("/api/products", productsRoute)

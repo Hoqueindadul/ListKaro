@@ -1,118 +1,155 @@
 import Products from '../models/products.model.js';
-import APIFunctionality from '../utils/apiFunctionality.js';
-import HandleError from '../utils/handleError.js';
-import handleAsyncError from '../middleware/handleAsyncError.js';
 
 // CREATE PRODUCT
-export const createProduct = async (req, res, next) => {
+export const createProduct = async (req, res) => {
     try {
+        const imageData = req.files.map(file => ({
+            public_id: file.filename, 
+            url: `/productimages/${file.filename}`
+        }));
+
+        req.body.image = imageData;
+
+        // Ensure quantityValue and quantityUnit are provided
+        if (req.body.quantityValue && req.body.quantityUnit) {
+            // Validate quantityValue
+            if (isNaN(req.body.quantityValue)) {
+                return res.status(400).json({ success: false, message: "Invalid quantity value" });
+            }
+
+            req.body.quantity = {
+                value: parseFloat(req.body.quantityValue),
+                unit: req.body.quantityUnit
+            };
+        } else {
+            // If quantity info is missing, return an error
+            return res.status(400).json({ success: false, message: "Quantity value and unit are required" });
+        }
+
+        // Create product
         const product = await Products.create(req.body);
         res.status(201).json({ success: true, data: product });
     } catch (error) {
-        next(error);
+        console.error("Create Product Error:", error.message);
+        res.status(500).json({ success: false, message: "Failed to create product" });
     }
-}
+};
 
-// SEARCH PRODUCTS BY KEYWORDS
-export const searchProductsByKeyword = handleAsyncError(async (req, res, next) => {
-    const resultPerPage = 3; // Number of products per page
-    const apiFeatures = new APIFunctionality(Products.find(), req.query).search().filter();
 
-    const filteredQuery = apiFeatures.query.clone();
-    const productCount = await filteredQuery.countDocuments();
-    const totalpages = Math.ceil(productCount / resultPerPage);
-    const page = Number(req.query.page) || 1;
-    if(page>totalpages && productCount){
-        return next(new HandleError("This page does not exist", 404));
-    }
-    const allProducts = await apiFeatures.query;
-
-    if (!allProducts || allProducts.length === 0) {
-        return next(new HandleError("No products found", 404));
-    }
-
-    res.status(200).json({
-        success: true,
-        totalProduct: allProducts.length,
-        message: "Products fetched successfully",
-        data: allProducts,
-        productCount,
-        resultperPage: resultPerPage,
-        currentPage: page,
-    });
-});
-
-// GET ALL PRODUCT
-export const getAllProducts = async(req, res, next) => {
+// GET PRODUCTS
+export const getProducts = async (req, res) => {
     try {
-        const products = await Products.find();
-        if(!products){
-            return next(new HandleError("Products not found", 404));
+        const allProducts = await Products.find();
+        if (!allProducts) {
+            res.status(404).json({
+                success: false,
+                message: "No products found"
+            });
         }
-        res.status(200).json({ 
+        res.status(200).json({
             success: true,
-            message: "Products found successfully.",
-            data: products
-         })
+            message: "Products fetched successfully",
+            data: allProducts
+        });
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        res.status(500).json({ 
+            message: "Internal Server Error" 
+        });
     }
 }
 
 // UPDATE PRODUCT
-export const updateProduct = async (req, res, next) => {
+export const updateProduct = async (req, res) => {
     try {
-        const product = await Products.findByIdAndUpdate(req.params.id, req.body, {
-            new: true, // it returns the updated data
-            runValidators: true // it runs the validators in the model
-        });
+        const product = await Products.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            {
+                new: true, // return the updated document
+                runValidators: true // enforce schema validation
+            }
+        );
+
         if (!product) {
-            return next(new HandleError("Product not found", 404));
+            return res.status(404).json({
+                success: false,
+                message: "Product not found"
+            });
         }
-        res.status(200).json({
+
+        return res.status(200).json({
             success: true,
             message: "Product updated successfully",
             data: product
         });
     } catch (error) {
         if (error.name === "ValidationError") {
-            const firstError = Object.values(error.errors)[0].message; // Get first validation error message
-            return res.status(400).json({ message: firstError });
+            const firstError = Object.values(error.errors)[0].message;
+            return res.status(400).json({
+                success: false,
+                message: firstError
+            });
         }
-        next(error);
+
+        console.error("Update product error:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Server error while updating product"
+        });
     }
-}
+};
+
+            
 
 // DELETE PRODUCT
-export const deleteProduct = async (req, res, next) => {
+export const deleteProduct = async (req, res) => {
     try {
         const product = await Products.findByIdAndDelete(req.params.id);
         if (!product) {
-            return next(new HandleError("Product not found", 404));
-        }
+            res.status(404).json({
+                success:false,
+                message: "Product Not Found"
+            });
+        };
         res.status(200).json({
-            success: true,
+            success:true,
             message: "Product deleted successfully",
             data: product
         });
     } catch (error) {
-        next(error);
+        console.log(error);
     }
 }
-
-// GET SINGLE PRODUCT
-export const getSingleProduct = async (req, res, next) => {
+export const getSingleProduct = async (req, res) => {
     try {
         const product = await Products.findById(req.params.id);
-        if (!product) {
-            return next(new HandleError("Product not found", 404));
-        }
+        if(!product){
+            res.status(404).json({
+                success: false,
+                message: "Product not found"
+            })
+        };
         res.status(200).json({
             success: true,
             message: "Product fetched successfully",
             data: product
-        });
+        })
     } catch (error) {
-        next(error);
+        console.log(error);
     }
 }
+
+//Product by Category
+export const getProductsByCategory = async (req, res) => {
+    const { category } = req.params;
+    try {
+        const products = await Products.find({ category });
+        if (!products.length) {
+            return res.status(404).json({ success: false, message: "No products found for this category" });
+        }
+        res.status(200).json({ success: true, data: products });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+};

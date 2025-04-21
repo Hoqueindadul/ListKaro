@@ -1,8 +1,29 @@
-import React, { useState } from 'react';
-import './About.css';
+import React, { useState, useEffect } from 'react';
+import './About.css'; 
+import './AboutDark.css'
 
 function About() {
     const [currContent, setcurrContent] = useState('company');
+    const [LightMode, setLightMode] = useState(true);
+    
+    const OnDarkMode = () =>{
+    const DarkMode = !LightMode;
+        setLightMode(DarkMode);
+        document.body.classList.toggle('dark');
+        localStorage.setItem('theme', DarkMode ? 'light' : 'dark');
+        }
+    useEffect(() => {
+        const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+              setLightMode(false);
+                  document.body.classList.add('dark');
+                } 
+            else {
+                  setLightMode(true);
+                  document.body.classList.remove('dark');
+                }
+              }, []);
+    
 
     const content = () => {
         switch (currContent) {
@@ -37,7 +58,10 @@ function About() {
                         
                         With ListKaro, shopping is not just faster — it's smarter.
                     </p>
-                    <img src="/images/hq.png" alt="" height={'600px'} width={'600px'}   />
+                    <img src={LightMode? '/images/hq.png' : '/images/hqnight.png'} alt="" height={'600px'} width={'600px'}   />
+
+
+
 
                 </div>
                 </>
@@ -104,6 +128,8 @@ function About() {
                 </>
             ) 
 
+            
+
         }
       };
     return(
@@ -116,6 +142,7 @@ function About() {
                         <li onClick={() => setcurrContent('developers')}>Developers</li>
                         <li onClick={() => setcurrContent('project')}>Project</li>
                         <li onClick={() => setcurrContent('technologies')}>Technologies Used</li>
+                        <img src={LightMode? '/images/sun.png' : '/images/moon.png'} onClick={OnDarkMode} alt="Image" className="sunmoonicon" />
                     </ul>
                 </div>
             </nav>
