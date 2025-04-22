@@ -12,6 +12,7 @@ import userRoute from "./routers/user.route.js";
 import errorHandleMiddleware from "./middleware/error.js";
 import newsletterRoute from "./routers/newsletter_route.js";
 import paymentRoute from './routers/payment_route.js'
+import cartRoute from './routers/cart.route.js'
 
 dotenv.config(); 
 
@@ -34,6 +35,7 @@ app.use(cookieParser());
 // Routes
 // app.use("/api", uploadRoute); 
 app.use('/api', ocrRoute);
+app.use('/api/cart', cartRoute)
 app.use("/api/search", searchProductRoute);
 app.use("/api/products", productsRoute)
 app.use("/api/auth", userRoute)

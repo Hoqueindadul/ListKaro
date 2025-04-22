@@ -14,6 +14,7 @@ import EmailVerificationPage from "./pages/EmailVerificationPage";
 import LoginPage from "./pages/LoginPage"
 import ForgotPasswordPage from "./pages/ForgotPasswordPage"
 import ResetPasswordPage from "./pages/ResetPasswordPage";
+import Dashboard from "./adminpanel/Dashboard";
 
 function App() {
   
@@ -32,6 +33,7 @@ function App() {
           <Route path="/login" element={ <LoginPage/> } />
           <Route path="/forgot-password" element={ <ForgotPasswordPage/> } />
           <Route path="/reset-password/:token" element={ <ResetPasswordPage/> } />
+          <Route path="/adminpanel" element={ <Dashboard/> } />
 
 
 

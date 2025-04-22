@@ -1,102 +1,143 @@
-import React, { useState , useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import SignUp from "./Signup";
 
-export default function Navbar(){
-        const [showPopup, setShowPopup] = useState(false); 
-        const [LightMode, setLightMode] = useState(true);
+export default function Navbar() {
+  const [showPopup, setShowPopup] = useState(false);
+  const [lightMode, setLightMode] = useState(true);
+  const [showUserDropdown, setShowUserDropdown] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-        const OnDarkMode = () =>{
-            const DarkMode = !LightMode;
-            setLightMode(DarkMode);
-            document.body.classList.toggle('dark');
-            localStorage.setItem('theme', DarkMode ? 'light' : 'dark');
-          }
-        useEffect(() => {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
-              setLightMode(false);
-              document.body.classList.add('dark');
-            } else {
-              setLightMode(true);
-              document.body.classList.remove('dark');
-            }
-          }, []);
+  const toggleDarkMode = () => {
+    const newMode = !lightMode;
+    setLightMode(newMode);
+    document.body.classList.toggle("dark");
+    localStorage.setItem("theme", newMode ? "light" : "dark");
+  };
 
-        const handleRegistration = () => {
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+      setLightMode(false);
+      document.body.classList.add("dark");
+    } else {
+      setLightMode(true);
+      document.body.classList.remove("dark");
+    }
+  }, []);
 
-        }
+  return (
+    <>
+      <nav className="bg-white dark:bg-gray-800 text-gray-800 dark:text-white shadow-md w-full fixed z-50 transition-all duration-300">
+        <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+          {/* Logo */}
+          <div className="flex items-center space-x-2">
+            <img src="/images/logo.png" alt="logo" className="h-8 w-8" />
+            <a href="#" className="text-xl font-bold">ListKaro</a>
+          </div>
 
-    return(
-        <>
-                <nav className="navbar my-navbar">
-                    <div className="container d-flex justify-content-between align-items-center">
+          {/* Desktop Search & Upload List */}
+          <div className="hidden lg:flex items-center gap-4">
+            <input
+              type="search"
+              placeholder="Search for items"
+              className="px-3 py-1 rounded-md border dark:border-gray-600 dark:bg-gray-700 text-sm focus:outline-none"
+            />
+            <a href="/uploadlist" className="text-sm font-semibold hover:underline">
+              Upload List
+            </a>
+          </div>
 
-                        <div className="d-flex align-items-center">
-                        <img src="/images/logo.png" alt="logo" className="logo" />
-                        <a className="navbar-brand my-brand ms-2" href="#">ListKaro</a>
-                        
-                        </div>
+          {/* Right Section */}
+          <div className="flex items-center gap-4">
+            {/* Cart */}
+            <a
+              href="/cart"
+              className="bg-green-600 text-white px-3 py-1 rounded-md text-sm hover:bg-green-700 transition"
+            >
+              🛒
+            </a>
 
-                        <div className="d-flex align-items-center">
-                        <input type="search"  placeholder="Search for items" className="searchbar"/>
+            {/* Theme toggle */}
+            <img
+              src={lightMode ? "/images/sun.png" : "/images/moon.png"}
+              onClick={toggleDarkMode}
+              alt="Toggle Theme"
+              className="w-6 h-6 cursor-pointer"
+            />
 
+            {/* User Dropdown */}
+            <div className="relative">
+              <img
+                src="/images/user.png"
+                onClick={() => setShowUserDropdown(!showUserDropdown)}
+                alt="User"
+                className="w-6 h-6 cursor-pointer"
+              />
+              {showUserDropdown && (
+                <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-700 border dark:border-gray-600 rounded shadow-lg text-sm z-50">
+                  <a
+                    href="#"
+                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600"
+                    onClick={() => {
+                      setShowPopup(true);
+                      setShowUserDropdown(false);
+                    }}
+                  >
+                    Login
+                  </a>
+                  <a
+                    href="#"
+                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600"
+                    onClick={() => {
+                      setShowPopup(true);
+                      setShowUserDropdown(false);
+                    }}
+                  >
+                    Signup
+                  </a>
+                  <a
+                    href="/orders"
+                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600"
+                  >
+                    Orders
+                  </a>
+                </div>
+              )}
+            </div>
 
-                        <li style={{ display: 'inline-block', fontSize: '20px', }}>
-                        <a href="/uploadlist" style={{ textDecoration: 'none', color: 'white', fontWeight: 'bold' }}>Upload List</a>
-                        <img src="../../public/images/uploadIcon.gif" alt="Upload Icon" style={{ width: '20px', height: '20px',marginLeft: '10px', marginRight: '20px', verticalAlign: 'middle' }}/>  
-                        </li>
+            {/* Mobile Toggle Button */}
+            <div className="lg:hidden">
+              <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                <svg
+                  className="w-6 h-6 text-gray-800 dark:text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
 
+        {/* Mobile Dropdown */}
+        {isMobileMenuOpen && (
+          <div className="lg:hidden px-4 pt-2 pb-4 bg-white dark:bg-gray-700 shadow-md">
+            <input
+              type="search"
+              placeholder="Search for items"
+              className="w-full px-3 py-1 mb-3 rounded-md border dark:border-gray-600 dark:bg-gray-800 text-sm focus:outline-none"
+            />
+            <a href="/uploadlist" className="block text-sm font-semibold hover:underline">
+              Upload List
+            </a>
+          </div>
+        )}
+      </nav>
 
-                        <button className="navbar-toggler ms-auto" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
-                        </button>
-
-                        <div onClick={() => setShowPopup(true)} style={{ cursor: 'pointer' }}>
-                            <img
-                            src="/images/user.png"
-                            height="25px"
-                            width="25px"
-                            style={{ marginLeft: "20px", marginRight: "20px" }}
-                            alt="User"
-                            className="profileicon"
-                            />
-                        </div>
-
-                        <img src={LightMode? '/images/sun.png' : '/images/moon.png'} onClick={OnDarkMode} alt="Image" className="sunmoonicon" />
-                        
-                        </div>
-
-
-                        <div className="offcanvas offcanvas-end custom-sidebar" tabIndex="-1" id="sidebarMenu" aria-labelledby="sidebarTitle">
-                        <div className="offcanvas-header">
-                            <h5 className="offcanvas-title" id="sidebarTitle">Menu</h5>
-                            <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                        </div>
-
-                        <div className="offcanvas-body">
-                            <ul className="navbar-nav">
-                            <li className="nav-item"><a className="nav-link" href="/">Home</a></li>
-                            <li className="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Products</a>
-                                <ul className="dropdown-menu">
-                                <li><a className="dropdown-item" href="/products">Dairy</a></li>
-                                <li><a className="dropdown-item" href="/products">Packed</a></li>
-                                <li><a className="dropdown-item" href="/products">Veggies & Fruits</a></li>
-                                <li><a className="dropdown-item" href="/products">Sweets</a></li>
-                                </ul>
-                            </li>
-                            <li className="nav-item"><a className="nav-link" href="/products">View All Products</a></li>
-                            <li className="nav-item"><a className="nav-link" href="/uploadlist">Upload List</a></li>
-                            <li className="nav-item"><a className="nav-link" href="/about" target="_blank" rel="noopener noreferrer">About</a></li>
-                            <li className="nav-item"><a className="nav-link" href="/adminpanel">Admin Panel</a></li></ul>
-                        </div>
-                        </div>
-                    </div>
-                </nav>
-
-                <SignUp showPopup={showPopup} setShowPopup={setShowPopup} />
-
-                
-        </>
-    )
+      <SignUp showPopup={showPopup} setShowPopup={setShowPopup} />
+    </>
+  );
 }
