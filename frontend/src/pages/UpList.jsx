@@ -1,76 +1,85 @@
 import './UpList.css';
-import './UpListDark.css'
+import './UpListDark.css';
 import { useState } from 'react';
-import Navbar from './Navbar'
+import axios from 'axios';
+import Navbar from './Navbar';
 
 function UpList() {
-  const [ocrText, setOcrText] = useState([]); 
+  const [ocrText, setOcrText] = useState([]);
   const [productInputs, setProductInputs] = useState([
     { name: '', quantity: '' },
-    { name: '', quantity: '' }, //Initially show 2 input boxes
+    { name: '', quantity: '' },
   ]);
-
-  const handleChange = (index, field, value) => {
-    const updated = [...productInputs];  //Keep copy  of the current boxes
-    updated[index][field] = value;      //index -> which box, field -> name or quantity, value->user typed value (like egg, 20pcs etc)
-    setProductInputs(updated);          //Update the state
-  };
-
-  const addNewProductField = () => {
-    setProductInputs([...productInputs, { name: '', quantity: '' }]); //Add a new box
-  };
-
-  const removeProductField = (index) => {
-    const updated = [...productInputs]; //Keep copy  of the current  input boxes
-    updated.splice(index, 1);           //Remove the clicked index
-    setProductInputs(updated);          //Update the state
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Submitted products:', productInputs);
-
-    //Backend Require Here
-
-  };
-
-  async function upload() {
-    let file = document.getElementById("fileId").files[0];
-    if (!file) return alert("Please select a file");
   
-    const ValidExtension = ["image/jpeg", "image/png"];
-    if (!ValidExtension.includes(file.type)) {
-      return alert("Please upload a valid JPG or PNG image");
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+  const [ocrResult, setOcrResult] = useState(null);
+  
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedImage(file);
+      setPreviewUrl(URL.createObjectURL(file));
+      setOcrResult(null);
+      setErrorMsg('');
+    }
+  };
+  
+  const upload = async () => {
+    if (!selectedImage) {
+      alert("Please select a file");
+      return;
     }
   
-    let formFile = new FormData();
-    formFile.append("image", file); 
+    const validTypes = ["image/jpeg", "image/png"];
+    if (!validTypes.includes(selectedImage.type)) {
+      alert("Please upload a valid JPG or PNG image");
+      return;
+    }
+  
+    const formData = new FormData();
+    formData.append('image', selectedImage);
+  
+    setLoading(true);
+    setErrorMsg('');
+    setOcrResult(null);
   
     try {
-      const response = await fetch("http://localhost:5000/api/upload-ocr", {
-        method: 'POST',
-        body: formFile,
-      });
+      const response = await axios.post(
+        'http://localhost:5000/api/upload-ocr',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          withCredentials: true, // ⬅️ Enable sending cookies (JWT)
+        }
+      );
   
-      const data = await response.json();
-      console.log("Extracted lines:", data.lines);
-  
-      if (data?.lines) {
-        const extractedItems = extractItems(data.lines);
-        console.log("Separated Items:", extractedItems);
+      if (response.data?.lines) {
+        const extractedItems = extractItems(response.data.lines);
         setOcrText(extractedItems);
         alert("List has been uploaded successfully");
       } else {
         alert("Failed to extract list items!");
       }
-    } catch (err) {
-      console.error(err);
-      alert("Upload Failed");
-    }
-  }
   
-
-  function extractItems(lines) {
+      setOcrResult(response.data);
+    } catch (error) {
+      console.error('Upload failed:', error);
+      if (error.response && error.response.status === 401) {
+        setErrorMsg('Unauthorized. Please log in again.');
+      } else {
+        setErrorMsg('Upload failed. Please try again.');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  const extractItems = (lines) => {
     const pattern = /^(.*)\s+(\d+(?:\.\d+)?\s*(?:kg|gm|g|ml|litre|l|pcs)?)$/i;
   
     return lines.map(line => {
@@ -78,105 +87,139 @@ function UpList() {
       if (match) {
         return {
           name: match[1].trim().toLowerCase(),
-          quantity: match[2].trim()
+          quantity: match[2].trim(),
         };
       } else {
-
         const words = line.trim().split(" ");
         const name = words.slice(0, -1).join(" ");
         const quantity = words.slice(-1).join("");
         return {
           name: name.toLowerCase(),
-          quantity
+          quantity,
         };
       }
     });
-  }
-
-
+  };
   
+  const handleChange = (index, field, value) => {
+    const updated = [...productInputs];
+    updated[index][field] = value;
+    setProductInputs(updated);
+  };
   
-
+  const addNewProductField = () => {
+    setProductInputs([...productInputs, { name: '', quantity: '' }]);
+  };
+  
+  const removeProductField = (index) => {
+    const updated = [...productInputs];
+    updated.splice(index, 1);
+    setProductInputs(updated);
+  };
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('Submitted products:', productInputs);
+  
+    // Add backend integration for manual input submission if needed
+  };
+  
   return (
     <>
-      {/* <nav className="navbar my-navbar">
-        <div className="container d-flex justify-content-between align-items-center">
-          <div className="d-flex align-items-center">
-            <img src="/images/logo.png" alt="logo" className="logo" />
-            <a className="navbar-brand my-brand ms-2" href="#">ListKaro</a>
-          </div>
-        </div>
-
-        <button className="navbar-toggler ms-auto me-auto" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-label="Toggle navigation"  >
-          <span className="navbar-toggler-icon" ></span>
-        </button>
-
-        <div className="offcanvas offcanvas-end custom-sidebar" tabIndex="-1" id="sidebarMenu" aria-labelledby="sidebarTitle" >
-          <div className="offcanvas-header">
-            <h5 className="offcanvas-title" id="sidebarTitle">Menu</h5>
-            <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-          </div>
-
-          <div className="offcanvas-body">
-            <ul className="navbar-nav">
-              <li className="nav-item"><a className="nav-link" href="/">Home</a></li>
-              <li className="nav-item dropdown">
-                <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Products</a>
-                <ul className="dropdown-menu">
-                  <li><a className="dropdown-item" href="#">Dairy</a></li>
-                  <li><a className="dropdown-item" href="#">Packed</a></li>
-                  <li><a className="dropdown-item" href="#">Veggies & Fruits</a></li>
-                  <li><a className="dropdown-item" href="#">Sweets</a></li>
-                </ul>
-              </li>
-              <li className="nav-item"><a className="nav-link" href="/uploadlist">Upload List</a></li>
-              <li className="nav-item"><a className="nav-link" href="/about" target="_blank" rel="noopener noreferrer">About</a></li>
-              <li className="nav-item"><a className="nav-link" href="/profile">Profile</a></li></ul>
-          </div>
-        </div>
-
-
-      </nav> */}
-
-      <Navbar/>
-
-      
-
-      <div className="listcontainer">
-        <p id="uploadtitle">Upload Your List or Fill the Form</p>
-        <p id='instruction'>Please upload list as the <i> <strong> .jpg or .png  </strong> </i> format</p>
+      <Navbar />
+      <div className="container list-upload-container rounded py-4">
+        <h2 className="text-start mb-2" id='uploadtitle'>Upload Your List or Fill the Form</h2>
+        <p className="text-start">
+          Please upload list as the <strong>.jpg or .png</strong> format
+        </p>
         <hr />
+        <div className="row justify-content-center">
+          <div className="col-12 col-md-10 col-lg-8">
+            <div className="d-flex flex-column flex-md-row justify-content-between gap-4">
 
-        <div className="listbox">
-          <div className="dragndrop">
-            <div className="imagecontainer">
-              <label htmlFor="fileId" className="filelabel">
-              <img src="/images/upload.png" alt="" />
-              </label>
-            </div>
-            <input type="file" id="fileId" accept="image/png, image/jpeg" />
-            <button onClick={upload} className="filesubmit">Upload</button>
-          </div>
+              {/* Upload Section */}
+              <div className="flex-fill text-center p-3 border rounded shadow-lg">
+                <div className="mb-3">
+                  <label htmlFor="fileId" className="d-block cursor-pointer">
+                    <img src="/images/upload.png" alt="Upload" style={{ maxWidth: '100px', cursor: 'pointer' }} />
+                  </label>
+                  <input
+                    type="file"
+                    id="fileId"
+                    className="form-control mt-2"
+                    accept="image/png, image/jpeg"
+                    onChange={handleFileChange}
+                  />
+                  <button onClick={upload} className="btn btn-primary mt-3 w-100">
+                    {loading ? 'Uploading...' : 'Upload'}
+                  </button>
+                </div>
 
-          <p className="or">OR</p>
+                {selectedImage && (
+                  <div className="mt-3">
+                    <p><strong>Selected File:</strong> {selectedImage.name}</p>
+                    {previewUrl && (
+                      <img
+                        src={previewUrl}
+                        alt="Preview"
+                        className="img-fluid rounded"
+                        style={{ maxHeight: '200px' }}
+                      />
+                    )}
+                  </div>
+                )}
 
-          <div className="listform">
-          <form onSubmit={handleSubmit}>
-            {
-              productInputs.map((product, index) => (
-              <div className="prod" key={index} style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
-                <input type="text" placeholder="Product Name (e.g Egg, Milk)" value={product.name} onChange={(e) => handleChange(index, 'name', e.target.value)}/>
-                <input type="text" placeholder="Quantity (e.g 20kg, 200ml, 7p)" value={product.quantity} onChange={(e) => handleChange(index, 'quantity', e.target.value)}/>
-                <img src="images/dustbin.png" alt="" onClick={() => removeProductField(index)}  />
+                {errorMsg && (
+                  <div className="alert alert-danger mt-3">{errorMsg}</div>
+                )}
               </div>
-               ))
-            }
-            <div className="buttons">
-            <input type="button" value="Add New Product +" onClick={addNewProductField} className="addprodbtn" />
-            <button type="submit" className="filesubmit">Upload</button>
-            </div>
 
-          </form>
+              {/* OR Divider */}
+              <div className="d-flex align-items-center justify-content-center">
+                <span className="fw-bold">OR</span>
+              </div>
+
+              {/* Manual Input Form */}
+              <div className="flex-fill p-3 border rounded shadow-xl text-white">
+                <form onSubmit={handleSubmit}>
+                  {productInputs.map((product, index) => (
+                    <div
+                      key={index}
+                      className="d-flex flex-column flex-md-row align-items-center gap-2 mb-3"
+                    >
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Product Name (e.g Egg, Milk)"
+                        value={product.name}
+                        onChange={(e) => handleChange(index, 'name', e.target.value)}
+                      />
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Quantity (e.g 20kg, 200ml, 7p)"
+                        value={product.quantity}
+                        onChange={(e) => handleChange(index, 'quantity', e.target.value)}
+                      />
+                      <button type="button" onClick={() => removeProductField(index)} className="btn btn-outline-danger">
+                        <img src="/images/dustbin.png" alt="Remove" style={{ width: '50px', backgroundColor: "white" }} />
+                      </button>
+                    </div>
+                  ))}
+
+                  <div className="d-flex flex-column flex-md-row justify-content-between gap-2 mt-3">
+                    <input
+                      type="button"
+                      value="Add New Product +"
+                      onClick={addNewProductField}
+                      className="btn btn-outline-success w-100 w-md-auto"
+                    />
+                    <button type="submit" className="btn btn-primary w-100 w-md-auto">Upload</button>
+                  </div>
+                </form>
+              </div>
+
+            </div>
           </div>
         </div>
       </div>

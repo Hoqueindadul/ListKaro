@@ -123,6 +123,7 @@ export const extractProductDataFromImage = async (req, res) => {
       success: true,
       message: 'Products added to cart successfully.',
       totalProductsAdded,
+      lines: allLines,
       data: results,
     });
   } catch (error) {

@@ -38,6 +38,9 @@ export const useAuthStore = create((set) => ({
 				isLoading: false,
 			});
 			console.log("Login successful", response.data);
+			// In your login function after a successful response
+			localStorage.setItem('token', response.data.jwt);
+
 		} catch (error) {
 			set({ error: error.response?.data?.message || "Error logging in", isLoading: false });
 			throw error;
