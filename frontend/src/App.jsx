@@ -12,7 +12,7 @@ import PaymentForm from './pages/PaymentForm'
 import FAQ from './pages/FAQ'
 import Dashboard from "./adminpanel/Dashboard";
 import Products from "./pages/Products";
-
+import OrderPage from "./pages/OrderPage";
 function App() {
   
   return (
@@ -29,6 +29,7 @@ function App() {
           <Route path="/faq" element={ <FAQ/> } />
           <Route path="/adminpanel" element={ <Dashboard/> } />
           <Route path="/products" element={ <Products/> } />
+          <Route path='/orderpage' element={<OrderPage />}> </Route>
 
 
       </Routes>

@@ -1,5 +1,6 @@
-import React, { useState , useEffect} from "react";
+import React, { useState , useEffect, use} from "react";
 import SignUp from "./Signup";
+import {useNavigate} from 'react-router-dom';
 
 export default function Navbar(){
         const [showPopup, setShowPopup] = useState(false); 
@@ -23,9 +24,18 @@ export default function Navbar(){
           }, []);
 
         const handleRegistration = () => {
-
         }
 
+        const navigate = useNavigate();
+        const checkPass = () =>{
+            const enterpass = prompt("We need to verify if you are admin");
+            if (enterpass === 'imadmin'){
+                navigate('/adminpanel')
+            }
+            else{
+                alert("Wrong Password. Admin Login Failed")
+            }
+        }
     return(
         <>
                 <nav className="navbar my-navbar">
@@ -88,7 +98,7 @@ export default function Navbar(){
                             <li className="nav-item"><a className="nav-link" href="/products">View All Products</a></li>
                             <li className="nav-item"><a className="nav-link" href="/uploadlist">Upload List</a></li>
                             <li className="nav-item"><a className="nav-link" href="/about" target="_blank" rel="noopener noreferrer">About</a></li>
-                            <li className="nav-item"><a className="nav-link" href="/adminpanel">Admin Panel</a></li></ul>
+                            <li className="nav-item"><button className="nav-link" onClick={checkPass}>Admin Panel</button></li></ul> 
                         </div>
                         </div>
                     </div>
