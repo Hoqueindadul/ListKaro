@@ -1,209 +1,414 @@
-*{
-    margin: 0;
-    padding: 0;
-}
-a{ all:unset;}
-.container{
-    display: flex;
-    height: 100vh;
-}
 
-.left {
-    width: 25%;
-    background-color: #222222;
-    height: 100vh; 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: sticky;
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap');
 
-}
-
-.right {
-    width: 75%;
-    background-color: beige;
-    height: 100vh;
-    margin-left: 25%; 
-    position: absolute;
-    right: 0;  
-    top: 0; 
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;  
-}
-
-.logo_container{
-    display: flex;
-    width: 100%;
-    justify-content: space-evenly ;
-    align-items: center;
-    position: relative; 
-    top: 50px;
-}
-.logo{
-    width: 100px;
-    cursor: pointer;
-
-}
-
-.login{
-    background-color: blue;
-    height: 50px;
-    width: 50px;
-    border-radius: 50%;
-    cursor: pointer;
-}
-.navbar{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 25%; 
-    margin-top: 150px;
-    position: fixed;
-}
-
-.navbar ul { 
-    list-style-type: none;
-    margin-top: 20px;
-    cursor: pointer;
-    transition: background 0.3s, color 0.3s;
-    width: 100%; 
-}
-
-.navbar ul li{
-    font-size: 20px;
-    margin-bottom: 20px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    text-align: center;
-    color: white;
-    width: 100%;
-}
-.navbar ul li:hover {
-    background-color: #ff9800;
-    color: black;
-    width: 100%; 
-}
-
-.products {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    flex-grow: 1; 
-}
-
-.footer {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    width: 100%;
-    background-color: #222222d5;
-    color: white;
-    position: relative;
-    padding-top: 50px;
-    padding-bottom: 50px;
-}
-
-.footer h1{
-    font-size: 50px;
-    color: #ff9800;
-}
-.footer #em_holder{
-    height: 35px;
-    width: 250px;
-    border-radius: 5px;
-    border: none;
-    padding-left: 10px ;
-    margin-right: 10px;
-    background-color: #d1186bc3;
-}
-#em_holder::placeholder{ color: white; opacity: 1;}
-
-.footer #btn{
-    height: 35px;
-    width: 100px;
-    background-color: beige;
-    color: black;
-    border-radius: 5px;
-    cursor: pointer;
-    border: none;
+body {
+  background-color: #FAF1E6; 
+  font-family: "Titillium Web", sans-serif;
+  font-weight: 200;
+  font-style: normal;
 }
 
 
-.card{
-    height: 250px;
-    width: 300px;
-    border-radius: 10px;
-    margin: 30px;
-    cursor: pointer;
-    transition: 0.3s ease all;
-}
-.card:hover{
-    transform: scale(1.1); 
-    filter: brightness(60%);
-}
-
-#electronics {
-    background-image: url('/images/electronics.jpg');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-#groceries {
-    background-image: url('/images/groceries.jpg');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-#snacks {
-    background-image: url('/images/snacks.jpg');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
 
 
-.graphic {
-        background-image: url('/images/shopping.jpg');
-        width: 100%;
-        min-height: 100vh;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-        flex-grow: 1; 
-}
-
-#categories_title{
-    font-size: 45px;
-    margin: 40px;
-    margin-top: 40px;
-    text-align: center;
+/* MIDSECTION  */
+.carocontainer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2rem; 
+  width: 100%;
+  height: auto;
+  flex-wrap: wrap; 
+  margin-right: 20px;
 
 }
 
-.btn_container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.slide-wrapper {
+  flex: 1; 
+  margin-left: 20px;
+  max-width: 50rem;
+}
+
+.slider{
+  display: flex;
+  width: 100%;
+  height: 500px; 
+  aspect-ratio: unset; 
+  overflow-x: auto;
+  scroll-snap-type: x mandatory; 
+  scroll-behavior: smooth;
+  border-radius: 0.5rem;
+
+  scrollbar-width: none;  /* slider hidden for firefox */
+  -ms-overflow-style: none;  /* slider hidden for edge */
+}
+.slider::-webkit-scrollbar {
+  display: none; /* slider hidden for Chrome Safari */
+}
+
+.slider img{
+  flex: 1 0 100%;
+  scroll-snap-align: start;
+  object-fit: cover;
+}
+
+.slider-nav{
+  display: flex;
+  column-gap: 1rem;
+  position: absolute;
+  left: 30%;
+  transform: translate(-50%);  
+  z-index: 1;
+  margin-top: 28rem;
+}
+
+.slider-nav a{
+height: 0.6rem;
+width: 0.6rem;
+border-radius: 50%;
+background-color: white ;
+box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.9);
+opacity: 0.5;
+transition: opacity ease 250ms;
+}
+.slider-nav a:hover{
+  opacity: 1;
+}
+
+/* CARDS SECTION  */
+
+.card-container {
+  width: 18rem;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  transition: transform 0.3s ease;
+}
+
+.card-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.card-body {
+  padding: 16px;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.card-text {
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 16px;
+}
+
+.card-button {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.card-button:hover {
+  background-color: #0056b3;
+}
+
+
+/* Scrolling Text  */
+.offer-banner {
+  background-color: #fef9f0;
+  border-top: 2px solid #ffa500;
+  border-bottom: 2px solid #ffa500;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 10px 0;
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.offer-text {
+  display: inline-block;
+  padding-left: 100%;
+  animation: scrollLeft 30s linear infinite;
+}
+.offer-text span {
+  margin-right: 500px; 
+}
+
+@keyframes scrollLeft {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.signupcontainer {
+  position: fixed; 
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  height: 550px;
+  width: 500px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); 
+  padding: 40px;
+  z-index: 10; 
+}
+.signheader{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  align-items: center;
+}
+.signupcontainer input{
+  padding: 7px;
+  font-size: 16px;
+  border-radius: 5px;
+  margin-bottom: 12px;
+  width: 100%;
+  border:0.5px solid gray;
+}
+.signheader .signuptitle{
+  font-size: 26px;
+  font-weight: bold;
+}
+.signheader .close{
+  font-size: 20px;
+  cursor: pointer;
+  font-weight: 400;
+  transition: all 0.3s ease;
+  color: green;
+}
+.close:hover{
+  color: red;
+}
+
+.signupbtn{
+  background-color: blue;
+  color: white;
+  margin-top: 10px;
+  max-width: 100px;
+  transition: all 0.3s ease;
 
 }
-.viewbtn {
-    width: 180px;
-    height: 40px;
-    margin-top: 30px;
-    margin-bottom: 40px;
-    font-size: 18px;
-    border: none;
-    cursor: pointer;
-    background-color: blueviolet;
-    color: white;
-    border-radius:5px;
-    transition: 0.1s ease-in all;
+.signupbtn:hover{
+  transform: scale(0.9);
+  background-color: green;
+}
+
+
+.categoriestitle{
+  margin: 0px 60px;
+  padding: 10px;
 
 }
-.viewbtn:hover{
-    transform: scale(1.05);
-    background-color: blue;
+.categories{
+  margin: 0px 50px;
+  padding: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  
+}
+
+.circontainer{
+  text-align: center;
+}
+.circontainer p{
+  margin-top: 20px;
+  font-weight: bold;
+  font-size: 20px;
+}
+.cirimage{
+  height: 120px;
+  width: 120px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.5s ease;
+  object-fit: cover;
+}
+.cirimage:hover{
+  transform: scale(1.1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.299);
+}
+
+.offer{
+  background-color: orange;
+  height: auto;
+  margin: 0px 50px; 
+  border-radius: 30px;
+  text-align: start;
+  display: flex;
+  justify-content: space-around;
+}
+.offercontainer{
+  margin: 50px;
+  padding: 20px;
+  font-weight: bold;
+  color: whitesmoke;
+}
+.offercontainer h3{
+  font-size: 40px;
+  font-weight: bold;
+}
+.offercontainer p{
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+}
+.offercontainer #price{
+  font-size: 28px;
+  font-weight:bold;
+  color: yellow;
+}
+.offercontainer #star{
+  color: rgba(0, 0, 0, 0.358);
+}
+.offercontainer input{
+  width: 120px;
+  border-radius: 10px;
+  border: none;
+  padding: 10px;
+  background-color: rgba(0, 0, 255, 0.8);
+  color: white;
+  font-weight: bold;
+  transition: transform 0.3s ease;
+}
+.offercontainer input:hover{
+  background-color: blue;
+  transform: scale(0.9);
+}
+
+.newsletter{
+  margin: 50px;
+  padding: 20px;
+  border-radius: 40px;
+  font-weight: bold;
+  background-color: white;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.newsletter h3{
+  font-size: 35px;
+  font-weight: bold;
+}
+.newsletter .emailbox{
+  width: 250px;
+  font-size: 16px;
+  border-radius: 10px;
+  padding: 10px;
+  margin-right: 10px;
+
+}
+.newsletter .emailbtn{
+  font-size: 16px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color:#ffa600d9;
+  border: none;
+  color: white;
+  font-weight: bold;
+  width: 100px;
+  transition: transform 0.3s ease;
+}
+.emailbtn:hover{
+  background-color:#ffa500;
+  transform: scale(0.9);
+}
+
+footer{
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  padding: 20px; 
+  margin: 20px;
+
+}
+footer .products,.aboutus, .consumers, .programs{
+  display: flex;
+  flex-direction: column;
+
+}
+footer p{
+  font-size: 18px;
+  font-weight: bold;
+}
+footer a{
+  text-decoration: none;
+  color: black;
+  margin-bottom: 5px;
+}
+footer a:hover{
+  color: red;
+  font-weight: 300;
+}
+
+hr{
+  opacity: 0.2;
+}
+
+/* OfferPopup */
+.offerPopupContainer {
+  background-image: url('/images/offerPopup.jpg');
+  height: 250px;
+  width: 350px;
+  position: fixed;
+  z-index: 10;
+  bottom: 30px;
+  right: 30px;
+  border-radius: 30px;
+  background-repeat: no-repeat;
+  background-size: cover; 
+  background-position: center;
+  overflow: hidden;
+}
+
+.offerPopupContent{
+  color: white;
+  font-size: 18px;
+  padding: 40px;
+}
+.offerPopupContent h3{
+  font-weight: bold;
+  font-size: 35px;
+}
+.offerPopupContent button{
+  background-color: white;
+  color: black;
+  padding: 5px;
+  font-weight: 500;
+  width:100px;
+  border-radius: 10px;
+  border: none;
+}
+
+.sunmoonicon{
+  height: 30px;
+  width: 30px;
+  cursor:pointer;
+  transition: all 0.3s ease-in;
+}
+.sunmoonicon:hover{
+  transform: scale(0.9);
 }

@@ -1,0 +1,36 @@
+.adminnav{
+    background-color: #99BC85; 
+}
+.adminnav h3{
+    color: #FDFAF6;
+    font-weight: bold;
+    font-size: 28px;
+    transition: all 0.3s ease-in;
+}
+.adminnav h3:hover{
+    color: #fdf6f6ae; 
+}
+
+.adminoffcanvas .offcanvas-header{
+    background-color: #bcd2c2;
+}
+.adminoffcanvas .offcanvas-body{
+    background-color: #e4efe7; 
+    color: black; 
+}
+
+.adminoffcanvas .nav-item{
+    list-style: none;
+}
+.adminoffcanvas .nav-link{
+    color: black; 
+    font-size: 1rem;
+    padding: 10px 15px;
+}
+
+.adminoffcanvas .nav-link:hover {
+    background-color: #99BC85;
+    color: white;
+    border-radius: 5px;
+  }
+

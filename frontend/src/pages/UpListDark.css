@@ -1,0 +1,63 @@
+body.dark .list-upload-container {
+    background-color: #29294c;
+  }
+  
+  body.dark #uploadtitle {
+    color: #ffd369;
+  }
+  
+  body.dark .dragndrop {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+  }
+  
+  body.dark .listform {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  body.dark .filelabel {
+    background-color: #2b2d42;
+    color: #ffffff;
+  }
+  
+  body.dark .filesubmit {
+    background-color: #5e5eff;
+    color: #ffffff;
+  }
+  
+  body.dark .filesubmit:hover {
+    background-color: #1414ff;
+  }
+  
+  body.dark .prod input {
+    background-color: #2b2d42;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  body.dark .addprodbtn {
+    background-color: rgba(0, 128, 0, 0.67);
+    color: #ffffff;
+  }
+  
+  body.dark .addprodbtn:hover {
+    background-color: rgba(0, 128, 0, 0.923);
+    color: yellow;
+  }
+
+  body.dark .imagecontainer img{
+    filter: invert(100%);
+  }
+  body.dark .listform .prod input{
+
+    background-color:#6161e74b;
+  }
+  body.dark .listform .prod input::placeholder{
+    color: rgba(255, 255, 255, 0.692);
+  }
+  body.dark .listform img{
+    filter: invert(100%);
+  }
+  body.dark .listform img:hover{
+    filter: invert(80%)
+  }

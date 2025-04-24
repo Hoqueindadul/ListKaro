@@ -3,28 +3,22 @@ import APIFunctionality from '../utils/apiFunctionality.js';
 import HandleError from '../utils/handleError.js';
 import handleAsyncError from '../middleware/handleAsyncError.js';
 
-// CREATE PRODUCT
 export const createProduct = async (req, res, next) => {
-    try {
-        const product = await Products.create(req.body);
-        res.status(201).json({ success: true, data: product });
-    } catch (error) {
-        next(error);
-    }
-}
+  try {
+    const product = await Products.create(req.body);
+    res.status(201).json({ success: true, data: product });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+    // or use next(error) if centralized error handler is in place
+  }
+};
+
 
 // SEARCH PRODUCTS BY KEYWORDS
 export const searchProductsByKeyword = handleAsyncError(async (req, res, next) => {
-    const resultPerPage = 3; // Number of products per page
+
     const apiFeatures = new APIFunctionality(Products.find(), req.query).search().filter();
 
-    const filteredQuery = apiFeatures.query.clone();
-    const productCount = await filteredQuery.countDocuments();
-    const totalpages = Math.ceil(productCount / resultPerPage);
-    const page = Number(req.query.page) || 1;
-    if(page>totalpages && productCount){
-        return next(new HandleError("This page does not exist", 404));
-    }
     const allProducts = await apiFeatures.query;
 
     if (!allProducts || allProducts.length === 0) {
@@ -35,10 +29,7 @@ export const searchProductsByKeyword = handleAsyncError(async (req, res, next) =
         success: true,
         totalProduct: allProducts.length,
         message: "Products fetched successfully",
-        data: allProducts,
-        productCount,
-        resultperPage: resultPerPage,
-        currentPage: page,
+        data: allProducts
     });
 });
 
