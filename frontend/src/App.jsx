@@ -15,14 +15,16 @@ import LoginPage from "./pages/LoginPage"
 import ForgotPasswordPage from "./pages/ForgotPasswordPage"
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import Dashboard from "./adminpanel/Dashboard";
+import ShoppingCart from "./pages/ShoppingCart";
 
 function App() {
   
   return (
     <>
+    
     <Router>
       <Routes>
-
+      
           <Route path="/" element={<Home />} />
           <Route path="/uploadlist" element={ <UpList />} />
           <Route path="/profile" element={ <Profile/> } />
@@ -34,6 +36,7 @@ function App() {
           <Route path="/forgot-password" element={ <ForgotPasswordPage/> } />
           <Route path="/reset-password/:token" element={ <ResetPasswordPage/> } />
           <Route path="/adminpanel" element={ <Dashboard/> } />
+          <Route path="/shopping-cart" element={ <ShoppingCart />} />
 
 
 

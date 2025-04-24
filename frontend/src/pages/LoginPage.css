@@ -62,7 +62,7 @@
 }
 
 /* Login button */
-button {
+.login-btn {
 	width: 100%;
 	padding: 12px;
 	background: linear-gradient(to right, #00ff88, #00cc66);

@@ -57,7 +57,7 @@ const SignUp = ({ showPopup, setShowPopup }) => {
                 <input type="submit" value="Signup" className="signupbtn" />
             </form>
 
-            <p style={{ textAlign: 'center' }}>Already have an account? <a href="" style={{ textDecoration: 'none' }}>Log in</a></p>
+            <p style={{ textAlign: 'center' }}>Already have an account? <a href="/login" style={{ textDecoration: 'none' }}>Log in</a></p>
         </div>
     );
 };

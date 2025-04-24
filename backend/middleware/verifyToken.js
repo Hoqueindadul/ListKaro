@@ -4,6 +4,12 @@ export const verifyToken = (req, res, next) => {
     // take token from cookies
     const token = req.cookies.token;
 
+    res.cookie("token", token, {
+        httpOnly: true,
+        secure: false, // ✅ Change to true in production if using HTTPS
+        sameSite: "Lax", // ✅ Change to "None" if using secure:true and cross-origin
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
     // check if token is present
     if(!token){
         return res.status(401).json({

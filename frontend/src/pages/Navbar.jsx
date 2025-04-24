@@ -32,7 +32,7 @@ export default function Navbar() {
           {/* Logo */}
           <div className="flex items-center space-x-2">
             <img src="/images/logo.png" alt="logo" className="h-8 w-8" />
-            <a href="#" className="text-xl font-bold">ListKaro</a>
+            <a href="#" className="text-xl font-bold my-brand">ListKaro</a>
           </div>
 
           {/* Desktop Search & Upload List */}
@@ -51,7 +51,7 @@ export default function Navbar() {
           <div className="flex items-center gap-4">
             {/* Cart */}
             <a
-              href="/cart"
+              href="/shopping-cart"
               className="bg-green-600 text-white px-3 py-1 rounded-md text-sm hover:bg-green-700 transition"
             >
               🛒

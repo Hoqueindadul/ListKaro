@@ -4,6 +4,8 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useAuthStore } from "../store/authStore";
 import { Mail, Lock, Loader } from "lucide-react";
+import Cookies from 'js-cookie';
+
 import "./LoginPage.css";
 
 const LoginPage = () => {
@@ -17,6 +19,7 @@ const LoginPage = () => {
 		try {
 			await login(email, password);
 			toast.success("Your are logged in successfully");
+			
 			setTimeout(() => {
 				navigate("/");
 			}, 2000);
