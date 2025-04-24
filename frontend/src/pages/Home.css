@@ -8,79 +8,7 @@ body {
   font-style: normal;
 }
 
-.my-navbar {
-  background-color: #99BC85; 
-}
 
-.logo{ 
-  height: 45px;
-  width: 45px;
-  margin: 2px;
-  cursor: pointer;
-}
-.my-brand {
-  color: #FDFAF6;
-  font-weight: bold;
-  font-size: 28px;
-  transition: all 0.3s ease-in;
-}
-.my-brand:hover {
-  color: #fdf6f6ae; 
-}
-
-
-.my-navbar .nav-link {
-  color: white;
-  padding: 10px 15px; 
-  font-size: 1rem;
-}
-
-.searchbar{
-  font-size: 19px;
-  border: none;
-  border-radius: 15px;
-  padding-left: 20px;
-  margin-right: 20px;
-  width: 250px;
-
-}
-
-.custom-sidebar {
-  background-color: #e4efe7; 
-  color: black; 
-}
-
-.custom-sidebar .offcanvas-header {
-  background-color: #bcd2c2;
-}
-
-.custom-sidebar .nav-link {
-  color: black; 
-  font-size: 1rem;
-  padding: 10px 15px;
-}
-
-.custom-sidebar .nav-link:hover {
-  background-color: #99BC85;
-  color: white;
-  border-radius: 5px;
-}
-
-
-.custom-sidebar .dropdown-menu {
-  background-color: #FDFAF6;
-  border: none;
-}
-
-.custom-sidebar .dropdown-item {
-  color: black;
-}
-
-.custom-sidebar .dropdown-item:hover {
-  background-color: #99BC85;
-  color: white;
-  border-radius: 5px;
-}
 
 
 /* MIDSECTION  */
@@ -209,7 +137,6 @@ transition: opacity ease 250ms;
   padding: 10px 0;
   font-size: 16px;
   color: #333;
-  margin-top: 10px;
   margin-bottom: 20px;
 }
 

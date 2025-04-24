@@ -1,8 +1,11 @@
 import { useState } from "react";
-import axios from "axios"; 
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const SignUp = ({ showPopup, setShowPopup }) => {
     if (!showPopup) return null;
+    const navigate = useNavigate()
 
     const [formData, setFormData] = useState({
         name: "",
@@ -20,18 +23,19 @@ const SignUp = ({ showPopup, setShowPopup }) => {
     const handleRegistration = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post("http://localhost:5000/api/register", formData);
+            const response = await axios.post("http://localhost:5000/api/auth/signup", formData);
             console.log("User registered:", response.data);
-            alert("Registration successful!");
+            toast.success("Verify Your Email")
             setShowPopup(false);
+            navigate("/emailVerification")
         } catch (error) {
             const errorMessage = error.response?.data?.message || error.message || "Registration failed. Please try again.";
             console.error("Registration error:", errorMessage);
             alert(errorMessage); // Show the backend error message or a fallback message
         }
     };
-    
-    
+
+
 
     return (
         <div className="signupcontainer">
@@ -44,16 +48,16 @@ const SignUp = ({ showPopup, setShowPopup }) => {
                 <input name="name" type="text" placeholder="Enter your name" required value={formData.name} onChange={handleChange} /><br />
                 <input name="email" type="email" placeholder="Enter your email" required autoComplete="off" value={formData.email} onChange={handleChange} /><br />
                 <input name="password" type="password" placeholder="Set a password" required autoComplete="off" value={formData.password} onChange={handleChange} /><br />
-                <input name="phone" type="tel" placeholder="Phone Number (Optional)" 
-                    value={formData.phone} 
-                    onChange={handleChange} 
+                <input name="phone" type="tel" placeholder="Phone Number (Optional)"
+                    value={formData.phone}
+                    onChange={handleChange}
                 />
-<br />
+                <br />
                 By signing up, you agree to our <a href="" style={{ textDecoration: 'none' }}>terms and conditions</a><br /><br />
                 <input type="submit" value="Signup" className="signupbtn" />
             </form>
 
-            <p style={{ textAlign: 'center' }}>Already have an account? <a href="" style={{ textDecoration: 'none' }}>Log in</a></p>
+            <p style={{ textAlign: 'center' }}>Already have an account? <a href="/login" style={{ textDecoration: 'none' }}>Log in</a></p>
         </div>
     );
 };

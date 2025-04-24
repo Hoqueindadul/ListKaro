@@ -1,7 +1,9 @@
 class HandleError extends Error{
-	construtor(message, statusCode){
-		
-		
-
+	constructor(message, statusCode){
+		super(message);
+		this.statusCode = statusCode;
+		Error.captureStackTrace(this, this.construtor)
 	}
 }
+
+export default HandleError;
