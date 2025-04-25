@@ -25,9 +25,9 @@ const SignUp = ({ showPopup, setShowPopup }) => {
         try {
             const response = await axios.post("http://localhost:5000/api/auth/signup", formData);
             console.log("User registered:", response.data);
-            toast.success("Verify Your Email")
+            toast.success("Verify Your Email");
             setShowPopup(false);
-            navigate("/emailVerification")
+            navigate("/emailVerification");
         } catch (error) {
             const errorMessage = error.response?.data?.message || error.message || "Registration failed. Please try again.";
             console.error("Registration error:", errorMessage);

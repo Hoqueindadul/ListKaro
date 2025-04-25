@@ -1,111 +1,112 @@
-import { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import './OrderPage.css';
 
-const OrderPage = ({ cartItems, totalAmount }) => {
-  const [userInfo, setUserInfo] = useState({
-    name: '',
-    email: '',
-    phone: '',
+const OrderPage = () => {
+  const { state } = useLocation();
+  const { cartItems, totalAmount } = state || {};
+  const [paymentMode, setPaymentMode] = useState("cashOnDelivery");
+  const [formData, setFormData] = useState({
+    name: "",
+    address: "",
+    zip: "",
+    email: "",
+    phone: "",
   });
 
-  const [address, setAddress] = useState({
-    street: '',
-    city: '',
-    state: '',
-    postalCode: '',
-  });
+  const navigate = useNavigate(); // Initialize navigate function for redirection
 
-  const [paymentMethod, setPaymentMethod] = useState('COD');
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-  const handleOrder = async () => {
-    if (!userInfo.name || !userInfo.email || !userInfo.phone || !address.state || !address.city) {
-      alert("Please fill in all required fields");
-      return;
-    }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    const orderData = {
-      items: cartItems,
-      totalAmount,
-      userAddress: address,
-      paymentMethod,
-      userName: userInfo.name,
-      userEmail: userInfo.email,
-      userPhone: userInfo.phone,
-    };
+    if (paymentMode === "cashOnDelivery") {
+      const orderData = {
+        customerDetails: formData,
+        cartItems,
+        totalAmount,
+        paymentMode,
+      };
 
-    try {
-      await axios.post('/api/orders/place-order', orderData);
-      if (paymentMethod === 'COD') {
-        alert("Order Confirmed!");
+      try {
+        const response = await fetch("http://localhost:5000/api/order", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(orderData),
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+          alert("Order placed successfully!");
+          navigate("/orderplaced", {
+            state : {    
+              customerDetails: formData,
+              cartItems,
+              totalAmount,}
+          });
+        } else {
+          alert("Error placing order: " + result.message);
+        }
+      } catch (err) {
+        console.error("Error:", err);
+        alert("Something went wrong!");
       }
-      else{
-        window.location.href = "http://localhost:5173/completepayment";
-      }
-    } catch (error) {
-      console.error("Order failed", error);
+    } else {
+      navigate("/completepayment", { state: { 
+        customerDetails: formData,
+        cartItems,
+        totalAmount, } });
     }
   };
 
+
   return (
-    <div className="p-4 max-w-xl mx-auto">
-      <h2 className="text-lg font-bold mb-4">User Information</h2>
-      <input
-        placeholder="Name"
-        value={userInfo.name}
-        onChange={e => setUserInfo({ ...userInfo, name: e.target.value })}
-        className="block border p-2 my-2 w-full"
-      />
-      <input
-        placeholder="Email"
-        value={userInfo.email}
-        onChange={e => setUserInfo({ ...userInfo, email: e.target.value })}
-        className="block border p-2 my-2 w-full"
-      />
-      <input
-        placeholder="Phone Number"
-        value={userInfo.phone}
-        onChange={e => setUserInfo({ ...userInfo, phone: e.target.value })}
-        className="block border p-2 my-2 w-full"
-      />
+      <div className="orderbody">
+      <div className="order-page">
+      <div className="delivery-form">
+        <h2>Delivery Details</h2>
 
-      <h2 className="text-lg font-bold mt-6 mb-4">Delivery Address</h2>
-      <input
-        placeholder="Street"
-        value={address.street}
-        onChange={e => setAddress({ ...address, street: e.target.value })}
-        className="block border p-2 my-2 w-full"
-      />
-      <input
-        placeholder="City"
-        value={address.city}
-        onChange={e => setAddress({ ...address, city: e.target.value })}
-        className="block border p-2 my-2 w-full"
-      />
-      <input
-        placeholder="State"
-        value={address.state}
-        onChange={e => setAddress({ ...address, state: e.target.value })}
-        className="block border p-2 my-2 w-full"
-      />
-      <input
-        placeholder="Postal Code"
-        value={address.postalCode}
-        onChange={e => setAddress({ ...address, postalCode: e.target.value })}
-        className="block border p-2 my-2 w-full"
-      />
+        <form onSubmit={handleSubmit}>
+          
+          <label htmlFor="name">Customer's name : </label>
+          <input type="text" name="name" placeholder="Enter Receiver's Name" required onChange={handleChange} />
 
-      <select
-        value={paymentMethod}
-        onChange={e => setPaymentMethod(e.target.value)}
-        className="block border p-2 my-4 w-full"
-      >
-        <option value="COD">Cash on Delivery</option>
-        <option value="Online">Online</option>
-      </select>
+          <label htmlFor="addresstotal">Delivery Address : </label>
+          <div className="deladdress" id="addresstotal">
+            <input type="text" name="address" placeholder="Address" id="addressfeild" required onChange={handleChange} />  
+            <input type="text" name="zip" placeholder="Pin Code" required onChange={handleChange} />
+          </div>
 
-      <button onClick={handleOrder} className="bg-blue-600 text-white px-4 py-2 rounded">
-        Place Order
-      </button>
+          <input type="email" name="email" placeholder="Email" required onChange={handleChange} />
+              
+          <input type="tel" name="phone" placeholder="Phone Number" required onChange={handleChange} />
+
+          <label>Payment Method</label>
+          <select value={paymentMode} onChange={(e) => setPaymentMode(e.target.value)}>
+            <option value="cashOnDelivery">Cash on Delivery</option>
+            <option value="online">Online Payment</option>
+          </select>
+          <button type="submit" id="ordersubmit">Place Order</button>
+        </form>
+      </div>
+
+      <div className="order-summary">
+        <h3>Order Summary</h3>
+        <ul>
+          {cartItems?.map((item) => (
+            <li key={item._id || item.product._id}>{item.name}</li>
+          ))}
+        </ul>
+        <p>
+          <strong>Total: ₹{totalAmount}</strong>
+        </p>
+      </div>
+    </div>
     </div>
   );
 };

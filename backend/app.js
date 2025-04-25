@@ -13,7 +13,8 @@ import errorHandleMiddleware from "./middleware/error.js";
 import newsletterRoute from "./routers/newsletter_route.js";
 import paymentRoute from './routers/payment_route.js'
 import cartRoute from './routers/cart.route.js'
-
+import order_route from './routers/order_route.js'
+import orderEmail from "./nodemailer/orderEmail.js";
 dotenv.config(); 
 
 const app = express();
@@ -42,6 +43,10 @@ app.use("/api/auth", userRoute)
 app.use(errorHandleMiddleware)
 app.use('/api', newsletterRoute);
 app.use("/api", paymentRoute);
+app.use("/api/order", order_route);
+app.use("/api/", orderEmail);
+
+
 
 
 

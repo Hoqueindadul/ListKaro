@@ -71,8 +71,12 @@
 import React, { useState, useEffect } from 'react';
 import '../pages/ShoppingCart.css';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+
+
 
 const ShoppingCart = () => {
+  const navigate = useNavigate();
     const [cartItems, setCartItems] = useState([]);
       const [loading, setLoading] = useState(true);
       const [error, setError] = useState(null);
@@ -245,7 +249,18 @@ const ShoppingCart = () => {
           <p className="total-value">₹{total}</p>
         </div>
 
-        <button className="checkout-btn">Proceed to Checkout</button>
+        <button className="checkout-btn"
+          onClick={() =>
+            navigate("/order", {
+              state: {
+                cartItems,
+                totalAmount: total,
+              },
+            })
+          }
+        >
+  Proceed to Checkout
+</button>
       </div>
     </div>
   );
