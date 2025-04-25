@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import SignUp from "./Signup";
 import {useNavigate} from 'react-router-dom';
 
@@ -33,7 +34,7 @@ export default function Navbar() {
           {/* Logo */}
           <div className="flex items-center space-x-2">
             <img src="/images/logo.png" alt="logo" className="h-8 w-8" />
-            <a href="#" className="text-xl font-bold my-brand">ListKaro</a>
+            <Link to="/" className="text-xl font-bold my-brand">ListKaro</Link>
           </div>
 
           {/* Desktop Search & Upload List */}
@@ -43,20 +44,20 @@ export default function Navbar() {
               placeholder="Search for items"
               className="px-3 py-1 rounded-md border dark:border-gray-600 dark:bg-gray-700 text-sm focus:outline-none"
             />
-            <a href="/uploadlist" className="text-sm font-semibold hover:underline">
+            <Link to="/uploadlist" className="text-sm font-semibold hover:underline">
               Upload List
-            </a>
+            </Link>
           </div>
 
           {/* Right Section */}
           <div className="flex items-center gap-4">
             {/* Cart */}
-            <a
-              href="/shopping-cart"
+            <Link
+              to="/shopping-cart"
               className="bg-green-600 text-white px-3 py-1 rounded-md text-sm hover:bg-green-700 transition"
             >
               🛒
-            </a>
+            </Link>
 
             {/* Theme toggle */}
             <img
@@ -76,8 +77,8 @@ export default function Navbar() {
               />
               {showUserDropdown && (
                 <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-700 border dark:border-gray-600 rounded shadow-lg text-sm z-50">
-                  <a
-                    href="#"
+                  <Link
+                    to="#"
                     className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600"
                     onClick={() => {
                       setShowPopup(true);
@@ -85,9 +86,9 @@ export default function Navbar() {
                     }}
                   >
                     Login
-                  </a>
-                  <a
-                    href="#"
+                  </Link>
+                  <Link
+                    to="#"
                     className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600"
                     onClick={() => {
                       setShowPopup(true);
@@ -95,19 +96,19 @@ export default function Navbar() {
                     }}
                   >
                     Signup
-                  </a>
-                  <a
-                    href="/orders"
+                  </Link>
+                  <Link
+                    to="/orders"
                     className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600"
                   >
                     Orders
-                  </a>
+                  </Link>
                 </div>
               )}
             </div>
 
             {/* Mobile Toggle Button */}
-            <div className="lg:hidden">
+            <div className="block lg:hidden">
               <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                 <svg
                   className="w-6 h-6 text-gray-800 dark:text-white"
@@ -131,9 +132,9 @@ export default function Navbar() {
               placeholder="Search for items"
               className="w-full px-3 py-1 mb-3 rounded-md border dark:border-gray-600 dark:bg-gray-800 text-sm focus:outline-none"
             />
-            <a href="/uploadlist" className="block text-sm font-semibold hover:underline">
+            <Link to="/uploadlist" className="block text-sm font-semibold hover:underline">
               Upload List
-            </a>
+            </Link>
           </div>
         )}
       </nav>

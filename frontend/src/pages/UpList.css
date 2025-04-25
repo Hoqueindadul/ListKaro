@@ -1,15 +1,18 @@
-
-.listcontainer{
-    background-color: white;
-    width: 80%;
-    min-height: 550px;
-    display: flex;
-    flex-direction: column;
-    position: absolute; 
+.list-upload-container{
+    position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
+#uploadtitle{
+    color: black;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+/* 
+
 
 #uploadtitle{
     color: black;
@@ -131,4 +134,4 @@
 }
 .buttons button{
     width: 100%;
-}
+}  */
