@@ -5,6 +5,7 @@ import handleAsyncError from '../middleware/handleAsyncError.js';
 
 export const createProduct = async (req, res, next) => {
   try {
+    req.body.user = req.user.id
     const product = await Products.create(req.body);
     res.status(201).json({ success: true, data: product });
   } catch (error) {

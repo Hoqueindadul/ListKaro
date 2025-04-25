@@ -110,7 +110,45 @@ transition: opacity ease 250ms;
   color: #666;
   margin-bottom: 16px;
 }
-
+.my-navbar{
+  background-color: white;
+  position: relative;
+}
+.nav-dropdown{
+  background-color: white;
+  text-decoration: none;
+}
+.nav-dropdown-link{
+  text-decoration: none;
+}
+.nav-uploadList{
+  text-decoration: none;
+}
+.nav-mob-screen-dropdown{
+  background-color: white;
+}
+.nav-sidebar-close{
+  color: black;
+}
+.nav-sidebarheader-text{
+  color: black;
+}
+.upload-list{
+  text-decoration: none;
+  font-size: 1.3rem;
+}
+.upload-list-lg{
+  text-decoration: none;
+}
+.nav-toggle-icon{
+  color: rgb(61, 61, 61);
+}
+.nav-user-icon{
+  color: rgb(61, 61, 61);
+}
+.nav-cart-icon{
+  color: rgb(61, 61, 61);
+}
 .card-button {
   display: inline-block;
   padding: 8px 16px;

@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SignUp from "./Signup";
+import { useAuthStore } from '../store/authStore';
+import { ShoppingCart, Menu, X, User, Upload } from 'lucide-react';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import './Home.css'
+import './HomeDark.css'
 
 export default function Navbar() {
   const [showPopup, setShowPopup] = useState(false);
   const [lightMode, setLightMode] = useState(true);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showSidebar, setShowSidebar] = useState(false);
+  const { user, logout, isAuthenticated } = useAuthStore();
+  const navigate = useNavigate();
 
   const toggleDarkMode = () => {
     const newMode = !lightMode;
@@ -26,9 +34,21 @@ export default function Navbar() {
     }
   }, []);
 
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast.success("Logged out successfully");
+      setShowUserDropdown(false);
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to logout");
+    }
+  };
+
   return (
     <>
-      <nav className="bg-white dark:bg-gray-800 text-gray-800 dark:text-white shadow-md w-full fixed z-50 transition-all duration-300">
+      <nav className="my-navbar dark:bg-gray-800 text-gray-800 dark:text-white shadow-md w-full fixed z-50 transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
           {/* Logo */}
           <div className="flex items-center space-x-2">
@@ -43,8 +63,8 @@ export default function Navbar() {
               placeholder="Search for items"
               className="px-3 py-1 rounded-md border dark:border-gray-600 dark:bg-gray-700 text-sm focus:outline-none"
             />
-            <Link to="/uploadlist" className="text-sm font-semibold hover:underline">
-              Upload List
+            <Link to="/uploadlist" className="flex gap-2 text-sm font-semibold upload-list-lg">
+              <Upload size={20} className="text-gray-800 dark:text-white" />Upload List
             </Link>
           </div>
 
@@ -53,9 +73,9 @@ export default function Navbar() {
             {/* Cart */}
             <Link
               to="/shopping-cart"
-              className="bg-green-600 text-white px-3 py-1 rounded-md text-sm hover:bg-green-700 transition"
+              className="px-3 py-1 rounded-md text-sm hover:bg-green-700 transition"
             >
-              🛒
+              <ShoppingCart size={24} className="nav-cart-icon" />
             </Link>
 
             {/* Theme toggle */}
@@ -68,77 +88,104 @@ export default function Navbar() {
 
             {/* User Dropdown */}
             <div className="relative">
-              <img
-                src="/images/user.png"
+              <User
                 onClick={() => setShowUserDropdown(!showUserDropdown)}
-                alt="User"
-                className="w-6 h-6 cursor-pointer"
+                size={24}
+                className="cursor-pointer nav-user-icon"
               />
               {showUserDropdown && (
-                <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-700 border dark:border-gray-600 rounded shadow-lg text-sm z-50">
-                  <Link
-                    to="#"
-                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600"
-                    onClick={() => {
-                      setShowPopup(true);
-                      setShowUserDropdown(false);
-                    }}
-                  >
-                    Login
-                  </Link>
-                  <Link
-                    to="#"
-                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600"
-                    onClick={() => {
-                      setShowPopup(true);
-                      setShowUserDropdown(false);
-                    }}
-                  >
-                    Signup
-                  </Link>
-                  <Link
+                <div className="absolute right-0 mt-2 w-40 nav-dropdown bg-gray-800 dark:bg-gray-700 border dark:border-gray-600 rounded shadow-lg text-sm z-50">
+                  {isAuthenticated && user && (
+                    <div className="block px-4 py-2 text-white font-semibold">
+                      Hello, {user.name}
+                    </div>
+                  )}
+                  <hr />
+                  {!isAuthenticated && (
+                    <>
+                      <Link
+                        to="/login"
+                        className="block px-4 py-2 text-bold hover:bg-gray-100 dark:hover:bg-gray-600 nav-dropdown-link"
+                        onClick={() => {
+                          setShowPopup(true);
+                          setShowUserDropdown(false);
+                        }}
+                      >
+                        Login
+                      </Link>
+                      <Link
+                        to="#"
+                        className="block px-4 py-2 text-bold hover:bg-gray-100 dark:hover:bg-gray-600 nav-dropdown-link"
+                        onClick={() => {
+                          setShowPopup(true);
+                          setShowUserDropdown(false);
+                        }}
+                      >
+                        Signup
+                      </Link>
+                      
+                    </>
+                  )}
+                  {isAuthenticated && (<Link
                     to="/orders"
-                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600"
+                    className="block px-4 py-2 text-bold hover:bg-gray-100 dark:hover:bg-gray-600 nav-dropdown-link"
                   >
-                    Orders
+                    Your Orders
                   </Link>
+                  )}
+                  <hr />
+                  {isAuthenticated && (<Link
+                    to="#"
+                    className="block px-4 py-2 text-bold hover:bg-gray-100 dark:hover:bg-gray-600 nav-dropdown-link"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </Link>
+                  )}
                 </div>
               )}
             </div>
 
             {/* Mobile Toggle Button */}
             <div className="block lg:hidden">
-              <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-                <svg
-                  className="w-6 h-6 text-gray-800 dark:text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
+              <button onClick={() => setShowSidebar(true)}>
+                <Menu className="w-6 h-6 nav-toggle-icon dark:text-white" />
               </button>
             </div>
           </div>
         </div>
 
-        {/* Mobile Dropdown */}
-        {isMobileMenuOpen && (
-          <div className="lg:hidden px-4 pt-2 pb-4 bg-white dark:bg-gray-700 shadow-md">
-            <input
-              type="search"
-              placeholder="Search for items"
-              className="w-full px-3 py-1 mb-3 rounded-md border dark:border-gray-600 dark:bg-gray-800 text-sm focus:outline-none"
-            />
-            <Link to="/uploadlist" className="block text-sm font-semibold hover:underline">
-              Upload List
-            </Link>
+        {/* Mobile Sidebar (Offcanvas) */}
+        {showSidebar && (
+          <div className="fixed top-0 right-0 h-full w-64 nav-mob-screen-dropdown shadow-lg z-50 transform transition-transform duration-300 ease-in-out translate-x-0">
+            <div className="flex justify-between items-center p-4 border-b dark:border-gray-600">
+              <span className="text-lg font-semibold nav-sidebarheader-text  dark:text-white">Menu</span>
+              <button onClick={() => setShowSidebar(false)}>
+                <X className="w-5 h-5  nav-sidebar-close" />
+              </button>
+            </div>
+            <div className="p-4">
+              <input
+                type="search"
+                placeholder="Search for items"
+                className="w-full px-3 py-2 mb-4 rounded-md border dark:border-gray-600 dark:bg-gray-700 text-sm focus:outline-none"
+              />
+              <Link
+                to="/uploadlist"
+                className="flex items-center gap-2 text-sm font-semibold upload-list px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                <Upload size={20} className="text-gray-800 dark:text-white" />
+                Upload List
+              </Link>
+
+            </div>
           </div>
         )}
+        <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
       </nav>
 
       <SignUp showPopup={showPopup} setShowPopup={setShowPopup} />
+      
     </>
   );
 }

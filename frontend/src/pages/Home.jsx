@@ -3,7 +3,6 @@ import axios from 'axios';
 
 import "./Home.css";
 import './HomeDark.css';
-import Navbar from "./Navbar";
 
 function Home() {
   // const [showPopup, setShowPopup] = useState(false); 
@@ -142,7 +141,7 @@ function Home() {
         </nav> 
         } */}
 
-    <Navbar />
+
 
     {
       offerPopup && (

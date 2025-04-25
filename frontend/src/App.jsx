@@ -1,6 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 import './App.css'
 
@@ -16,6 +18,7 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage"
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import Dashboard from "./adminpanel/Dashboard";
 import ShoppingCart from "./pages/ShoppingCart";
+import Navbar from "./pages/Navbar";
 
 function App() {
   
@@ -23,6 +26,7 @@ function App() {
     <>
     
     <Router>
+    <Navbar />
       <Routes>
       
           <Route path="/" element={<Home />} />

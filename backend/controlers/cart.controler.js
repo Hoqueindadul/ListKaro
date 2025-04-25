@@ -63,3 +63,49 @@ export const getUserCart = async (req, res) => {
     });
   }
 };
+
+
+export const removeItemFromCart = async (req, res) => {
+  try {
+    const { productId } = req.params;
+    const userId = req.userId;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized - You are not logged in",
+      });
+    }
+
+    // Pull the product from the cart array
+    const updatedCart = await Cart.findOneAndUpdate(
+      { userId },
+      {
+        $pull: {
+          products: { productId: productId }, // remove matching product from array
+        },
+      },
+      { new: true }
+    ).populate("products.productId");
+
+    if (!updatedCart) {
+      return res.status(404).json({
+        success: false,
+        message: "Cart not found or product not found in cart",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Product removed from cart successfully",
+      data: updatedCart.products,
+    });
+
+  } catch (error) {
+    console.error("Error removing item from cart:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};

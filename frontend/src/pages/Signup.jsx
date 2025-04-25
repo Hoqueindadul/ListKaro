@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import toast from "react-hot-toast";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const SignUp = ({ showPopup, setShowPopup }) => {
-    if (!showPopup) return null;
     const navigate = useNavigate()
 
     const [formData, setFormData] = useState({
@@ -20,22 +20,23 @@ const SignUp = ({ showPopup, setShowPopup }) => {
             [e.target.name]: e.target.value
         });
     };
+
     const handleRegistration = async (e) => {
         e.preventDefault();
         try {
             const response = await axios.post("http://localhost:5000/api/auth/signup", formData);
             console.log("User registered:", response.data);
-            toast.success("Verify Your Email")
+            toast.success("Verify Your Email");  // This triggers the success toast
             setShowPopup(false);
-            navigate("/emailVerification")
+            navigate("/emailVerification");
         } catch (error) {
             const errorMessage = error.response?.data?.message || error.message || "Registration failed. Please try again.";
             console.error("Registration error:", errorMessage);
-            alert(errorMessage); // Show the backend error message or a fallback message
+            toast.error(errorMessage);  // This triggers the error toast
         }
     };
 
-
+    if (!showPopup) return null;  // Only render the form if `showPopup` is true
 
     return (
         <div className="signupcontainer">
@@ -56,8 +57,11 @@ const SignUp = ({ showPopup, setShowPopup }) => {
                 By signing up, you agree to our <a href="" style={{ textDecoration: 'none' }}>terms and conditions</a><br /><br />
                 <input type="submit" value="Signup" className="signupbtn" />
             </form>
-
+            <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
             <p style={{ textAlign: 'center' }}>Already have an account? <a href="/login" style={{ textDecoration: 'none' }}>Log in</a></p>
+            
+            {/* Always render ToastContainer */}
+            
         </div>
     );
 };
