@@ -114,4 +114,56 @@ export const useAuthStore = create((set) => ({
 			throw error;
 		}
 	},
+	
+}));
+
+const CART_API_URL = import.meta.env.MODE === "development"
+  ? "http://localhost:5000/api/cart"
+  : "/api/cart";
+
+export const useCartStore = create((set) => ({
+  cartItems: [],
+  loading: false,
+  error: null,
+
+  fetchCartItems: async () => {
+    set({ loading: true, error: null });
+    try {
+      const response = await axios.get(`${CART_API_URL}/user-cart`, {
+        withCredentials: true,
+      });
+      set({ cartItems: response.data.data, loading: false });
+    } catch (error) {
+      set({ error: "Failed to load cart items", loading: false });
+    }
+  },
+
+  updateQuantity: (productId, newQuantity) => {
+    set((state) => ({
+      cartItems: state.cartItems.map((item) =>
+        item._id === productId ? { ...item, quantity: newQuantity } : item
+      ),
+    }));
+  },
+
+  removeItem: async (productId) => {
+    try {
+      await axios.delete(`${CART_API_URL}/user-cart/${productId}`, {
+        withCredentials: true,
+      });
+      set((state) => ({
+        cartItems: state.cartItems.filter((item) => item._id !== productId),
+      }));
+    } catch (error) {
+      console.error('Failed to remove item:', error);
+    }
+  },
+
+  getCartCount: () => {
+	const items = useCartStore.getState().cartItems;
+	console.log("Cart count:", items.length);
+	return items.length;
+	
+	
+  }
 }));

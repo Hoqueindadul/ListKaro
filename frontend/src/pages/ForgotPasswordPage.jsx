@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import toast from "react-hot-toast";
 import { useAuthStore } from "../store/authStore";
 import { ArrowLeft, Loader, Mail } from "lucide-react";
 import "./LoginPage.css";

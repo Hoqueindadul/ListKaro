@@ -9,7 +9,29 @@ body.dark .my-navbar {
     background-color: #1a1a3e;
     color: white;
 }
-
+body.dark .nav-dropdown{
+  background-color: #1a1a3e;
+  color: white;
+}
+body.dark .nav-mob-screen-dropdown{
+  background-color: #1a1a3e;
+  color: white;
+}
+body.dark .nav-toggle-icon{
+  color: white;
+}
+body.dark .nav-user-icon{
+  color: white;
+}
+body.dark .nav-cart-icon{
+  color: white;
+}
+body.dark .nav-sidebar-close{
+  color: white
+}
+body.dark .nav-sidebarheader-text{
+  color: white;
+}
 body.dark .my-brand {
     color: white;
     transition: all 0.3s ease-in;

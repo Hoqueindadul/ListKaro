@@ -19,6 +19,10 @@ const userSchema = new mongoose.Schema({
         required: false,
         unique: true,
     },
+    role: {
+        type: String,
+        default: "user"
+    },
     lastLogin: {
         type: Date,
         default: Date.now,

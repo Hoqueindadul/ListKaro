@@ -108,6 +108,11 @@
     font-size: 0.9rem;
     margin: 0;
   }
+  .item-quantity{
+    color: #666;
+    font-size: 0.9rem;
+    margin: 0;
+  }
   
   .quantity-controls {
     display: flex;
@@ -121,6 +126,7 @@
     border-radius: 6px;
     border: 1px solid #e0e0e0;
     background: #fff;
+    color: #666;
     cursor: pointer;
     transition: all 0.2s;
   }
@@ -135,6 +141,7 @@
     text-align: center;
     border: 1px solid #e0e0e0;
     border-radius: 6px;
+    color: #666;
   }
   
   .item-total {
@@ -148,7 +155,6 @@
     gap: 0.5rem;
   }
   
-  .update-item-btn,
   .remove-item-btn {
     padding: 0.5rem;
     border-radius: 6px;
@@ -158,10 +164,7 @@
     font-size: 0.9rem;
   }
   
-  .update-item-btn {
-    background: black;
-    color: white;
-  }
+
   
   .remove-item-btn {
     background:gray;
@@ -173,7 +176,7 @@
     opacity: 0.9;
   }
   .remove-item-btn:hover{
-    background:var( --primary-light);
+    background:rgb(63, 62, 62);
     color: var(--bg-primary)
   }
   
