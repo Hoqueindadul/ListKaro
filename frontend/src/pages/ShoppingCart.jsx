@@ -1,50 +1,29 @@
 import React, { useEffect } from 'react';
+import { Link, useNavigate  } from 'react-router-dom';
 import '../pages/ShoppingCart.css';
 import { useCartStore } from "../store/authStore"; 
-import { useNavigate } from "react-router-dom";
-
-
 
 const ShoppingCart = () => {
-  const navigate = useNavigate();
-    const [cartItems, setCartItems] = useState([]);
-      const [loading, setLoading] = useState(true);
-      const [error, setError] = useState(null);
-      console.log(cartItems);
-      
-    
-      useEffect(() => {
-        // Fetch cart items from the API
-        const fetchCartItems = async () => {
-          try {
-            const response = await axios.get("http://localhost:5000/api/cart/user-cart", {
-              withCredentials: true, // Make sure cookies are sent with the request
-            });
-            setCartItems(response.data.data); // Set the cart items
-            setLoading(false); // Stop loading once data is fetched
-          } catch (err) {
-            setError("Failed to load cart items.");
-            setLoading(false);
-          }
-        };
-    
-        fetchCartItems();
-      }, []);
-  const updateQuantity = async (productId, newQuantity) => {
-    try {
-      const token = localStorage.getItem('jwt');
-      await axios.patch(
-        `http://localhost:5000/api/cart/user-cart/${productId}`,
-        { quantity: newQuantity },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      fetchCart(); // Refresh cart
-    } catch (error) {
-      console.error('Failed to update quantity:', error);
+  const {
+    cartItems,
+    fetchCartItems,
+    updateQuantity,
+    removeItem,
+    loading,
+    error,
+  } = useCartStore();
+ const navigate = useNavigate()
+  useEffect(() => {
+    fetchCartItems(); 
+  }, []);
+
+  const handleIncreaseQuantity = (productId, currentQuantity) => {
+    updateQuantity(productId, currentQuantity + 1);
+  };
+
+  const handleDecreaseQuantity = (productId, currentQuantity) => {
+    if (currentQuantity > 1) {
+      updateQuantity(productId, currentQuantity - 1);
     }
   };
 
@@ -165,6 +144,7 @@ const ShoppingCart = () => {
           <p className="total-value">₹{total}</p>
         </div>
 
+        
         <button className="checkout-btn"
           onClick={() =>
             navigate("/order", {
@@ -175,8 +155,8 @@ const ShoppingCart = () => {
             })
           }
         >
-  Proceed to Checkout
-</button>
+          Proceed to Checkout
+        </button>
       </div>
     </div>
   );

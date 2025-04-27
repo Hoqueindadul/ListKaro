@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import SignUp from "./Signup";
-import {useNavigate} from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { ShoppingCart, Menu, X, User, Upload , Info, Package} from 'lucide-react';
 import { toast, ToastContainer } from 'react-toastify';
