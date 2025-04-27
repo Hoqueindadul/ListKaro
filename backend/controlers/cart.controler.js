@@ -1,5 +1,4 @@
 import Cart from "../models/cart.model.js";
-import Products from "../models/products.model.js";
 
 export const getUserCart = async (req, res) => {
   try {
@@ -14,7 +13,7 @@ export const getUserCart = async (req, res) => {
     // Find the user's cart and populate product details (productId is the reference in cart)
     const cart = await Cart.findOne({ userId: req.userId }).populate("products.productId");
 
-    if (!cart || cart.products.length === 0) {
+    if (!cart || !cart.products || cart.products.length === 0) {
       return res.status(404).json({
         success: false,
         message: "Cart is empty",
@@ -22,20 +21,22 @@ export const getUserCart = async (req, res) => {
       });
     }
 
-    // Debugging: Log raw cart data to inspect
+    // Debugging: Log raw cart data
     console.log("Raw Cart Data:", JSON.stringify(cart, null, 2));
 
-    // Check if any productId in cart couldn't be populated
-    cart.products.forEach((item, index) => {
-      if (!item.productId) {
-        console.warn(`⚠️ Warning: productId at index ${index} could not be populated.`);
-      }
-    });
+    // Safely filter only products where productId is valid and populated
+    const filteredProducts = cart.products.filter(item => item.productId && item.productId._id);
 
-    // Filter out products where productId could not be populated
-    const filteredProducts = cart.products.filter(item => item.productId);
+    // If no valid products after filtering
+    if (filteredProducts.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No valid products found in cart",
+        data: [],
+      });
+    }
 
-    // Format the data to send back to the frontend
+    // Format the filtered products
     const formattedProducts = filteredProducts.map((item) => ({
       _id: item.productId._id,
       name: item.productId.name,
@@ -45,10 +46,10 @@ export const getUserCart = async (req, res) => {
       stock: item.productId.stock,
       quantity: item.quantity,
       description: item.productId.description || "",
-      source: item.source || "manual", // or 'OCR' based on how product was added
+      source: item.source || "manual", // OCR/manual
     }));
 
-    // Respond with the formatted cart items
+    // Send the response
     return res.status(200).json({
       success: true,
       message: "Cart items fetched successfully",
@@ -63,6 +64,7 @@ export const getUserCart = async (req, res) => {
     });
   }
 };
+
 
 
 export const removeItemFromCart = async (req, res) => {

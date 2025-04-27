@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import SignUp from "./Signup";
 import { useAuthStore } from '../store/authStore';
-import { ShoppingCart, Menu, X, User, Upload } from 'lucide-react';
+import { ShoppingCart, Menu, X, User, Upload , Info, Package} from 'lucide-react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useCartStore } from "../store/authStore";
 import './Home.css'
 import './HomeDark.css'
 
@@ -14,7 +15,12 @@ export default function Navbar() {
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
   const { user, logout, isAuthenticated } = useAuthStore();
+  const [showSubTabs, setShowSubTabs] = useState(false);
+  const { getCartCount } = useCartStore();
   const navigate = useNavigate();
+  const cartCount = isAuthenticated ? getCartCount() : 0
+
+
 
   const toggleDarkMode = () => {
     const newMode = !lightMode;
@@ -73,9 +79,13 @@ export default function Navbar() {
             {/* Cart */}
             <Link
               to="/shopping-cart"
-              className="px-3 py-1 rounded-md text-sm hover:bg-green-700 transition"
+              className="px-3 py-1 rounded-md text-sm hover:bg-green-700 transition relative"
             >
               <ShoppingCart size={24} className="nav-cart-icon" />
+
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-600 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">{cartCount}</span>
+              )}
             </Link>
 
             {/* Theme toggle */}
@@ -123,7 +133,7 @@ export default function Navbar() {
                       >
                         Signup
                       </Link>
-                      
+
                     </>
                   )}
                   {isAuthenticated && (<Link
@@ -147,7 +157,7 @@ export default function Navbar() {
             </div>
 
             {/* Mobile Toggle Button */}
-            <div className="block lg:hidden">
+            <div className="block">
               <button onClick={() => setShowSidebar(true)}>
                 <Menu className="w-6 h-6 nav-toggle-icon dark:text-white" />
               </button>
@@ -170,12 +180,64 @@ export default function Navbar() {
                 placeholder="Search for items"
                 className="w-full px-3 py-2 mb-4 rounded-md border dark:border-gray-600 dark:bg-gray-700 text-sm focus:outline-none"
               />
+
+              {/* For Upload list */}
               <Link
                 to="/uploadlist"
                 className="flex items-center gap-2 text-sm font-semibold upload-list px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 <Upload size={20} className="text-gray-800 dark:text-white" />
                 Upload List
+              </Link>
+
+              <div>
+                {/* Main Tab (All Products) */}
+                <Link
+                  to="#"
+                  className="flex items-center gap-2 text-sm font-semibold upload-list px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+                  onClick={() => setShowSubTabs((prev) => !prev)} // Toggle visibility of sub-tabs
+                >
+                  <Package size={20} className="text-gray-800 dark:text-white" /> 
+                  All Products
+                </Link>
+
+                {/* Sub Tabs */}
+                {showSubTabs && (
+                  <div className="pl-6 mt-2 space-y-2">
+                    <Link
+                      to="/subtab1"
+                      className="block text-sm text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 px-2 py-1 rounded"
+                    >
+                      Sub Tab 1
+                    </Link>
+                    <Link
+                      to="/subtab2"
+                      className="block text-sm text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 px-2 py-1 rounded"
+                    >
+                      Sub Tab 2
+                    </Link>
+                    <Link
+                      to="/subtab3"
+                      className="block text-sm text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 px-2 py-1 rounded"
+                    >
+                      Sub Tab 3
+                    </Link>
+                    <Link
+                      to="/subtab4"
+                      className="block text-sm text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 px-2 py-1 rounded"
+                    >
+                      Sub Tab 4
+                    </Link>
+                  </div>
+                )}
+              </div>
+
+              <Link
+                to="/about"
+                className="flex items-center gap-2 text-sm font-semibold upload-list px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                <Info size={20} className="text-gray-800 dark:text-white" />
+                About
               </Link>
 
             </div>
@@ -185,7 +247,7 @@ export default function Navbar() {
       </nav>
 
       <SignUp showPopup={showPopup} setShowPopup={setShowPopup} />
-      
+
     </>
   );
 }
