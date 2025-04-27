@@ -6,7 +6,6 @@ import Cart from '../models/cart.model.js';
 const AZURE_KEY = '341qYo40r0EeSr32UoRv3IYnxACap3Oc0qd4OXPSAv7TAv8ttADdJQQJ99BDACGhslBXJ3w3AAAFACOGlGwA';
 const AZURE_ENDPOINT = 'https://jabedindadualocr.cognitiveservices.azure.com/';
 const AZURE_OCR_URL = AZURE_ENDPOINT + 'vision/v3.2/read/analyze';
-
 export const extractProductDataFromImage = async (req, res) => {
   try {
     const imagePath = req.file.path;
@@ -40,19 +39,26 @@ export const extractProductDataFromImage = async (req, res) => {
 
     fs.unlinkSync(imagePath);
 
+    // Process the OCR result and split by key-value
     const keyValuePairs = {};
     const allLines = result.flatMap(page => page.lines.map(line => line.text));
 
-    // Pair every two lines
-    for (let i = 0; i < allLines.length - 1; i += 2) {
-      const key = allLines[i];           // e.g., "Mango"
-      const value = allLines[i + 1];     // e.g., "2 kg"
-      keyValuePairs[key] = value;
+    // Update regex to handle "=" along with "-", ":", and spaces
+    for (const line of allLines) {
+      const regex = /([a-zA-Z\s]+)[\s\-:=]+(\d+(\.\d+)?\s*(kg|g|lb|oz)?)/i;
+      const match = line.match(regex);
+
+      if (match) {
+        const productName = match[1].trim();
+        const quantityText = match[2].trim();
+        keyValuePairs[productName] = quantityText;
+      }
     }
+
     const results = {};
 
-    for (const [key, quantityText] of Object.entries(keyValuePairs)) {
-      const product = await Products.findOne({ name: new RegExp(`^${key}$`, 'i') });
+    for (const [productName, quantityText] of Object.entries(keyValuePairs)) {
+      const product = await Products.findOne({ name: new RegExp(`^${productName}$`, 'i') });
 
       if (product) {
         const qtyMatch = quantityText.match(/\d+/);
@@ -94,7 +100,7 @@ export const extractProductDataFromImage = async (req, res) => {
         // Save the updated cart
         await cart.save();
 
-        results[key] = {
+        results[productName] = {
           found: true,
           cartAdded: true,
           product: {
@@ -108,11 +114,11 @@ export const extractProductDataFromImage = async (req, res) => {
           },
         };
       } else {
-        results[key] = {
+        results[productName] = {
           found: false,
           cartAdded: false,
           quantityDetected: quantityText,
-          message: `'${key}' not found in the database.`,
+          message: `'${productName}' not found in the database.`,
         };
       }
     }

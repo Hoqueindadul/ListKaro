@@ -1,6 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 import './App.css'
 
@@ -16,6 +18,8 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage"
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import Dashboard from "./adminpanel/Dashboard";
 import ShoppingCart from "./pages/ShoppingCart";
+import OrderPage from "./pages/OrderPage";
+import Placed from "./pages/Placed";import Navbar from "./pages/Navbar";
 
 function App() {
   
@@ -23,6 +27,7 @@ function App() {
     <>
     
     <Router>
+    <Navbar />
       <Routes>
       
           <Route path="/" element={<Home />} />
@@ -37,6 +42,9 @@ function App() {
           <Route path="/reset-password/:token" element={ <ResetPasswordPage/> } />
           <Route path="/adminpanel" element={ <Dashboard/> } />
           <Route path="/shopping-cart" element={ <ShoppingCart />} />
+        
+          <Route path="/order" element={ <OrderPage/> } />
+          <Route path="/orderplaced" element={ <Placed/> } />
 
 
 

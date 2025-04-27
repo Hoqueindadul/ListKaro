@@ -2,7 +2,8 @@ import './UpList.css';
 import './UpListDark.css';
 import { useState } from 'react';
 import axios from 'axios';
-import Navbar from './Navbar';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function UpList() {
   const [ocrText, setOcrText] = useState([]);
@@ -10,13 +11,13 @@ function UpList() {
     { name: '', quantity: '' },
     { name: '', quantity: '' },
   ]);
-  
+
   const [selectedImage, setSelectedImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [ocrResult, setOcrResult] = useState(null);
-  
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -26,26 +27,26 @@ function UpList() {
       setErrorMsg('');
     }
   };
-  
+
   const upload = async () => {
     if (!selectedImage) {
-      alert("Please select a file");
+      toast.error("Please select a file"); // Error toast for no file selected
       return;
     }
-  
+
     const validTypes = ["image/jpeg", "image/png"];
     if (!validTypes.includes(selectedImage.type)) {
-      alert("Please upload a valid JPG or PNG image");
+      toast.error("Please upload a valid JPG or PNG image"); // Error toast for invalid file type
       return;
     }
-  
+
     const formData = new FormData();
     formData.append('image', selectedImage);
-  
+
     setLoading(true);
     setErrorMsg('');
     setOcrResult(null);
-  
+
     try {
       const response = await axios.post(
         'http://localhost:5000/api/upload-ocr',
@@ -57,31 +58,33 @@ function UpList() {
           withCredentials: true, // ⬅️ Enable sending cookies (JWT)
         }
       );
-  
+
       if (response.data?.lines) {
         const extractedItems = extractItems(response.data.lines);
         setOcrText(extractedItems);
-        alert("List has been uploaded successfully");
+        toast.success("File uploaded and list extracted successfully!"); // Success toast
       } else {
-        alert("Failed to extract list items!");
+        toast.error("Failed to extract list items!"); // Error toast if extraction fails
       }
-  
+
       setOcrResult(response.data);
     } catch (error) {
       console.error('Upload failed:', error);
       if (error.response && error.response.status === 401) {
         setErrorMsg('Unauthorized. Please log in again.');
+        toast.error('Unauthorized. Please log in again.'); // Error toast for unauthorized
       } else {
         setErrorMsg('Upload failed. Please try again.');
+        toast.error('Upload failed. Please try again.'); // Error toast for general upload failure
       }
     } finally {
       setLoading(false);
     }
   };
-  
+
   const extractItems = (lines) => {
     const pattern = /^(.*)\s+(\d+(?:\.\d+)?\s*(?:kg|gm|g|ml|litre|l|pcs)?)$/i;
-  
+
     return lines.map(line => {
       const match = line.match(pattern);
       if (match) {
@@ -100,33 +103,32 @@ function UpList() {
       }
     });
   };
-  
+
   const handleChange = (index, field, value) => {
     const updated = [...productInputs];
     updated[index][field] = value;
     setProductInputs(updated);
   };
-  
+
   const addNewProductField = () => {
     setProductInputs([...productInputs, { name: '', quantity: '' }]);
   };
-  
+
   const removeProductField = (index) => {
     const updated = [...productInputs];
     updated.splice(index, 1);
     setProductInputs(updated);
   };
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Submitted products:', productInputs);
-  
+
     // Add backend integration for manual input submission if needed
   };
   
   return (
     <>
-      <Navbar />
       <div className="container list-upload-container rounded py-4">
         <h2 className="text-start mb-2" id='uploadtitle'>Upload Your List or Fill the Form</h2>
         <p className="text-start">
@@ -173,7 +175,7 @@ function UpList() {
                   <div className="alert alert-danger mt-3">{errorMsg}</div>
                 )}
               </div>
-
+              <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
               {/* OR Divider */}
               <div className="d-flex align-items-center justify-content-center">
                 <span className="fw-bold">OR</span>

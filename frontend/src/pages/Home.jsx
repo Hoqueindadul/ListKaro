@@ -3,7 +3,6 @@ import axios from 'axios';
 
 import "./Home.css";
 import './HomeDark.css';
-import Navbar from "./Navbar";
 
 function Home() {
   // const [showPopup, setShowPopup] = useState(false); 
@@ -73,6 +72,25 @@ function Home() {
   //   }
   // }, []);
   
+      const [LightMode, setLightMode] = useState(true);
+      
+      const OnDarkMode = () =>{
+      const DarkMode = !LightMode;
+          setLightMode(DarkMode);
+          document.body.classList.toggle('dark');
+          localStorage.setItem('theme', DarkMode ? 'light' : 'dark');
+          }
+      useEffect(() => {
+          const savedTheme = localStorage.getItem('theme');
+              if (savedTheme === 'dark') {
+                setLightMode(false);
+                    document.body.classList.add('dark');
+                  } 
+              else {
+                    setLightMode(true);
+                    document.body.classList.remove('dark');
+                  }
+                }, []);
 
   return (
     <> 
@@ -142,7 +160,7 @@ function Home() {
         </nav> 
         } */}
 
-    <Navbar />
+
 
     {
       offerPopup && (
@@ -339,7 +357,7 @@ function Home() {
         <input type="email" placeholder="Enter email address" className="emailbox" value={email} onChange={(e) => setEmail(e.target.value)}/>
         <input type="submit" value={'Join now'} className="emailbtn"/>
       </form>
-      <img src="/images/model.png" alt=""  height={'400px'} width={'300px'}/>
+      <img src={LightMode? '/images/newsletterday.png' : '/images/newsletternight.png'}  alt=""  height={'400px'} width={'300px'}/>
     </section>
 
     <hr />

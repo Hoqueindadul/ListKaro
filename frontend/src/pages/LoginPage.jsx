@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import toast from "react-hot-toast";
 import { useAuthStore } from "../store/authStore";
 import { Mail, Lock, Loader } from "lucide-react";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Cookies from 'js-cookie';
 
 import "./LoginPage.css";
@@ -18,7 +19,7 @@ const LoginPage = () => {
 		e.preventDefault();
 		try {
 			await login(email, password);
-			toast.success("Your are logged in successfully");
+			toast.success("You are logged in successfully");
 			
 			setTimeout(() => {
 				navigate("/");
@@ -27,7 +28,7 @@ const LoginPage = () => {
 			const errorMessage =
 				error.response?.data?.message || error.message || "Login failed. Please try again.";
 			console.error("Login error:", errorMessage);
-			alert(errorMessage);
+			toast.error(errorMessage);
 		}
 	};
 
@@ -35,6 +36,8 @@ const LoginPage = () => {
 
 
     return (
+		<>
+		
         <div className="login-page">
 			<div className="login-card">
 				<h2>Welcome Back</h2>
@@ -74,7 +77,9 @@ const LoginPage = () => {
 					Don't have an account? <a href="/register">Sign up</a>
 				</p>
 			</div>
+			<ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
 		</div>
+		</>
     );
 };
 
