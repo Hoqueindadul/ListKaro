@@ -1,0 +1,907 @@
+@media (min-width: 481px) and (max-width: 768px) {
+  body {
+      padding: 0;
+      margin: 0;
+  }
+
+  .carocontainer {
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      margin: 0;
+      padding: 0;
+      left: 0;
+  }
+
+  .slide-wrapper {
+      margin: 0 auto;
+      max-width: 500px;
+      width: 100%;
+      padding: 0;
+  }
+
+  .slider {
+      height: 300px;
+      border-radius: 0.25rem;
+  }
+
+  .slider-nav {
+      left: 50%; 
+      margin-top: 10rem;
+  }
+
+  .slider-nav a {
+      height: 0.5rem;
+      width: 0.5rem;
+  }
+
+  .card-container {
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      background-color: #fff;
+      transition: transform 0.3s ease;
+      height: 400px;
+      width: 100%;
+      max-width: 500px;
+      margin-top: 20px;
+  }
+
+  .card-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+  }
+
+  .card-body {
+      padding: 12px;
+  }
+
+  .card-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #333;
+  }
+
+  .card-text {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 0;
+  }
+
+  .card-button {
+      display: inline-block;
+      padding: 8px 18px;
+      background-color: #007bff;
+      color: white;
+      font-weight: 500;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: background-color 0.2s ease;
+  }
+
+  .card-button:hover {
+      background-color: #0056b3;
+  }
+
+  .categories {
+      margin: 0px 20px;
+      padding: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+  }
+
+  .circontainer p {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 18px;
+      max-width: 120px;
+  }
+
+  .offer {
+      background-color: orange;
+      height: auto;
+      border-radius: 10px;
+      text-align: start;
+      display: flex;
+      justify-content: space-around;
+      flex-direction: column;
+      margin: 20px;
+      padding: 20px;
+  }
+
+  .offercontainer {
+      font-weight: bold;
+      color: whitesmoke;
+      margin: 0;
+  }
+
+  .offercontainer h3 {
+      font-size: 28px;
+      font-weight: bold;
+  }
+
+  .offercontainer p {
+      font-size: 14px;
+      font-weight: bold;
+      color: white;
+  }
+
+  .offercontainer #price {
+      font-size: 22px;
+      font-weight: bold;
+      color: yellow;
+  }
+
+  .newsletter {
+      margin: 20px;
+      padding: 20px;
+      border-radius: 10px;
+      font-weight: bold;
+      background-color: white;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex-direction: column;
+      gap: 30px;
+  }
+
+  .newsletter h3 {
+      font-size: 30px;
+      font-weight: bold;
+      margin-bottom: 15px;
+  }
+
+  .newsletter p {
+      font-size: 12px;
+  }
+
+  .newsletter .emailbox {
+      width: 300px;
+      max-width: 350px;
+      font-size: 16px;
+      border-radius: 10px;
+      padding: 10px;
+      margin-right: 10px;
+      margin-bottom: 20px;
+  }
+
+  .newsletter .emailbtn {
+      font-size: 16px;
+      padding: 10px;
+      border-radius: 10px;
+      background-color: #ffa600d9;
+      border: none;
+      color: white;
+      font-weight: bold;
+      width: 100px;
+      transition: transform 0.3s ease;
+  }
+
+  .emailbtn:hover {
+      background-color: #ffa500;
+      transform: scale(0.9);
+  }
+
+  .newsletter img {
+      border-radius: 20px;
+      width: 100%;
+      height: auto;
+  }
+
+  footer {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 10px;
+      margin: 10px;
+  }
+
+  footer .products,
+  footer .aboutus,
+  footer .consumers,
+  footer .programs {
+      display: flex;
+      flex-direction: column;
+  }
+
+  footer p {
+      font-size: 16px;
+      font-weight: bold;
+  }
+
+  footer a {
+      text-decoration: none;
+      color: black;
+      margin-bottom: 5px;
+      font-size: 14px;
+  }
+
+  .nav-holder .my-brand {
+      text-decoration: none;
+      color: #ffa600b0;
+  }
+
+  .offerPopupContainer {
+      background: linear-gradient(#2144c3, #8797e0);
+      height: 200px;
+      width: 300px;
+      bottom: 30px;
+      right: 30px;
+      border-radius: 10px;
+      opacity: 0;
+      animation: fadeIn 1s forwards;
+      padding: 5px;
+      box-shadow: 0 0 10px rgba(4, 21, 255, 0.821);
+  }
+
+  @keyframes fadeIn {
+      from {
+          opacity: 0;
+          transform: translateY(20px);
+      }
+
+      to {
+          opacity: 1;
+          transform: translateY(0px);
+      }
+  }
+
+  .offerPopupContent {
+      font-size: 14px;
+      padding: 10px;
+  }
+
+  .offerPopupContent h3 {
+      font-size: 22px;
+  }
+
+  .offerPopupContent .ccbtn {
+      background-color: #c3ff00;
+      color: rgb(67, 67, 67);
+      border-radius: 50px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.547);
+  }
+
+  /* User Container Nav */
+  .ucontainer {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      padding: 8px 0;
+      margin: 0;
+      min-width: 200px;
+      max-height: 300px;
+      overflow-y: auto;
+      gap: 0;
+  }
+
+  .uname,
+  .uorders,
+  .ulogout {
+      padding: 8px 16px;
+      width: 100%;
+      text-align: left;
+      color: white;
+      font-weight: 600;
+      background-color: #007bff2b;
+      box-shadow: 0 0 20px #0b35dd76;
+      border: 1px solid #007bff0e;
+  }
+
+  .ulogout {
+      color: red;
+  }
+
+  .menucontainer {
+      width: 100%;
+      padding: 10px;
+      border-radius: 0px;
+  }
+
+  .menucontainer input[type="search"] {
+      font-size: 14px;
+      padding: 8px;
+      margin-bottom: 10px;
+  }
+
+  .upload-list,
+  .upload-list a {
+      font-size: 14px;
+      padding: 8px;
+  }
+
+  .menucontainer .pl-6 {
+      padding-left: 10px;
+  }
+
+  .menucontainer .space-y-2 > * + * {
+      margin-top: 8px;
+  }
+
+  .menucontainer .pl-6 {
+      display: flex;
+      flex-direction: column;
+      margin-left: 100px;
+  }
+  .signupcontainer {
+    margin: 0;
+    padding: 20px;
+    height: 500px;
+    width: 570px;
+    background-color: #f1ecec;
+  }
+  .signupbtn{
+    margin: 0 auto;
+  }
+  .ahac{
+    margin-top: 20px;
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 1024px) {
+  body{
+      padding: 0;
+      margin: 0;
+  }
+  .carocontainer {
+    align-items: center;
+    gap: 1rem;
+    margin: 0;
+    padding: 10px;
+  }
+
+  .slide-wrapper {
+      padding: 0;
+    }
+    
+  .slider {
+    height: 360px;
+    max-width: 450px;
+    border-radius: 12px;
+  }
+
+  .slider-nav {
+    left: 25%; 
+    margin-top: 21rem; 
+
+  }
+
+  .slider-nav a {
+    height: 0.5rem;
+    width: 0.5rem;
+  }
+
+  .card-container {
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      background-color: #fff;
+      transition: transform 0.3s ease;
+      height: 360px;
+      max-width: 250px;
+    }
+    
+  .card-image {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+  }
+    
+  .card-body {
+      padding: 6px;
+  }
+    
+  .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #333;
+  } 
+  .card-text {
+      font-size: 0.75rem;
+      color: #666;
+      margin-bottom: 0; 
+  }
+  .card-text strong{display: none;}
+  .card-button {
+      display: inline-block;
+      padding: 6px 16px;
+      background-color: #007bff;
+      color: white;
+      font-weight: 500;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: background-color 0.2s ease;
+  }
+    
+  .card-button:hover {
+      background-color: #0056b3;
+  }
+  .categories{
+      margin: 0px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+  }
+
+  .circontainer p{
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 18px;
+      max-width: 120px;
+  }
+  .offercontainer{
+      font-weight: bold;
+      color: whitesmoke;
+      margin: 0;
+  }
+  .offercontainer h3{
+      font-size: 30px;
+      font-weight: bold;
+  }
+
+  .offercontainer #price{
+      font-size: 20px;
+      font-weight:bold;
+      color: yellow;
+  }
+  .offercontainer #star{
+      color: rgba(0, 0, 0, 0.358);
+  }
+  .offercontainer input{
+      width: 120px;
+      border-radius: 10px;
+      border: none;
+      padding: 8px;
+      background-color: rgba(0, 0, 255, 0.8);
+      color: white;
+      font-weight: bold;
+      transition: transform 0.3s ease;
+  }
+  .offercontainer input:hover{
+      background-color: blue;
+      transform: scale(0.9);
+  }
+  .newsletter img{
+      border-radius: 20px;
+      width: 400px;
+      height: 430px;
+  }
+  .offerPopupContainer {
+  background: linear-gradient(#2144c3,  #8797e0);
+  height: 380px;
+  width: 480px;
+  border-radius: 10px;
+  opacity: 0;
+  animation: fadeIn 1s forwards;
+  padding:20px;
+  box-shadow: 0 0 10px rgba(4, 21, 255, 0.821);
+    }
+  @keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px);}
+  to{opacity: 1; transform: translateY(0px);}
+  }
+  .offerPopupContent{
+  font-size: 24px;
+  padding: 10px;
+  }
+  .offerPopupContent h3{
+  font-size: 50px;
+  width: 300px;
+  }
+  .offerPopupContent .ccbtn{
+  background-color: #c3ff00;
+  color: rgb(67, 67, 67);
+  border-radius: 50px;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.547);
+  margin-top: 20px;
+  width: 300px;
+}
+
+/* User Container Nav  */
+  .ucontainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 8px 0; 
+  margin: 0;
+  min-width: 180px;
+  min-height: 100px;
+  max-height: 300px;
+  overflow-y: auto;
+  gap: 0; 
+    }
+
+  .uname, .uorders, .ulogout {
+  padding: 8px 16px;
+  width: 100%; 
+  text-align: left;
+  color: white;
+  font-weight: 600;
+  background-color: #007bff2b;
+  box-shadow: 0 0 20px #0b35dd76 ;
+  border: 1px solid #007bff0e;
+  }
+  .ulogout{
+    color: red;
+    }
+  .menucontainer {
+    width: 100%;
+    padding: 10px;
+    border-radius: 0px;
+  }
+
+  .menucontainer input[type="search"] {
+    font-size: 14px;
+    padding: 8px;
+    margin-bottom: 10px;
+  }
+
+  .upload-list, .upload-list a {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .menucontainer .pl-6 {
+    padding-left: 10px;
+  }
+
+  .menucontainer .space-y-2 > * + * {
+    margin-top: 8px;
+  }
+  .menucontainer .pl-6{
+    display: flex;
+    flex-direction: column;
+    margin-left: 100px;
+  }
+  .signupcontainer {
+    margin: 0;
+    padding: 20px;
+    height: 500px;
+    width: 350px;
+    background-color: #f1ecec;
+  }
+  .signupbtn{
+    margin: 0 auto;
+  }
+  .ahac{
+    margin-top: 20px;
+    font-size: 18px;
+  }
+}
+
+/* SmartPhone */
+@media (max-width: 480px) {
+  body{
+      padding: 0;
+      margin: 0;
+  }
+  .carocontainer {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    left: 0;
+  }
+  .slide-wrapper {
+      margin: 0 auto;
+      max-width: 330px;
+      width: 100%;
+      padding: 0;
+  }
+  .slider {
+    height: 250px;
+    border-radius: 0.25rem;
+  }
+  .slider-nav {
+    left: 50%; 
+    margin-top: 16rem; 
+
+  }
+  .slider-nav a {
+    height: 0.5rem;
+    width: 0.5rem;
+  }
+  .card-container {
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      background-color: #fff;
+      transition: transform 0.3s ease;
+      height: 400px;
+      max-width: 330px;
+      margin-top: 20px;
+  }
+  .card-image {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+  }
+  .card-body {
+      padding: 8px;
+  }
+  .card-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #333;
+  }
+  .card-body strong{
+      margin: 0;
+  }
+  .card-text {
+      font-size: 0.75rem;
+      color: #666;
+      margin-bottom: 0; 
+  }
+  .card-button {
+      display: inline-block;
+      padding: 6px 16px;
+      background-color: #007bff;
+      color: white;
+      font-weight: 500;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: background-color 0.2s ease;
+  } 
+  .card-button:hover {
+      background-color: #0056b3;
+  }
+  .categories{
+      margin: 0px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+  }
+  .circontainer p{
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 18px;
+      max-width: 120px;
+  }
+  .offer{
+      background-color: orange;
+      height: auto;
+      border-radius: 10px;
+      text-align: start;
+      display: flex;
+      justify-content: space-around;
+      flex-direction: column;
+      margin:20px;
+      padding: 20px;
+  }
+  .offercontainer{
+      font-weight: bold;
+      color: whitesmoke;
+      margin: 0;
+  }
+  .offercontainer h3{
+      font-size: 30px;
+      font-weight: bold;
+  }
+  .offercontainer p{
+      font-size: 14px;
+      font-weight: bold;
+      color: white;
+  }
+  .offercontainer #price{
+      font-size: 20px;
+      font-weight:bold;
+      color: yellow;
+  }
+  .offercontainer #star{
+      color: rgba(0, 0, 0, 0.358);
+  }
+  .offercontainer input{
+      width: 120px;
+      border-radius: 10px;
+      border: none;
+      padding: 10px;
+      background-color: rgba(0, 0, 255, 0.8);
+      color: white;
+      font-weight: bold;
+      transition: transform 0.3s ease;
+  }
+  .offercontainer input:hover{
+      background-color: blue;
+      transform: scale(0.9);
+  }
+  .newsletter{
+      margin:20px;
+      padding: 20px;
+      border-radius: 10px;
+      font-weight: bold;
+      background-color: white;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex-direction: column;
+      gap: 30px;
+
+  }
+  .newsletter h3{
+      font-size: 30px;
+      font-weight: bold;
+      margin-bottom: 15px;
+  }
+  .newsletter p{
+      font-size:12px;
+  }
+  .newsletter .emailbox{
+      width: 300px;
+      max-width: 350px;
+      font-size: 16px;
+      border-radius: 10px;
+      padding: 10px;
+      margin-right: 10px;
+      margin-bottom: 20px;
+    
+  }
+  .newsletter .emailbtn{
+      font-size: 16px;
+      padding: 10px;
+      border-radius: 10px;
+      background-color:#ffa600d9;
+      border: none;
+      color: white;
+      font-weight: bold;
+      width: 100px;
+      transition: transform 0.3s ease;
+  }
+  .emailbtn:hover{
+      background-color:#ffa500;
+      transform: scale(0.9);
+  }
+  .newsletter img{
+      border-radius: 20px;
+      width: 100%;
+      height: 430px;
+  }
+  footer {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 30px;
+      padding: 10px;
+      margin: 10px;
+  }
+    
+  footer .products,
+  footer .aboutus,
+  footer .consumers,
+  footer .programs {
+      display: flex;
+      flex-direction: column;
+  }
+  footer p {
+      font-size: 16px;
+      font-weight: bold;
+  }
+  footer a {
+      text-decoration: none;
+      color: black;
+      margin-bottom: 5px;
+      font-size: 14px;
+  }
+  .nav-holder .my-brand{
+  text-decoration: none;
+  color:white;
+  }  
+  .offerPopupContainer {
+  background: linear-gradient(#2144c3,  #8797e0);
+  height: 180px;
+  width: 260px;
+  bottom: 30px;
+  right: 30px;
+  border-radius: 10px;
+  opacity: 0;
+  animation: fadeIn 1s forwards;
+  padding:5px;
+  box-shadow: 0 0 10px rgba(4, 21, 255, 0.821);
+  }
+  @keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px);}
+  to{opacity: 1; transform: translateY(0px);}
+  }
+  .offerPopupContent{
+  font-size: 14px;
+  padding: 10px;
+  }
+  .offerPopupContent h3{
+  font-size: 22px;
+  }
+  .offerPopupContent .ccbtn{
+    background-color: #c3ff00;
+    color: rgb(67, 67, 67);
+    border-radius: 50px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.547);
+    margin-top: 20px;
+    width: 230px;
+  }
+/* User Container Nav  */
+  .ucontainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 8px 0; 
+  margin: 0;
+  min-width: 180px;
+  min-height: 100px;
+  max-height: 300px;
+  overflow-y: auto;
+  gap: 0; 
+  }
+  .uname, .uorders, .ulogout {
+  padding: 8px 16px;
+  width: 100%; 
+  text-align: left;
+  color: white;
+  font-weight: 600;
+  background-color: #007bff2b;
+  box-shadow: 0 0 20px #0b35dd76 ;
+  border: 1px solid #007bff0e;
+  }
+  .ulogout{
+    color: red;
+  }
+
+
+  .menucontainer {
+    width: 100%;
+    padding: 10px;
+    border-radius: 0px;
+  }
+
+  .menucontainer input[type="search"] {
+    font-size: 14px;
+    padding: 8px;
+    margin-bottom: 10px;
+  }
+
+  .upload-list, .upload-list a {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .menucontainer .pl-6 {
+    padding-left: 10px;
+  }
+
+  .menucontainer .space-y-2 > * + * {
+    margin-top: 8px;
+  }
+  .menucontainer .pl-6{
+    display: flex;
+    flex-direction: column;
+    margin-left: 100px;
+  }
+  .signupcontainer {
+    margin: 0;
+    padding: 20px;
+    height: 500px;
+    width: 350px;
+    background-color: #f1ecec;
+  }
+  .signupbtn{
+    margin: 0 auto;
+  }
+  .ahac{
+    margin-top: 20px;
+    font-size: 18px;
+  }
+}
+
+
+
+
+  

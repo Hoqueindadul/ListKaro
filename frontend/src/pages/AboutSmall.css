@@ -1,0 +1,119 @@
+@media (max-width:480px){
+    .nav-holder{
+        padding: 0;
+        margin: 0;
+    }
+
+    .my-navbar{
+        margin: 0;
+        padding: 0;
+        padding-top: 0px;
+        margin-bottom:0px;
+    }
+    
+    .aboutcontainer{
+        padding: 0px;
+        margin: 0px;
+        max-width: 480px;
+    }
+
+    .aboutcontainer ul {
+        margin: 10px;
+        padding: 5px;
+        
+      }
+      .aboutcontainer ul li{
+        color: #5656c4;
+        font-size: 12px;
+
+      }
+      .aboutcontainer ul li:hover{
+        color: #3333cc;
+        font-size: 12px;
+        font-weight: bold;
+      }
+
+      .aboutcontainer img{ height: 25px; width: 25px;}
+
+    .logocontainer {
+        max-width: 480px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    
+    .logocontainer img{
+        height: 40px;
+        width: 40px;
+    }
+    
+    .companydetails{
+        flex-direction: column;
+        padding: 10px;
+        margin: 10px;
+        font-size: 40px;
+        max-width: 480px;
+        max-height: 480px;
+    }
+    .companydetails p{
+        color: #1a1a1a;
+    }
+    .companydetails img{
+        border-radius: 10px;
+        margin-bottom: 10px;
+        transition: all 0.3s ease-in-out;
+        width: 400px;
+        height: 400px;
+    }
+
+    /* Developers */
+      .jabed{
+        justify-content: space-between;
+        flex-direction: column;
+        margin: 20px;
+      }
+      .jabed img{
+        border-radius: 30px;
+        margin-left: 0px;
+        height: 200px;
+        width: 800px;
+      }
+    
+      .indadul{
+        justify-content: space-between;
+        flex-direction: column;
+        margin: 20px;
+      }
+      .indadul img{
+        border-radius: 30px;
+        margin-right: 0px;
+        height: 200px;
+        width: 800px;
+        margin-bottom: 15px;
+      }
+    
+    
+    /* Projects */
+    .projectcontainer{
+        margin: 0px;
+        padding: 0px;
+
+        display: flex;
+        justify-content: space-around;
+        flex-direction: column;
+    }
+    .projectcontainer p{
+        margin: 20px;
+        font-size: 14px;
+    }
+    .projectcontainer img{
+        padding: 20px;
+        transition: all 0.3s ease;
+    }
+    .projectcontainer img:hover{
+        transform: scale(0.97);
+        transform: rotate(2deg);
+        cursor: pointer;
+    }
+}

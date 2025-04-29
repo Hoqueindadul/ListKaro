@@ -4,7 +4,6 @@ body.dark{
     background-color: #0d0d2b;
     color: #f0f0f5;
 }
-
 body.dark .my-navbar {
     background-color: #1a1a3e;
     color: white;
@@ -26,27 +25,19 @@ body.dark .nav-user-icon{
 body.dark .nav-cart-icon{
   color: white;
 }
-body.dark .nav-sidebar-close{
-  color: white
-}
-body.dark .nav-sidebarheader-text{
-  color: white;
-}
-body.dark .my-brand {
-    color: white;
-    transition: all 0.3s ease-in;
-  }
-body.dark .my-brand:hover {
-    color: #6a9bd0;
-  }
-body.dark .searchbar{
-    background-color: #1a1a3e;
-    border: 1px solid #6a9bd0;
-    color: #f0f0f5;
-}
-body.dark .searchbar::placeholder{
-    color: #a6a6c1;
-}
+body.dark .nav-sidebar-close{ color: white}
+body.dark .nav-sidebarheader-text{ color: white;}
+body.dark .my-brand { color: white; transition: all 0.3s ease-in; }
+body.dark .my-brand:hover { color: #6a9bd0; }
+body.dark .carocontainer, body.dark .categories, body.dark .categoriestitle { background-color:#0d0d2b ;}
+body.dark .searchinput {background-color: #1a1a3e;border: 1px solid #6a9bd0;color: #f0f0f5;}
+body.dark .searchinput::placeholder{ color: rgba(255, 255, 255, 0.478); color: #a6a6c1;}
+body.dark .my-navbar .nav-holder .upload-list-lg{ color: #f0f0f5; transition: all 0.3s ease-in;}  
+body.dark .my-navbar .nav-holder .upload-list-lg:hover{ color: #c686ff; transform: scale(1.1);}  
+
+body.dark .ucontainer{ background-color: #0d0d2b;}
+body.dark .uname,body.dark .uorders,body.dark .ulogout{ background-color: #0d0d2b; color: white; font: 800;}
+body.dark .ulogout{ color: red; }
 
 body.dark .navbar-toggler{
     background-color: #6a9bd0;
@@ -57,13 +48,18 @@ body.dark .navbar-toggler{
 body.dark .profileicon{
     filter: invert(100%);
 }
-
-body.dark .custom-sidebar {
+body.dark .menuheader{
+  background-color:#121212; 
+}
+body.dark .menucontainer{
+  background-color: #1a1a1a; 
+}
+/* body.dark .custom-sidebar {
     background-color: #121212;
     color: #f0f0f5;
   }
   
-  body.dark .custom-sidebar .offcanvas-header {
+body.dark .custom-sidebar .offcanvas-header {
     background-color: #1a1a1a;
     color: #f0f0f5;
   }
@@ -90,8 +86,7 @@ body.dark .custom-sidebar .dropdown-item {
 body.dark .custom-sidebar .dropdown-item:hover {
     background-color: #6a9bd0;
     color: white;
-
-}
+} */
 
 body.dark .card-container{
     background-color:  #1a1a1a;

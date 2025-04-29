@@ -38,8 +38,8 @@ const ShoppingCart = () => {
   const total = originalPrice - savings + storePickup + tax;
 
   return (
-    <div className="cart-page">
-      <div className="cart-items">
+    <div className="cart-page ">
+      <div className="cart-items ">
         <h2 className="cart-items-heading">Your Cart</h2>
         <div className="cart-table">
           <div className="cart-table-header">
@@ -121,7 +121,7 @@ const ShoppingCart = () => {
         </div>
       </div>
 
-      <div className="price-summary">
+      <div className="price-summary ">
         <h3 className="price-summary-heading">Price summary</h3>
         <div className="summary-item">
           <p className="summary-label">Subtotal:</p>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import SignUp from "./Signup";
 import { useAuthStore } from '../store/authStore';
-import { ShoppingCart, Menu, X, User, Upload , Info, Package} from 'lucide-react';
+import { ShoppingCart, Menu, X, User, Upload , Info, Package, Users} from 'lucide-react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useCartStore } from "../store/authStore";
@@ -55,7 +55,7 @@ export default function Navbar() {
   return (
     <>
       <nav className="my-navbar dark:bg-gray-800 text-gray-800 dark:text-white shadow-md w-full fixed z-50 transition-all duration-300">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+        <div className="nav-holder max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
           {/* Logo */}
           <div className="flex items-center space-x-2">
             <img src="/images/logo.png" alt="logo" className="h-8 w-8" />
@@ -67,10 +67,10 @@ export default function Navbar() {
             <input
               type="search"
               placeholder="Search for items"
-              className="px-3 py-1 rounded-md border dark:border-gray-600 dark:bg-gray-700 text-sm focus:outline-none"
+              className="searchinput px-3 py-1 rounded-md border dark:border-gray-600 dark:bg-gray-700 text-sm focus:outline-none"
             />
             <Link to="/uploadlist" className="flex gap-2 text-sm font-semibold upload-list-lg">
-              <Upload size={20} className="text-gray-800 dark:text-white" />Upload List
+              <Upload size={20} className="text-gray-800 dark:text-white" />One Click Shopping
             </Link>
           </div>
 
@@ -79,7 +79,7 @@ export default function Navbar() {
             {/* Cart */}
             <Link
               to="/shopping-cart"
-              className="px-3 py-1 rounded-md text-sm hover:bg-green-700 transition relative"
+              className="px-1 py-1 rounded-md text-sm hover:bg-green-700 transition relative"
             >
               <ShoppingCart size={24} className="nav-cart-icon" />
 
@@ -103,57 +103,63 @@ export default function Navbar() {
                 size={24}
                 className="cursor-pointer nav-user-icon"
               />
-              {showUserDropdown && (
-                <div className="absolute right-0 mt-2 w-40 nav-dropdown bg-gray-800 dark:bg-gray-700 border dark:border-gray-600 rounded shadow-lg text-sm z-50">
-                  {isAuthenticated && user && (
-                    <div className="block px-4 py-2 text-white font-semibold">
-                      Hello, {user.name}
-                    </div>
-                  )}
-                  <hr />
-                  {!isAuthenticated && (
-                    <>
-                      <Link
-                        to="/login"
-                        className="block px-4 py-2 text-bold hover:bg-gray-100 dark:hover:bg-gray-600 nav-dropdown-link"
-                        onClick={() => {
-                          setShowPopup(true);
-                          setShowUserDropdown(false);
-                        }}
-                      >
-                        Login
-                      </Link>
-                      <Link
-                        to="#"
-                        className="block px-4 py-2 text-bold hover:bg-gray-100 dark:hover:bg-gray-600 nav-dropdown-link"
-                        onClick={() => {
-                          setShowPopup(true);
-                          setShowUserDropdown(false);
-                        }}
-                      >
-                        Signup
-                      </Link>
-
-                    </>
-                  )}
-                  {isAuthenticated && (<Link
+            {showUserDropdown && (
+              <div className="absolute right-0 mt-2 w-48 nav-dropdown bg-gray-800 dark:bg-gray-700 border dark:border-gray-600 rounded shadow-lg text-sm z-50 ucontainer">
+                {isAuthenticated && user && (
+                  <div className="block px-4 py-2 text-white font-semibold uname">
+                    Welcome, {user.name}
+                  </div>
+                )}
+                <hr className="border-gray-600 my-2" />
+                
+                {!isAuthenticated && (
+                  <>
+                    <Link
+                      to="/login"
+                      className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 nav-dropdown-link"
+                      onClick={() => {
+                        setShowPopup(true);
+                        setShowUserDropdown(false);
+                      }}
+                    >
+                      Login
+                    </Link>
+                    <Link
+                      to="/"
+                      className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 nav-dropdown-link"
+                      onClick={() => {
+                        setShowPopup(true);
+                        setShowUserDropdown(false);
+                      }}
+                    >
+                      Signup
+                    </Link>
+                  </>
+                )}
+                
+                {isAuthenticated && (
+                  <Link
                     to="/orders"
-                    className="block px-4 py-2 text-bold hover:bg-gray-100 dark:hover:bg-gray-600 nav-dropdown-link"
+                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 nav-dropdown-link uorders"
                   >
                     Your Orders
                   </Link>
-                  )}
-                  <hr />
-                  {isAuthenticated && (<Link
-                    to="#"
-                    className="block px-4 py-2 text-bold hover:bg-gray-100 dark:hover:bg-gray-600 nav-dropdown-link"
+                )}
+                
+                <hr className="border-gray-600 my-2" />
+                
+                {isAuthenticated && (
+                  <Link
+                    to="/"
+                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 nav-dropdown-link ulogout"
                     onClick={handleLogout}
                   >
                     Logout
                   </Link>
-                  )}
-                </div>
-              )}
+                )}
+              </div>
+            )}
+
             </div>
 
             {/* Mobile Toggle Button */}
@@ -167,35 +173,30 @@ export default function Navbar() {
 
         {/* Mobile Sidebar (Offcanvas) */}
         {showSidebar && (
-          <div className="fixed top-0 right-0 h-full w-64 nav-mob-screen-dropdown shadow-lg z-50 transform transition-transform duration-300 ease-in-out translate-x-0">
-            <div className="flex justify-between items-center p-4 border-b dark:border-gray-600">
+          <div className="fixed top-0 right-0 h-full w-80 nav-mob-screen-dropdown shadow-lg z-50 transform transition-transform duration-300 ease-in-out translate-x-0">
+            
+            <div className="flex justify-between items-center p-4 border-b dark:border-gray-600 bg-orange-300 menuheader">
               <span className="text-lg font-semibold nav-sidebarheader-text  dark:text-white">Menu</span>
               <button onClick={() => setShowSidebar(false)}>
                 <X className="w-5 h-5  nav-sidebar-close" />
               </button>
             </div>
-            <div className="p-4">
-              <input
-                type="search"
-                placeholder="Search for items"
-                className="w-full px-3 py-2 mb-4 rounded-md border dark:border-gray-600 dark:bg-gray-700 text-sm focus:outline-none"
-              />
 
+            <div className="menucontainer p-0 bg-orange-200 h-full">
+        
+              <input type="search" placeholder="Search for items" className="searchinput m-4 w-full px-3 py-2 mb-4 rounded-md border dark:border-gray-600 dark:bg-gray-700 text-sm focus:outline-none" />
+              
               {/* For Upload list */}
-              <Link
-                to="/uploadlist"
-                className="flex items-center gap-2 text-sm font-semibold upload-list px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
-              >
+              <Link to="/uploadlist" className="flex gap-2 items-center text-sm font-semibold upload-list px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
                 <Upload size={20} className="text-gray-800 dark:text-white" />
-                Upload List
+                One Click Shopping
               </Link>
-
               <div>
                 {/* Main Tab (All Products) */}
                 <Link
                   to="#"
-                  className="flex items-center gap-2 text-sm font-semibold upload-list px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
-                  onClick={() => setShowSubTabs((prev) => !prev)} // Toggle visibility of sub-tabs
+                  className="flex items-center gap-2 text-sm font-semibold upload-list px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 t"
+                  onClick={() => setShowSubTabs((prev) => !prev)} 
                 >
                   <Package size={20} className="text-gray-800 dark:text-white" /> 
                   All Products
@@ -203,35 +204,35 @@ export default function Navbar() {
 
                 {/* Sub Tabs */}
                 {showSubTabs && (
-                  <div className="pl-6 mt-2 space-y-2">
+                  <div className="pl-6 mt-2 space-y-2 ">
                     <Link
                       to="/subtab1"
-                      className="block text-sm text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 px-2 py-1 rounded"
+                      className=" block text-sm text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 px-2 py-1 rounded !no-underline"
                     >
-                      Sub Tab 1
+                      Dairy Products
                     </Link>
                     <Link
                       to="/subtab2"
                       className="block text-sm text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 px-2 py-1 rounded"
                     >
-                      Sub Tab 2
+                      Fruits
                     </Link>
                     <Link
                       to="/subtab3"
                       className="block text-sm text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 px-2 py-1 rounded"
                     >
-                      Sub Tab 3
+                      Vegetables
                     </Link>
                     <Link
                       to="/subtab4"
                       className="block text-sm text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 px-2 py-1 rounded"
                     >
-                      Sub Tab 4
+                      Canned Products
                     </Link>
+                    
                   </div>
                 )}
               </div>
-
               <Link
                 to="/about"
                 className="flex items-center gap-2 text-sm font-semibold upload-list px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -240,7 +241,15 @@ export default function Navbar() {
                 About
               </Link>
 
+              <Link
+                to="/adminpanel"
+                className="flex items-center gap-2 text-sm font-semibold upload-list px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                <Users size={20} className="text-gray-800 dark:text-white" />
+                Admin Panel
+              </Link>
             </div>
+            
           </div>
         )}
         <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />

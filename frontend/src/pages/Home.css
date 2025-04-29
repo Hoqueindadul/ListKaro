@@ -2,14 +2,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap');
 
 body {
-  background-color: #FAF1E6; 
+  background-color: #F7AD45;
   font-family: "Titillium Web", sans-serif;
   font-weight: 200;
   font-style: normal;
 }
-
-
-
 
 /* MIDSECTION  */
 .carocontainer {
@@ -21,9 +18,9 @@ body {
   height: auto;
   flex-wrap: wrap; 
   margin-right: 20px;
-
+  background-color: #BB3E00;
+  padding: 20px 0px;
 }
-
 .slide-wrapper {
   flex: 1; 
   margin-left: 20px;
@@ -46,13 +43,11 @@ body {
 .slider::-webkit-scrollbar {
   display: none; /* slider hidden for Chrome Safari */
 }
-
 .slider img{
   flex: 1 0 100%;
   scroll-snap-align: start;
   object-fit: cover;
 }
-
 .slider-nav{
   display: flex;
   column-gap: 1rem;
@@ -62,7 +57,6 @@ body {
   z-index: 1;
   margin-top: 28rem;
 }
-
 .slider-nav a{
 height: 0.6rem;
 width: 0.6rem;
@@ -77,7 +71,6 @@ transition: opacity ease 250ms;
 }
 
 /* CARDS SECTION  */
-
 .card-container {
   width: 18rem;
   border: 1px solid #ccc;
@@ -85,42 +78,44 @@ transition: opacity ease 250ms;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   background-color: #fff;
+  background-color: #F7AD45;
   transition: transform 0.3s ease;
-}
 
+}
 .card-image {
   width: 100%;
   height: 180px;
   object-fit: cover;
 }
-
 .card-body {
   padding: 16px;
 }
-
 .card-title {
   font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: 8px;
-  color: #333;
+  color: #8f3000;
 }
-
 .card-text {
   font-size: 0.95rem;
-  color: #666;
+  color: #8f3000;
+  font-weight: 300;
   margin-bottom: 16px;
 }
 .my-navbar{
-  background-color: white;
+  background-color: #F7AD45;
   position: relative;
 }
+.my-navbar .nav-holder .upload-list-lg{ text-decoration: none; color: #BB3E00; font-size: 15px; }  
+.searchinput { width: 280px; background-color: #cd561be2;}
+.searchinput::placeholder{ color: rgba(255, 255, 255, 0.478); font-weight: 400; }
+.my-brand{ font-size: 30px; color: white; transition: all 0.3s ease; text-decoration: none;}
+.my-brand:hover{color: #BB3E00;}
 .nav-dropdown{
   background-color: white;
   text-decoration: none;
 }
-.nav-dropdown-link{
-  text-decoration: none;
-}
+.nav-dropdown-link{ text-decoration: none; }
 .nav-uploadList{
   text-decoration: none;
 }
@@ -152,32 +147,41 @@ transition: opacity ease 250ms;
 .card-button {
   display: inline-block;
   padding: 8px 16px;
-  background-color: #007bff;
+  background-color: #c0541ecf;
   color: white;
   font-weight: 500;
   text-decoration: none;
   border-radius: 6px;
-  transition: background-color 0.2s ease;
+  transition: all 0.3s ease;
 }
-
 .card-button:hover {
-  background-color: #0056b3;
+  background-color: #BB3E00;
+  transform: scale(0.9);
 }
-
-
+.ucontainer{
+  background-color: #F7AD45;
+}
+.uname, .uorders, .ulogout{
+  background-color: #F7AD45;
+  color: white;
+  font: 800;
+}
+.ulogout{color: red; font-weight: 600;}
 /* Scrolling Text  */
 .offer-banner {
   background-color: #fef9f0;
-  border-top: 2px solid #ffa500;
-  border-bottom: 2px solid #ffa500;
+  background-color: #657C6A;
+  border-top: 2px solid #657C6A;
+  border-bottom: 2px solid #657C6A;
   overflow: hidden;
   white-space: nowrap;
   padding: 10px 0;
   font-size: 16px;
-  color: #333;
+  color: white;
+  font-weight: 600;
   margin-bottom: 20px;
+  box-shadow: 0 0 30px #00ff37c1;
 }
-
 .offer-text {
   display: inline-block;
   padding-left: 100%;
@@ -186,7 +190,6 @@ transition: opacity ease 250ms;
 .offer-text span {
   margin-right: 500px; 
 }
-
 @keyframes scrollLeft {
   0% {
     transform: translateX(0%);
@@ -195,7 +198,6 @@ transition: opacity ease 250ms;
     transform: translateX(-100%);
   }
 }
-
 .signupcontainer {
   position: fixed; 
   top: 50%;
@@ -240,7 +242,6 @@ transition: opacity ease 250ms;
 .close:hover{
   color: red;
 }
-
 .signupbtn{
   background-color: blue;
   color: white;
@@ -253,22 +254,28 @@ transition: opacity ease 250ms;
   transform: scale(0.9);
   background-color: green;
 }
-
-
 .categoriestitle{
-  margin: 0px 60px;
-  padding: 10px;
-
+  padding: 30px 50px;
+  background-color: #BB3E00;
+  color: white;
+  font-size: 32px;
+  margin: 0;
 }
 .categories{
-  margin: 0px 50px;
-  padding: 30px;
+  padding: 30px 50px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  
+  background-color: #BB3E00;
+  color: white;
 }
-
+.categoriestitle hr{
+  background-color: #BB3E00;
+  color: white;
+  border: 2px solid white;
+  margin-top:30px;
+  margin-bottom: 0;
+}
 .circontainer{
   text-align: center;
 }
@@ -289,7 +296,6 @@ transition: opacity ease 250ms;
   transform: scale(1.1);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.299);
 }
-
 .offer{
   background-color: orange;
   height: auto;
@@ -336,7 +342,6 @@ transition: opacity ease 250ms;
   background-color: blue;
   transform: scale(0.9);
 }
-
 .newsletter{
   margin: 50px;
   padding: 20px;
@@ -374,7 +379,6 @@ transition: opacity ease 250ms;
   background-color:#ffa500;
   transform: scale(0.9);
 }
-
 footer{
   display: flex;
   justify-content: space-around;
@@ -401,16 +405,15 @@ footer a:hover{
   color: red;
   font-weight: 300;
 }
-
 hr{
   opacity: 0.2;
 }
 
 /* OfferPopup */
 .offerPopupContainer {
-  background-image: url('/images/offerPopup.jpg');
-  height: 250px;
-  width: 350px;
+  background: linear-gradient(#2144c3,  #8797e0);
+  height: 280px;
+  width: 380px;
   position: fixed;
   z-index: 10;
   bottom: 30px;
@@ -420,25 +423,36 @@ hr{
   background-size: cover; 
   background-position: center;
   overflow: hidden;
+  opacity: 0;
+  animation: fadeIn 1s forwards;
+  box-shadow: 0 0 10px rgba(4, 21, 255, 0.821);
 }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px);}
+  to{opacity: 1; transform: translateY(0px);}
+  }
 
 .offerPopupContent{
   color: white;
-  font-size: 18px;
-  padding: 40px;
+  font-size: 16px;
+  width: 350px;
+  padding: 30px;
 }
 .offerPopupContent h3{
   font-weight: bold;
-  font-size: 35px;
+  font-size: 30px;
+  width: 200px;
 }
-.offerPopupContent button{
-  background-color: white;
-  color: black;
+.offerPopupContent .ccbtn{
   padding: 5px;
   font-weight: 500;
-  width:100px;
-  border-radius: 10px;
   border: none;
+  background-color: #c3ff00;
+  color: rgb(67, 67, 67);
+  border-radius: 50px;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.547);
+  margin-top: 20px;
+  width: 300px;
 }
 
 .sunmoonicon{

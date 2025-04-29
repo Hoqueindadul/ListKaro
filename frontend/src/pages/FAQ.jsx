@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './FAQ.css'
-import Navbar from './Navbar';
+
 
 const questions = [
   {
@@ -31,8 +31,6 @@ function FAQ(){
   return(
 
     <>
-      <Navbar /> 
-
       <div className="faqcontainer">
         <h3>Frequently Asked Questions</h3>
         <p>We got you covered</p>

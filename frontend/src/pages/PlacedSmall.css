@@ -1,0 +1,25 @@
+@media (max-width:480px){
+    .placedcontainer{
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .invoice{
+        color: #000000;
+        max-width: 350px;
+        margin: 0 auto;
+        margin-bottom: 20px;
+    }
+    .inheader h3, p{
+        font-size: 10px;
+    }
+    .inbody{
+        font-size: 10px;
+    }
+    .incustomer #p{
+        font-size: 10px;
+    }
+
+}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Navbar from './Navbar';
+// import Navbar from './Navbar'; 
 import './Products.css'
 
 export default function GroupedProducts() {
@@ -31,7 +31,7 @@ export default function GroupedProducts() {
     <>
     
 
-    <Navbar/>
+    {/* <Navbar/>  */}
 
     <div>
       {Object.entries(products).map(([category, items], index) => (

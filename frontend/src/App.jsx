@@ -20,6 +20,7 @@ import Dashboard from "./adminpanel/Dashboard";
 import ShoppingCart from "./pages/ShoppingCart";
 import OrderPage from "./pages/OrderPage";
 import Placed from "./pages/Placed";import Navbar from "./pages/Navbar";
+import Product from './pages/Products'
 
 function App() {
   
@@ -45,6 +46,8 @@ function App() {
         
           <Route path="/order" element={ <OrderPage/> } />
           <Route path="/orderplaced" element={ <Placed/> } />
+          <Route path="/products" element={ <Product/> } />
+
 
 
 
