@@ -52,6 +52,20 @@ export default function Navbar() {
     }
   };
 
+  
+  const checkAdmin = () => {
+    const username = prompt("Enter admin username:");
+    const password = prompt("Enter admin password:");
+  
+    if (password === "admin") {
+      toast.success(`Welcome ${username}! What's up?`);
+      navigate("/adminpanel");
+    } else {
+      toast.error(`${username} : Wrong Admin `);
+    }
+  };
+  
+
   return (
     <>
       <nav className="my-navbar dark:bg-gray-800 text-gray-800 dark:text-white shadow-md w-full fixed z-50 transition-all duration-300">
@@ -241,13 +255,13 @@ export default function Navbar() {
                 About
               </Link>
 
-              <Link
-                to="/adminpanel"
+              <button onClick={checkAdmin}
+               
                 className="flex items-center gap-2 text-sm font-semibold upload-list px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 <Users size={20} className="text-gray-800 dark:text-white" />
                 Admin Panel
-              </Link>
+              </button>
             </div>
             
           </div>
