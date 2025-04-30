@@ -4,7 +4,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import './UpListSmall.css'
 function UpList() {
   const [ocrText, setOcrText] = useState([]);
   const [productInputs, setProductInputs] = useState([
@@ -129,32 +129,36 @@ function UpList() {
   
   return (
     <>
-      <div className="container list-upload-container rounded py-4">
+      <div className="container list-upload-container rounded py-4 uphead">
         <h2 className="text-start mb-2" id='uploadtitle'>Upload Your List or Fill the Form</h2>
         <p className="text-start">
           Please upload list as the <strong>.jpg or .png</strong> format
         </p>
         <hr />
-        <div className="row justify-content-center">
+        <div className="row justify-content-start">
           <div className="col-12 col-md-10 col-lg-8">
             <div className="d-flex flex-column flex-md-row justify-content-between gap-4">
 
               {/* Upload Section */}
               <div className="flex-fill text-center p-3 border rounded shadow-lg">
-                <div className="mb-3">
-                  <label htmlFor="fileId" className="d-block cursor-pointer">
-                    <img src="/images/upload.png" alt="Upload" style={{ maxWidth: '100px', cursor: 'pointer' }} />
-                  </label>
-                  <input
-                    type="file"
-                    id="fileId"
-                    className="form-control mt-2"
-                    accept="image/png, image/jpeg"
-                    onChange={handleFileChange}
-                  />
-                  <button onClick={upload} className="btn btn-primary mt-3 w-100">
-                    {loading ? 'Uploading...' : 'Upload'}
-                  </button>
+                <div className="mb-3 upsection">
+                  <div> 
+                    <label htmlFor="fileId" className="d-block cursor-pointer">
+                      <img src="/images/upload.png" alt="Upload" style={{ maxWidth: '100px', cursor: 'pointer' }} />
+                    </label>
+                  </div>
+                  <div>
+                    <input
+                      type="file"
+                      id="fileId"
+                      className="form-control mt-2"
+                      accept="image/png, image/jpeg"
+                      onChange={handleFileChange}
+                    />
+                    <button onClick={upload} className="btn btn-primary mt-3 w-100">
+                      {loading ? 'Uploading...' : 'Upload'}
+                    </button>
+                  </div>
                 </div>
 
                 {selectedImage && (
@@ -182,7 +186,7 @@ function UpList() {
               </div>
 
               {/* Manual Input Form */}
-              <div className="flex-fill p-3 border rounded shadow-xl text-white">
+              <div className="flex-fill p-3 border rounded shadow-xl text-white upform min-w-full">
                 <form onSubmit={handleSubmit}>
                   {productInputs.map((product, index) => (
                     <div
@@ -203,8 +207,8 @@ function UpList() {
                         value={product.quantity}
                         onChange={(e) => handleChange(index, 'quantity', e.target.value)}
                       />
-                      <button type="button" onClick={() => removeProductField(index)} className="btn btn-outline-danger">
-                        <img src="/images/dustbin.png" alt="Remove" style={{ width: '50px', backgroundColor: "white" }} />
+                      <button type="button" onClick={() => removeProductField(index)} className="btn btn-outline-danger updelbtn"> Delete Section
+                        <img src="/images/dustbin.png" alt="Remove" style={{ width: '25px', backgroundColor: "white" }} />
                       </button>
                     </div>
                   ))}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './About.css'; 
 import './AboutDark.css'
+import './AboutSmall.css'
 
 function About() {
     const [currContent, setcurrContent] = useState('company');
@@ -86,7 +87,7 @@ function About() {
                         <img src="/images/indadul.png" alt="" width={'500px'} height={'300px'}/>
                     </div>
                     <div className="details">
-                        <h2>Indadul</h2>
+                        <h2>Indadul Hoque</h2>
                         <h6>Bca Student</h6>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus dolore fuga non alias odit, placeat voluptatem culpa saepe est officiis enim. Beatae minus repellat corrupti nobis saepe unde incidunt sunt.</p>
                     </div>
@@ -117,7 +118,7 @@ function About() {
                         prone to errors or ambiguity, are accurately understood and processed, making it a cutting-edge solution 
                         for modern eCommerce.
                     </p>
-                    <img src="/images/employee.png" alt="" height={'550px'} width={'800px'} style={{borderRadius:'10px'}}/>
+                    <img src={LightMode? '/images/employee.png' : '/images/employeenight.png'} alt="" height={'400px'} width={'600px'} style={{borderRadius:'10px'}}/>
                     </section>
                 </>
             )

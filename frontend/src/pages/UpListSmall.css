@@ -1,0 +1,34 @@
+@media (max-width:480px){
+    .upsection{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .updelbtn{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        gap: 10px;
+        font-weight: bold;
+        background-color: red;
+        color: white;
+        padding: 6px;
+        margin: 10px;
+        width: 100%;
+    }
+    .updelbtn img{
+        display: none;
+    }
+    .upform{
+        box-shadow: 0 0 50px rgba(0, 0, 0, 0.153);
+        background-color: white;
+    }
+    .upform input{
+        background-color: whitesmoke;
+    }
+    .uphead{
+        margin-top:100px;
+    }
+    
+}

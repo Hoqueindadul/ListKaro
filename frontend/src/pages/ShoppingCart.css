@@ -44,7 +44,12 @@
     padding: 1.5rem;
     min-height: 60vh;
   }
-  
+
+  body.dark .cart-items { background-color: #1a1a1a; }
+  body.dark .cart-items-heading {color: white; }
+  body.dark .cart-table-header {color: black;}
+  body.dark .item-name {color: white;}
+
   .cart-items-heading {
     font-size: 1.5rem;
     color: #1a1a1a;
@@ -197,13 +202,19 @@
     padding-bottom: 0.75rem;
     border-bottom: 2px solid #f0f0f0;
   }
-  
+
+  body.dark .price-summary{ background-color: #1a1a1a;}
+  body.dark .price-summary-heading { color: white;}
+  body.dark .summary-item { color: white;}
+  body.dark .summary-total { color: white;}
+
   .summary-item {
     display: flex;
     justify-content: space-between;
     margin-bottom: 1rem;
     color: #666;
   }
+
   
   .summary-total {
     display: flex;
@@ -215,7 +226,7 @@
     color: #1a1a1a;
     font-size: 1.1rem;
   }
-  
+
   .checkout-btn {
     width: 100%;
     padding: 1rem;
@@ -233,8 +244,11 @@
   .checkout-btn:hover {
     background: gray
   }
+
+
   
   @media (max-width: 1024px) {
+
     .cart-page {
       grid-template-columns: 1fr 300px;
       gap: 1.5rem;
@@ -242,6 +256,7 @@
   }
   
   @media (max-width: 768px) {
+
     .cart-page {
       grid-template-columns: 1fr;
       margin: 1rem auto;
@@ -333,6 +348,7 @@
       content: 'Item Total:';
       font-weight: normal;
       color: #666;
+
     }
   
     .item-total-price {
@@ -379,6 +395,8 @@
   }
   
   @media (max-width: 480px) {
+
+
     .cart-page {
       padding: 0.75rem;
     }
@@ -450,3 +468,4 @@
   .checkout-btn {
     transition: all 0.2s ease-in-out;
   }
+
