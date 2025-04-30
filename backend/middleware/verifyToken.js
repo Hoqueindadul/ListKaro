@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import handleAsyncError from './handleAsyncError.js';
 import { User } from '../models/user.model.js';
+import HandleError from '../utils/handleError.js';
 
 export const verifyToken = handleAsyncError(async (req, res, next) => {
   // Get token from cookies

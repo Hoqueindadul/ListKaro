@@ -16,6 +16,7 @@ export default function Navbar() {
   const [showSidebar, setShowSidebar] = useState(false);
   const { user, logout, isAuthenticated } = useAuthStore();
   const [showSubTabs, setShowSubTabs] = useState(false);
+  const [popupType, setPopupType] = useState("signup");
   const { getCartCount } = useCartStore();
   const navigate = useNavigate();
   const cartCount = isAuthenticated ? getCartCount() : 0
@@ -117,14 +118,13 @@ export default function Navbar() {
                         to="/login"
                         className="block px-4 py-2 text-bold hover:bg-gray-100 dark:hover:bg-gray-600 nav-dropdown-link"
                         onClick={() => {
-                          setShowPopup(true);
                           setShowUserDropdown(false);
                         }}
                       >
                         Login
                       </Link>
                       <Link
-                        to="#"
+                        to="/signup"
                         className="block px-4 py-2 text-bold hover:bg-gray-100 dark:hover:bg-gray-600 nav-dropdown-link"
                         onClick={() => {
                           setShowPopup(true);
@@ -205,28 +205,28 @@ export default function Navbar() {
                 {showSubTabs && (
                   <div className="pl-6 mt-2 space-y-2">
                     <Link
-                      to="/subtab1"
+                      to="/dairy-products"
                       className="block text-sm text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 px-2 py-1 rounded"
                     >
-                      Sub Tab 1
+                      Dairy Products
                     </Link>
                     <Link
-                      to="/subtab2"
+                      to="/Fruits"
                       className="block text-sm text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 px-2 py-1 rounded"
                     >
-                      Sub Tab 2
+                      Fruits
                     </Link>
                     <Link
-                      to="/subtab3"
+                      to="/vegetables"
                       className="block text-sm text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 px-2 py-1 rounded"
                     >
-                      Sub Tab 3
+                      Vegetables
                     </Link>
                     <Link
-                      to="/subtab4"
+                      to="/canned-products"
                       className="block text-sm text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 px-2 py-1 rounded"
                     >
-                      Sub Tab 4
+                      Canned Products
                     </Link>
                   </div>
                 )}
@@ -238,6 +238,14 @@ export default function Navbar() {
               >
                 <Info size={20} className="text-gray-800 dark:text-white" />
                 About
+              </Link>
+
+              <Link
+                to="/adminpanel"
+                className="flex items-center gap-2 text-sm font-semibold upload-list px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                <Info size={20} className="text-gray-800 dark:text-white" />
+                Admin Panel
               </Link>
 
             </div>

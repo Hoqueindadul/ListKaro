@@ -19,7 +19,9 @@ import ResetPasswordPage from "./pages/ResetPasswordPage";
 import Dashboard from "./adminpanel/Dashboard";
 import ShoppingCart from "./pages/ShoppingCart";
 import OrderPage from "./pages/OrderPage";
-import Placed from "./pages/Placed";import Navbar from "./pages/Navbar";
+import Placed from "./pages/Placed";
+import Navbar from "./pages/Navbar";
+import Products from "./pages/Products"
 
 function App() {
   
@@ -42,7 +44,8 @@ function App() {
           <Route path="/reset-password/:token" element={ <ResetPasswordPage/> } />
           <Route path="/adminpanel" element={ <Dashboard/> } />
           <Route path="/shopping-cart" element={ <ShoppingCart />} />
-        
+          <Route path="/products" element={ <Products />} />
+          
           <Route path="/order" element={ <OrderPage/> } />
           <Route path="/orderplaced" element={ <Placed/> } />
 
