@@ -114,56 +114,151 @@ export const useAuthStore = create((set) => ({
 			throw error;
 		}
 	},
-	
+
 }));
 
 const CART_API_URL = import.meta.env.MODE === "development"
-  ? "http://localhost:5000/api/cart"
-  : "/api/cart";
+	? "http://localhost:5000/api/cart"
+	: "/api/cart";
 
 export const useCartStore = create((set) => ({
-  cartItems: [],
-  loading: false,
-  error: null,
+	cartItems: [],
+	loading: false,
+	error: null,
 
-  fetchCartItems: async () => {
-    set({ loading: true, error: null });
-    try {
-      const response = await axios.get(`${CART_API_URL}/user-cart`, {
-        withCredentials: true,
-      });
-      set({ cartItems: response.data.data, loading: false });
-    } catch (error) {
-      set({ error: "Failed to load cart items", loading: false });
-    }
-  },
+	fetchCartItems: async () => {
+		set({ loading: true, error: null });
+		try {
+			const response = await axios.get(`${CART_API_URL}/user-cart`, {
+				withCredentials: true,
+			});
+			set({ cartItems: response.data.data, loading: false });
+		} catch (error) {
+			set({ error: "Failed to load cart items", loading: false });
+		}
+	},
 
-  updateQuantity: (productId, newQuantity) => {
-    set((state) => ({
-      cartItems: state.cartItems.map((item) =>
-        item._id === productId ? { ...item, quantity: newQuantity } : item
-      ),
-    }));
-  },
+	updateQuantity: (productId, newQuantity) => {
+		set((state) => ({
+			cartItems: state.cartItems.map((item) =>
+				item._id === productId ? { ...item, quantity: newQuantity } : item
+			),
+		}));
+	},
 
-  removeItem: async (productId) => {
-    try {
-      await axios.delete(`${CART_API_URL}/user-cart/${productId}`, {
-        withCredentials: true,
-      });
-      set((state) => ({
-        cartItems: state.cartItems.filter((item) => item._id !== productId),
-      }));
-    } catch (error) {
-      console.error('Failed to remove item:', error);
-    }
-  },
+	removeItem: async (productId) => {
+		try {
+			await axios.delete(`${CART_API_URL}/user-cart/${productId}`, {
+				withCredentials: true,
+			});
+			set((state) => ({
+				cartItems: state.cartItems.filter((item) => item._id !== productId),
+			}));
+		} catch (error) {
+			console.error('Failed to remove item:', error);
+		}
+	},
 
-  getCartCount: () => {
-	const items = useCartStore.getState().cartItems;
-	console.log("Cart count:", items.length);
-	return items.length;
-	
-	
-  }
+	getCartCount: () => {
+		const items = useCartStore.getState().cartItems;
+		console.log("Cart count:", items.length);
+		return items.length;
+
+
+	}
 }));
+
+
+const PRODUCT_API_URL = import.meta.env.MODE === "development"
+	? "http://localhost:5000/api/products/"
+	: "/api/products/";
+
+export const useProductStore = create((set) => ({
+	products: [],
+	loading: false,
+	error: null,
+	createProduct: async (formData) => {
+		set({ loading: true, error: null });
+		try {
+		  const response = await axios.post(`${PRODUCT_API_URL}createProduct`, formData, {
+			headers: {
+			  "Content-Type": "multipart/form-data",
+			},
+			withCredentials: true,
+		  });
+	  
+		  set((state) => ({
+			products: [...state.products, response.data.product],
+			loading: false,
+		  }));
+		  console.log("Product created successfully", response.data);
+		} catch (error) {
+		  set({ error: "Failed to create product", loading: false });
+		  console.error("Error creating product:", error);
+		}
+	  }
+	  ,
+	fetchProducts: async () => {
+		set({ loading: true, error: null })
+		try {
+			const response = await axios.get(`${PRODUCT_API_URL}getAllProducts`, {
+				withCredentials: true,
+			})
+			set({ products: response.data.data, loading: false })
+			console.log("Products fetched successfully", response.data);
+
+		} catch (error) {
+			set({ error: "Failed to fetch products", loading: false })
+			console.error("Error fetching products:", error);
+
+		}
+	},
+	updateProduct: async (productId, updatedData) => {
+		set({ loading: true, error: null }); // Show loading state
+
+		try {
+			const response = await axios.put(
+				`${PRODUCT_API_URL}updateProduct/${productId}`,
+				updatedData,
+				{ headers: { "Content-Type": "multipart/form-data" } }
+			);
+
+			// Optionally: update the local state
+			set((state) => ({
+				products: state.products.map((product) =>
+					product._id === productId ? response.data : product
+				),
+				 
+			}));
+		} catch (error) {
+			console.error("Error updating product:", error);
+			set({ error: error.message });
+		} finally{
+			set({ loading: false }); // Hide loading state
+		}
+	},
+
+
+
+	deleteProduct: async (productId) => {
+		set({ loading: true, error: null });
+		try {
+			console.log("Deleting product with ID:", productId);
+
+			await axios.delete(`${PRODUCT_API_URL}deleteProduct/${productId}`, {
+				withCredentials: true,
+			});
+
+			set((state) => ({
+				products: state.products.filter(product => product._id !== productId),
+				loading: false
+			}));
+
+			console.log("Product deleted successfully");
+		} catch (error) {
+			set({ error: "Failed to delete product", loading: false });
+			console.error("Error deleting product:", error);
+		}
+	}
+
+}))

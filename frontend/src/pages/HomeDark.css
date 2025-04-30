@@ -89,17 +89,21 @@ body.dark .custom-sidebar .dropdown-item:hover {
 } */
 
 body.dark .card-container{
-    background-color:  #1a1a1a;
+    background-color:  #1a1a1a !important;
+    color: white;
 }
-
+body.dark .product-category-title{
+  color: white !important;
+}
+body.dark .product-price{
+  color: white;
+}
 body.dark .card-title {
-    background-color: #121212; 
     border-radius: 20px;
     color: #f0f0f5
   }
   
 body.dark  .card-text {
-    background-color: #1a1a1a; 
     color: #f0f0f5;
   }
   

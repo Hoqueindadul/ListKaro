@@ -16,6 +16,7 @@ export default function Navbar() {
   const [showSidebar, setShowSidebar] = useState(false);
   const { user, logout, isAuthenticated } = useAuthStore();
   const [showSubTabs, setShowSubTabs] = useState(false);
+  const [popupType, setPopupType] = useState("signup");
   const { getCartCount } = useCartStore();
   const navigate = useNavigate();
   const cartCount = isAuthenticated ? getCartCount() : 0
@@ -117,42 +118,39 @@ export default function Navbar() {
                 size={24}
                 className="cursor-pointer nav-user-icon"
               />
-            {showUserDropdown && (
-              <div className="absolute right-0 mt-2 w-48 nav-dropdown bg-gray-800 dark:bg-gray-700 border dark:border-gray-600 rounded shadow-lg text-sm z-50 ucontainer">
-                {isAuthenticated && user && (
-                  <div className="block px-4 py-2 text-white font-semibold uname">
-                    Welcome, {user.name}
-                  </div>
-                )}
-                <hr className="border-gray-600 my-2" />
-                
-                {!isAuthenticated && (
-                  <>
-                    <Link
-                      to="/login"
-                      className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 nav-dropdown-link"
-                      onClick={() => {
-                        setShowPopup(true);
-                        setShowUserDropdown(false);
-                      }}
-                    >
-                      Login
-                    </Link>
-                    <Link
-                      to="/"
-                      className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 nav-dropdown-link"
-                      onClick={() => {
-                        setShowPopup(true);
-                        setShowUserDropdown(false);
-                      }}
-                    >
-                      Signup
-                    </Link>
-                  </>
-                )}
-                
-                {isAuthenticated && (
-                  <Link
+              {showUserDropdown && (
+                <div className="absolute right-0 mt-2 w-40 nav-dropdown bg-gray-800 dark:bg-gray-700 border dark:border-gray-600 rounded shadow-lg text-sm z-50">
+                  {isAuthenticated && user && (
+                    <div className="block px-4 py-2 text-white font-semibold">
+                      Hello, {user.name}
+                    </div>
+                  )}
+                  <hr />
+                  {!isAuthenticated && (
+                    <>
+                      <Link
+                        to="/login"
+                        className="block px-4 py-2 text-bold hover:bg-gray-100 dark:hover:bg-gray-600 nav-dropdown-link"
+                        onClick={() => {
+                          setShowUserDropdown(false);
+                        }}
+                      >
+                        Login
+                      </Link>
+                      <Link
+                        to="/signup"
+                        className="block px-4 py-2 text-bold hover:bg-gray-100 dark:hover:bg-gray-600 nav-dropdown-link"
+                        onClick={() => {
+                          setShowPopup(true);
+                          setShowUserDropdown(false);
+                        }}
+                      >
+                        Signup
+                      </Link>
+
+                    </>
+                  )}
+                  {isAuthenticated && (<Link
                     to="/orders"
                     className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 nav-dropdown-link uorders"
                   >
@@ -220,25 +218,25 @@ export default function Navbar() {
                 {showSubTabs && (
                   <div className="pl-6 mt-2 space-y-2 ">
                     <Link
-                      to="/subtab1"
+                      to="/dairy-products"
                       className=" block text-sm text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 px-2 py-1 rounded !no-underline"
                     >
                       Dairy Products
                     </Link>
                     <Link
-                      to="/subtab2"
+                      to="/Fruits"
                       className="block text-sm text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 px-2 py-1 rounded"
                     >
                       Fruits
                     </Link>
                     <Link
-                      to="/subtab3"
+                      to="/vegetables"
                       className="block text-sm text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 px-2 py-1 rounded"
                     >
                       Vegetables
                     </Link>
                     <Link
-                      to="/subtab4"
+                      to="/canned-products"
                       className="block text-sm text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 px-2 py-1 rounded"
                     >
                       Canned Products
@@ -253,6 +251,14 @@ export default function Navbar() {
               >
                 <Info size={20} className="text-gray-800 dark:text-white" />
                 About
+              </Link>
+
+              <Link
+                to="/adminpanel"
+                className="flex items-center gap-2 text-sm font-semibold upload-list px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                <Info size={20} className="text-gray-800 dark:text-white" />
+                Admin Panel
               </Link>
 
               <button onClick={checkAdmin}

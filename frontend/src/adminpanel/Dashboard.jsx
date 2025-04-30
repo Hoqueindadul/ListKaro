@@ -1,59 +1,43 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Modal, Button, Form, Spinner } from "react-bootstrap";
-import './Dashboard.css';
+import { useProductStore } from "../store/authStore";
+import "./Dashboard.css";
 
 export default function Dashboard() {
-    const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
+    const {
+        products,
+        loading,
+        error,
+        fetchProducts,
+        createProduct,
+        updateProduct,
+        deleteProduct,
+    } = useProductStore();
+
     const [showModal, setShowModal] = useState(false);
     const [newProduct, setNewProduct] = useState({
         name: "",
         description: "",
         price: "",
-        quantityValue: "",
-        quantityUnit: "",
         category: "",
         stock: "",
+        quantityValue: "",
+        quantityUnit: "",
         images: [],
-      });    
+    });
     const [selectedImages, setSelectedImages] = useState([]);
-    const [uploading, setUploading] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+    const [editingProductId, setEditingProductId] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const productsPerPage = 5;
 
     useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                setLoading(true);
-                const response = await axios.get("http://localhost:5000/api/products/getAllProducts");
-                setProducts(response.data.data);
-            } catch (error) {
-                setError("Failed to load products.");
-                console.error("Fetch Products Error:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
         fetchProducts();
-    }, []);
+    }, [fetchProducts]);
 
     const handleDelete = async (productId) => {
         if (!window.confirm("Are you sure you want to delete this product?")) return;
-
-        try {
-            await axios.delete(`http://localhost:5000/api/products/deleteProduct/${productId}`);
-            const updatedProducts = products.filter((product) => product._id !== productId);
-            setProducts(updatedProducts);
-
-            if (updatedProducts.length <= (currentPage - 1) * productsPerPage) {
-                setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
-            }
-        } catch (error) {
-            console.error("Delete Error:", error);
-            setError("Failed to delete product.");
-        }
+        await deleteProduct(productId);
     };
 
     const handleInputChange = (e) => {
@@ -62,13 +46,29 @@ export default function Dashboard() {
     };
 
     const handleImageChange = (e) => {
-        setSelectedImages(e.target.files);
+        const files = Array.from(e.target.files);
+        setSelectedImages(files);
+    };
+
+    const resetForm = () => {
+        setNewProduct({
+            name: "",
+            description: "",
+            price: "",
+            category: "",
+            stock: "",
+            quantityValue: "",
+            quantityUnit: "",
+            images: [],
+        });
+        setSelectedImages([]);
+        setEditingProductId(null);
+        setIsEditing(false);
     };
 
     const handleUpload = async (e) => {
         e.preventDefault();
-        setUploading(true);
-    
+
         const formData = new FormData();
         formData.append("name", newProduct.name);
         formData.append("description", newProduct.description);
@@ -77,298 +77,249 @@ export default function Dashboard() {
         formData.append("stock", newProduct.stock);
         formData.append("quantityValue", newProduct.quantityValue);
         formData.append("quantityUnit", newProduct.quantityUnit);
-    
+
         Array.from(selectedImages).forEach((file) => {
-            formData.append("image", file);
+            formData.append("images", file);
         });
-    
+
         try {
-            let response;
-    
             if (isEditing) {
-                response = await axios.put(
-                    `http://localhost:5000/api/products/updateProduct/${editingProductId}`,
-                    formData,
-                    { headers: { "Content-Type": "multipart/form-data" } }
-                );
-                setProducts(products.map((p) =>
-                    p._id === editingProductId ? response.data.data : p
-                ));
+                await updateProduct(editingProductId, formData);
             } else {
-                response = await axios.post(
-                    "http://localhost:5000/api/products/createProduct",
-                    formData,
-                    { headers: { "Content-Type": "multipart/form-data" } }
-                );
-                setProducts([...products, response.data.product]);
+                await createProduct(formData);
             }
-    
+
+            await fetchProducts();
             setShowModal(false);
-            setIsEditing(false);
-            setEditingProductId(null);
-            setNewProduct({
-                name: "",
-                category: "",
-                price: "",
-                description: "",
-                stock: "",
-                quantityValue: "",
-                quantityUnit: "",
-                images: [],
-            });
-            setSelectedImages([]);
-        } catch (error) {
-            console.error("Upload/Update Error:", error);
-            setError("Failed to process product.");
-        } finally {
-            setUploading(false);
+            resetForm();
+        } catch (err) {
+            console.error("Upload/Update Error:", err);
         }
     };
     
 
     const indexOfLastProduct = currentPage * productsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-    const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+    const currentProducts = Array.isArray(products)
+        ? products.slice(indexOfFirstProduct, indexOfLastProduct)
+        : [];
 
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+    // Removed duplicate paginate function declaration
     
-    const [isEditing, setIsEditing] = useState(false);
-    const [editingProductId, setEditingProductId] = useState(null);
     const handleEdit = (product) => {
         setShowModal(true);
         setIsEditing(true);
-        setEditingProductId(product._id);
+        setEditingProductId(product?._id);
         setNewProduct({
-            name: product.name,
-            category: product.category,
-            price: product.price,
-            description: product.description,
-            stock: product.stock,
-            quantityValue: product.quantity?.value || "",
-            quantityUnit: product.quantity?.unit || "",
-            images: product.image || [], 
+            name: product?.name || "",
+            description: product?.description || "",
+            price: product?.price || "",
+            category: product?.category || "",
+            stock: product?.stock || "",
+            quantityValue: product?.quantity?.value || "",
+            quantityUnit: product?.quantity?.unit || "",
+            images: product?.image || [],
         });
+        setSelectedImages([]); // Will reselect new files if needed
     };
-    
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
     return (
-        <>
-            <div className="adminContainer">
+        <div className="adminContainer">
+            <nav className="navbar adminnav">
+                <div className="container">
+                    <button
+                        className="btn btn-outline-light"
+                        type="button"
+                        data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasAdmin"
+                        aria-controls="offcanvasAdmin"
+                    >
+                        ☰
+                    </button>
+                    <h3 className="navbar-brand">ListKaro</h3>
+                    <p>Admin Panel</p>
+                </div>
+            </nav>
 
-                <nav className="navbar adminnav">
-                    <div className="container">
-                        <button className="btn btn-outline-light" type="button"
-                            data-bs-toggle="offcanvas"
-                            data-bs-target="#offcanvasAdmin"
-                            aria-controls="offcanvasAdmin"
-                        > ☰ </button>
+            <div
+                className="offcanvas adminoffcanvas offcanvas-start"
+                tabIndex="-1"
+                id="offcanvasAdmin"
+                aria-labelledby="offcanvasAdminLabel"
+            >
+                <div className="offcanvas-header">
+                    <h5 id="offcanvasAdminLabel">ListKaro Admin Panel</h5>
+                    <button
+                        type="button"
+                        className="btn-close text-reset"
+                        data-bs-dismiss="offcanvas"
+                        aria-label="Close"
+                    ></button>
+                </div>
+                <div className="offcanvas-body">
+                    <ul className="navbar-nav">
+                        <li className="nav-item"><a href="/adminpanel" className="nav-link">Dashboard</a></li>
+                        <li className="nav-item"><a href="/allproducts" className="nav-link">All Products</a></li>
+                        <li className="nav-item"><a href="/" className="nav-link">Go to Home Page</a></li>
+                    </ul>
+                </div>
+            </div>
 
-                        <h3 className="navbar-brand">ListKaro</h3>
-                        <p>Admin Panel</p>
-                    </div>
-                </nav>
-
-                <div className="offcanvas adminoffcanvas offcanvas-start" tabIndex="-1" id="offcanvasAdmin" aria-labelledby="offcanvasAdminLabel">
-                    <div className="offcanvas-header">
-                        <h5 id="offcanvasAdminLabel">ListKaro Admin Panel</h5>
-                        <button type="button" className="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                    </div>
-                    <div className="offcanvas-body">
-                        <ul className="navabr-nav">
-                            <li className="nav-item">
-                                <a href="/adminpanel" className="nav-link">Dashboard</a>
-                            </li>
-                            <li className="nav-item">
-                                <a href="/allproducts" className="nav-link">All Products</a>
-                            </li>
-                            <li className="nav-item">
-                                <a href="/" className="nav-link">Go to Home Page</a>
-                            </li>
-                        </ul>
-                    </div>
+            <div className="container mt-4">
+                <div className="d-flex justify-content-between align-items-center mb-4">
+                    <h2>All Products</h2>
+                    <Button onClick={() => { setShowModal(true); resetForm(); }}>
+                        + Upload Product
+                    </Button>
                 </div>
 
-                <div className="container mt-4">
-                    <div className="d-flex justify-content-between align-items-center mb-4">
-                        <h2>All Products</h2>
-                        <Button variant="primary" onClick={() => setShowModal(true)}>
-                            + Upload Product
-                        </Button>
+                {error && <p className="text-danger">{error}</p>}
+
+                {loading ? (
+                    <div className="d-flex justify-content-center align-items-center">
+                        <Spinner animation="border" variant="primary" />
+                        <span className="ms-2">Loading products...</span>
                     </div>
-
-                    {error && <p className="text-danger">{error}</p>}
-
-                    {loading ? (
-                        <div className="d-flex justify-content-center align-items-center">
-                            <Spinner animation="border" variant="primary" />
-                            <span className="ms-2">Loading products...</span>
-                        </div>
-                    ) : currentProducts.length > 0 ? (
-                        <div className="table-responsive">
-                            <table className="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Category</th>
-                                        <th>Price</th>
-                                        <th>Images</th>
-                                        <th>Quantity</th>
-                                        <th>Update</th>
-                                        <th>Remove</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {currentProducts.map((product) => (
-                                        <tr key={product._id}>
-                                            <td>{product.name}</td>
-                                            <td>{product.category}</td>
-                                            <td>₹{product.price}</td>
-                                            <td>
-                                                {Array.isArray(product.image) &&
-                                                    product.image.map((img, index) => (
-                                                        <img
-                                                            key={index}
-                                                            src={img.url}
-                                                            alt={product.name}
-                                                            style={{ width: "50px", height: "50px", marginRight: "5px" }}
-                                                        />
-                                                    ))}
-                                            </td>
-                                            <td>
-                                                {product.quantity ? `${product.quantity.value} ${product.quantity.unit}` : "N/A"}
-                                            </td>
-                                            <td>
-                                            <button style={{border:'none', backgroundColor:'blue', width:'50px', borderRadius:'30px', color:'white', padding:'2px'}} onClick={() => handleEdit(product)}>
+                ) : currentProducts.length > 0 ? (
+                    <div className="table-responsive">
+                        <table className="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Price</th>
+                                    <th>Images</th>
+                                    <th>Quantity</th>
+                                    <th>Update</th>
+                                    <th>Remove</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {currentProducts.map((product, index) => (
+                                    <tr key={product._id || index}>
+                                        <td>{product?.name}</td>
+                                        <td>{product?.category}</td>
+                                        <td>₹{product?.price}</td>
+                                        <td>
+                                            {Array.isArray(product.image) && product.image.map((img, i) => (
+                                                <img
+                                                    key={i}
+                                                    src={img?.url}
+                                                    alt={product.name}
+                                                    style={{ width: "50px", height: "50px", marginRight: "5px" }}
+                                                />
+                                            ))}
+                                        </td>
+                                        <td>{product?.quantity ? `${product.quantity.value} ${product.quantity.unit}` : "N/A"}</td>
+                                        <td>
+                                            <button
+                                                className="btn btn-sm btn-primary"
+                                                onClick={() => handleEdit(product)}
+                                            >
                                                 Edit
                                             </button>
-                                            </td>
-                                            <td>
-                                                <button style={{border:'none', backgroundColor:'red', width:'60px', borderRadius:'30px', color:'white', padding:'2px'}} onClick={() => handleDelete(product._id)}>
-                                                    Delete
-                                                </button>
-                                            </td>
-
-
-                                        </tr>
-                                    ))}
-                                </tbody>
-
-                            </table>
-                            <nav>
-                                <ul className="pagination justify-content-center">
-                                    {[...Array(Math.ceil(products.length / productsPerPage)).keys()].map((number) => (
-                                        <li key={number} className="page-item">
-                                            <button onClick={() => paginate(number + 1)} className="page-link">
-                                                {number + 1}
+                                        </td>
+                                        <td>
+                                            <button
+                                                className="btn btn-sm btn-danger"
+                                                onClick={() => handleDelete(product._id)}
+                                            >
+                                                Delete
                                             </button>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </nav>
-                        </div>
-                    ) : (
-                        <p>No products available.</p>
-                    )}
-
-                    <Modal show={showModal} onHide={() => setShowModal(false)} centered>
-                        <Modal.Header closeButton>
-                            <Modal.Title>Upload Product</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <Form onSubmit={handleUpload}>
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Product Name</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        name="name"
-                                        value={newProduct.name}
-                                        onChange={handleInputChange}
-                                        required
-                                    />
-                                </Form.Group>
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Category</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        name="category"
-                                        value={newProduct.category}
-                                        onChange={handleInputChange}
-                                        required
-                                    />
-                                </Form.Group>
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Price</Form.Label>
-                                    <Form.Control
-                                        type="number"
-                                        name="price"
-                                        value={newProduct.price}
-                                        onChange={handleInputChange}
-                                        required
-                                    />
-                                </Form.Group>
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Description</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        name="description"
-                                        value={newProduct.description}
-                                        onChange={handleInputChange}
-                                        required
-                                    />
-                                </Form.Group>
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Stock</Form.Label>
-                                    <Form.Control
-                                        type="number"
-                                        name="stock"
-                                        value={newProduct.stock}
-                                        onChange={handleInputChange}
-                                        required
-                                    />
-                                </Form.Group>
-                                <Form.Group className="mb-3">
-                                <Form.Label>Quantity Value</Form.Label>
-                                <Form.Control
-                                    type="number"
-                                    name="quantityValue"
-                                    value={newProduct.quantityValue}
-                                    onChange={handleInputChange}
-                                    required
-                                />
-                                </Form.Group>
-
-                                <Form.Group className="mb-3">
-                                <Form.Label>Quantity Unit</Form.Label>
-                                <Form.Select
-                                    name="quantityUnit"
-                                    value={newProduct.quantityUnit}
-                                    onChange={handleInputChange}
-                                    required
-                                >
-                                    <option value="">Select Unit</option>
-                                    <option value="kg">kg</option>
-                                    <option value="g">g</option>
-                                    <option value="litre">litre</option>
-                                    <option value="ml">ml</option>
-                                    <option value="pcs">pcs</option>
-                                </Form.Select>
-                                </Form.Group>
-
-                         
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Images</Form.Label>
-                                    <Form.Control type="file" multiple onChange={handleImageChange} />
-                                </Form.Group>
-                                <div className="d-flex justify-content-center">
-                                    <Button variant="primary" type="submit" disabled={uploading}>
-                                        {uploading ? "Uploading..." : "Upload"}
-                                    </Button>
-                                </div>
-                            </Form>
-                        </Modal.Body>
-                    </Modal>
-                </div>
-
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                        <nav>
+                            <ul className="pagination justify-content-center">
+                                {[...Array(Math.ceil(products.length / productsPerPage)).keys()].map((number) => (
+                                    <li key={number} className="page-item">
+                                        <button onClick={() => paginate(number + 1)} className="page-link">
+                                            {number + 1}
+                                        </button>
+                                    </li>
+                                ))}
+                            </ul>
+                        </nav>
+                    </div>
+                ) : (
+                    <p>No products available.</p>
+                )}
             </div>
-        </>
+
+            <Modal show={showModal} onHide={() => setShowModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>{isEditing ? "Update Product" : "Add Product"}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form onSubmit={handleUpload} encType="multipart/form-data">
+                        <Form.Group>
+                            <Form.Label>Name</Form.Label>
+                            <Form.Control name="name" value={newProduct.name} onChange={handleInputChange} required />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Description</Form.Label>
+                            <Form.Control name="description" value={newProduct.description} onChange={handleInputChange} required />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Price</Form.Label>
+                            <Form.Control name="price" value={newProduct.price} onChange={handleInputChange} required />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Category</Form.Label>
+                            <Form.Control name="category" value={newProduct.category} onChange={handleInputChange} required />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Stock</Form.Label>
+                            <Form.Control name="stock" value={newProduct.stock} onChange={handleInputChange} required />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Quantity Value</Form.Label>
+                            <Form.Control name="quantityValue" value={newProduct.quantityValue} onChange={handleInputChange} />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Quantity Unit</Form.Label>
+                            <Form.Select
+                                name="quantityUnit"
+                                value={newProduct.quantityUnit}
+                                onChange={handleInputChange}
+                                required
+                            >
+                                <option value="">Select Unit</option>
+                                <option value="kg">kg</option>
+                                <option value="g">g</option>
+                                <option value="litre">litre</option>
+                                <option value="ml">ml</option>
+                                <option value="pcs">pcs</option>
+                            </Form.Select>
+                        </Form.Group>
+
+                        <Form.Group>
+                            <Form.Label>Images</Form.Label>
+                            <Form.Control type="file" multiple onChange={handleImageChange} />
+                        </Form.Group>
+                        {isEditing && newProduct.images?.length > 0 && (
+                            <div className="mt-2">
+                                <p>Existing Images:</p>
+                                {newProduct.images.map((img, idx) => (
+                                    <img
+                                        key={idx}
+                                        src={img?.url}
+                                        alt={`product-${idx}`}
+                                        style={{ width: 50, height: 50, marginRight: 5 }}
+                                    />
+                                ))}
+                            </div>
+                        )}
+                        <Button variant="primary" type="submit" className="mt-3">
+                            {isEditing ? "Update Product" : "Add Product"}
+                        </Button>
+                    </Form>
+                </Modal.Body>
+            </Modal>
+        </div>
     );
 }
