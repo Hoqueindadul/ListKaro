@@ -107,9 +107,9 @@ function Home() {
 
       <div className="slide-wrapper">
         <div className="slider">
-          <img src="../../public/images/c1.jpg" alt="" id="slide1" />
-          <img src="../../public/images/c2.jpg" alt="" id="slide2" />
-          <img src="../../public/images/c3.jpg" alt="" id="slide3" />
+          <img src="/images/c1.jpg" alt="" id="slide1" />
+          <img src="/images/c2.jpg" alt="" id="slide2" />
+          <img src="/images/c3.jpg" alt="" id="slide3" />
 
           <div className="slider-nav">
           <a href="#slide1"></a>

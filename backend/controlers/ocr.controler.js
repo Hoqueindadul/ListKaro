@@ -137,3 +137,4 @@ export const extractProductDataFromImage = async (req, res) => {
     res.status(500).json({ error: 'Something went wrong during OCR.' });
   }
 };
+

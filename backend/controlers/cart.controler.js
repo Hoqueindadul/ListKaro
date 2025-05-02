@@ -21,9 +21,6 @@ export const getUserCart = async (req, res) => {
       });
     }
 
-    // Debugging: Log raw cart data
-    console.log("Raw Cart Data:", JSON.stringify(cart, null, 2));
-
     // Safely filter only products where productId is valid and populated
     const filteredProducts = cart.products.filter(item => item.productId && item.productId._id);
 
@@ -53,6 +50,7 @@ export const getUserCart = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Cart items fetched successfully",
+      userId: cart.userId,
       data: formattedProducts,
     });
 

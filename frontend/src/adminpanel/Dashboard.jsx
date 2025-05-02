@@ -96,11 +96,7 @@ export default function Dashboard() {
             console.error("Upload/Update Error:", err);
         }
     };
-    
 
-
-    // Removed duplicate paginate function declaration
-    
     const handleEdit = (product) => {
         setShowModal(true);
         setIsEditing(true);
@@ -117,6 +113,12 @@ export default function Dashboard() {
         });
         setSelectedImages([]); // Will reselect new files if needed
     };
+
+    const indexOfLastProduct = currentPage * productsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    const currentProducts = Array.isArray(products)
+        ? products.slice(indexOfFirstProduct, indexOfLastProduct)
+        : [];
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 

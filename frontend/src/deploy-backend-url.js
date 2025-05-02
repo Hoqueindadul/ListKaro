@@ -1,0 +1,1 @@
+export const DEPLOYMENT_URL="https://list-karo-feg8.vercel.app/"

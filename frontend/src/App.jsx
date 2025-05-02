@@ -22,10 +22,6 @@ import OrderPage from "./pages/OrderPage";
 import Placed from "./pages/Placed";
 import Navbar from "./pages/Navbar";
 import Products from "./pages/Products"
-<<<<<<< HEAD
-=======
-import Product from './pages/Products'
->>>>>>> main
 
 function App() {
   
@@ -52,7 +48,7 @@ function App() {
           
           <Route path="/order" element={ <OrderPage/> } />
           <Route path="/orderplaced" element={ <Placed/> } />
-          <Route path="/products" element={ <Product/> } />
+          <Route path="/products" element={ <Products/> } />
 
 
 

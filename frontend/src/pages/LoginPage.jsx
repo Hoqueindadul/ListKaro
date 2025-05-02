@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useAuthStore } from "../store/authStore";
 import { Mail, Lock, Loader } from "lucide-react";
@@ -12,8 +12,10 @@ import "./LoginPage.css";
 const LoginPage = () => {
     const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-	const navigate = useNavigate();
 	const { login, isLoading, error } = useAuthStore();
+	const navigate = useNavigate();
+  	const location = useLocation();
+  	const from = location.state?.from?.pathname || "/";
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
@@ -22,7 +24,7 @@ const LoginPage = () => {
 			toast.success("You are logged in successfully");
 			
 			setTimeout(() => {
-				navigate("/");
+				navigate(from, { replace: true }); // Redirect to the page user came from
 			}, 2000);
 		} catch (error) {
 			const errorMessage =

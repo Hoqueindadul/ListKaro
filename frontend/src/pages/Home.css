@@ -112,8 +112,9 @@ transition: opacity ease 250ms;
 .my-brand{ font-size: 30px; color: white; transition: all 0.3s ease; text-decoration: none;}
 .my-brand:hover{color: #BB3E00;}
 .nav-dropdown{
-  background-color: white;
+  background-color: #F7AD45;
   text-decoration: none;
+  
 }
 .nav-dropdown-link{ text-decoration: none; }
 .nav-uploadList{

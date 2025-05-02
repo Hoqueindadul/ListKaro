@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { Link, useNavigate  } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import '../pages/ShoppingCart.css';
-import { useCartStore } from "../store/authStore"; 
+import { useCartStore, useAuthStore } from "../store/authStore";
 
 const ShoppingCart = () => {
   const {
@@ -12,9 +12,13 @@ const ShoppingCart = () => {
     loading,
     error,
   } = useCartStore();
- const navigate = useNavigate()
+  const { isAuthenticated } = useAuthStore()
+  console.log(isAuthenticated);
+  
+  const navigate = useNavigate()
+  const location = useLocation();
   useEffect(() => {
-    fetchCartItems(); 
+    fetchCartItems();
   }, []);
 
   const handleIncreaseQuantity = (productId, currentQuantity) => {
@@ -31,6 +35,18 @@ const ShoppingCart = () => {
     removeItem(productId);
   };
 
+  const handleCheckout = () => {
+    if (!isAuthenticated) {
+      navigate("/login", { state: { from: location } }); // redirect to login with origin
+    } else {
+      navigate("/order", {
+        state: {
+          cartItems,
+          totalAmount: total,
+        },
+      });
+    }
+  };
   const originalPrice = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
   const savings = cartItems.length > 0 ? 299 : 0;
   const storePickup = cartItems.length > 0 ? 99 : 0;
@@ -144,17 +160,8 @@ const ShoppingCart = () => {
           <p className="total-value">₹{total}</p>
         </div>
 
-        
-        <button className="checkout-btn"
-          onClick={() =>
-            navigate("/order", {
-              state: {
-                cartItems,
-                totalAmount: total,
-              },
-            })
-          }
-        >
+
+        <button className="checkout-btn" onClick={handleCheckout}>
           Proceed to Checkout
         </button>
       </div>

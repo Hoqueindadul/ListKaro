@@ -1,22 +1,25 @@
 import './UpList.css';
 import './UpListDark.css';
+import './UpListSmall.css';
 import { useState } from 'react';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import './UpListSmall.css'
+import { useNavigate } from 'react-router-dom';
+import { useBulkUploadStore } from '../store/authStore';
+import { useAuthStore } from '../store/authStore';
+
 function UpList() {
   const [ocrText, setOcrText] = useState([]);
-  const [productInputs, setProductInputs] = useState([
-    { name: '', quantity: '' },
-    { name: '', quantity: '' },
-  ]);
-
+  const [productInputs, setProductInputs] = useState([{ name: '', quantity: '' }]);
   const [selectedImage, setSelectedImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [ocrResult, setOcrResult] = useState(null);
+
+  const navigate = useNavigate();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -29,14 +32,20 @@ function UpList() {
   };
 
   const upload = async () => {
+    if (!isAuthenticated) {
+      toast.warn("Please log in to upload.");
+      navigate('/login');
+      return;
+    }
+
     if (!selectedImage) {
-      toast.error("Please select a file"); // Error toast for no file selected
+      toast.error("Please select a file");
       return;
     }
 
     const validTypes = ["image/jpeg", "image/png"];
     if (!validTypes.includes(selectedImage.type)) {
-      toast.error("Please upload a valid JPG or PNG image"); // Error toast for invalid file type
+      toast.error("Please upload a valid JPG or PNG image");
       return;
     }
 
@@ -55,16 +64,16 @@ function UpList() {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
-          withCredentials: true, // ⬅️ Enable sending cookies (JWT)
+          withCredentials: true,
         }
       );
 
       if (response.data?.lines) {
         const extractedItems = extractItems(response.data.lines);
         setOcrText(extractedItems);
-        toast.success("File uploaded and list extracted successfully!"); // Success toast
+        toast.success("File uploaded and list extracted successfully!");
       } else {
-        toast.error("Failed to extract list items!"); // Error toast if extraction fails
+        toast.error("Failed to extract list items!");
       }
 
       setOcrResult(response.data);
@@ -72,10 +81,10 @@ function UpList() {
       console.error('Upload failed:', error);
       if (error.response && error.response.status === 401) {
         setErrorMsg('Unauthorized. Please log in again.');
-        toast.error('Unauthorized. Please log in again.'); // Error toast for unauthorized
+        toast.error('Unauthorized. Please log in again.');
       } else {
         setErrorMsg('Upload failed. Please try again.');
-        toast.error('Upload failed. Please try again.'); // Error toast for general upload failure
+        toast.error('Upload failed. Please try again.');
       }
     } finally {
       setLoading(false);
@@ -120,13 +129,25 @@ function UpList() {
     setProductInputs(updated);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Submitted products:', productInputs);
 
-    // Add backend integration for manual input submission if needed
+    if (!isAuthenticated) {
+      toast.warn("Please log in to upload.");
+      navigate('/login');
+      return;
+    }
+
+    try {
+      await useBulkUploadStore.getState().bulkUploadProducts(productInputs);
+      toast.success("Bulk upload successful!");
+      setProductInputs([{ name: '', quantity: '' }]);
+    } catch (error) {
+      toast.error("Failed to bulk upload products.");
+      console.error("Bulk upload error:", error);
+    }
   };
-  
+
   return (
     <>
       <div className="container list-upload-container rounded py-4 uphead">
@@ -139,10 +160,9 @@ function UpList() {
           <div className="col-12 col-md-10 col-lg-8">
             <div className="d-flex flex-column flex-md-row justify-content-between gap-4">
 
-              {/* Upload Section */}
               <div className="flex-fill text-center p-3 border rounded shadow-lg">
                 <div className="mb-3 upsection">
-                  <div> 
+                  <div>
                     <label htmlFor="fileId" className="d-block cursor-pointer">
                       <img src="/images/upload.png" alt="Upload" style={{ maxWidth: '100px', cursor: 'pointer' }} />
                     </label>
@@ -179,13 +199,13 @@ function UpList() {
                   <div className="alert alert-danger mt-3">{errorMsg}</div>
                 )}
               </div>
+
               <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
-              {/* OR Divider */}
+
               <div className="d-flex align-items-center justify-content-center">
                 <span className="fw-bold">OR</span>
               </div>
 
-              {/* Manual Input Form */}
               <div className="flex-fill p-3 border rounded shadow-xl text-white upform min-w-full">
                 <form onSubmit={handleSubmit}>
                   {productInputs.map((product, index) => (
