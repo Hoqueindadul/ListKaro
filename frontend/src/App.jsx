@@ -1,9 +1,7 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import 'react-toastify/dist/ReactToastify.css';
-
-
 import './App.css'
 
 import Home from './pages/Home'
@@ -23,40 +21,51 @@ import Placed from "./pages/Placed";
 import Navbar from "./pages/Navbar";
 import Products from "./pages/Products"
 
-function App() {
-  
+import { ToastContainer } from 'react-toastify';
+
+function AppContent() {
+  const location = useLocation();
+
+  // Define routes where Navbar should be hidden
+  const hideNavbarRoutes = ["/adminpanel"];
+
+  const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
+
   return (
     <>
-    
-    <Router>
-    <Navbar />
-      <Routes>
-      
+      {!shouldHideNavbar && <Navbar />}
+
+      <div className={!shouldHideNavbar ? "pt-6" : ""} style={!shouldHideNavbar ? { paddingTop: "100px" } : {}}>
+        <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/uploadlist" element={ <UpList />} />
-          <Route path="/profile" element={ <Profile/> } />
-          <Route path="/about" element={ <About/> } />
-          <Route path="/completepayment" element={ <PaymentForm/> } />
-          <Route path="/faq" element={ <FAQ/> } />
-          <Route path="/emailVerification" element={ <EmailVerificationPage/> } />
-          <Route path="/login" element={ <LoginPage/> } />
-          <Route path="/forgot-password" element={ <ForgotPasswordPage/> } />
-          <Route path="/reset-password/:token" element={ <ResetPasswordPage/> } />
-          <Route path="/adminpanel" element={ <Dashboard/> } />
-          <Route path="/shopping-cart" element={ <ShoppingCart />} />
-          <Route path="/products" element={ <Products />} />
-          
-          <Route path="/order" element={ <OrderPage/> } />
-          <Route path="/orderplaced" element={ <Placed/> } />
-          <Route path="/products" element={ <Products/> } />
-
-
-
-
-      </Routes>
-    </Router>
+          <Route path="/uploadlist" element={<UpList />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/completepayment" element={<PaymentForm />} />
+          <Route path="/faq" element={<FAQ />} />
+          <Route path="/emailVerification" element={<EmailVerificationPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
+          <Route path="/adminpanel" element={<Dashboard />} />
+          <Route path="/shopping-cart" element={<ShoppingCart />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/order" element={<OrderPage />} />
+          <Route path="/orderplaced" element={<Placed />} />
+        </Routes>
+      </div>
+      <ToastContainer />
     </>
-  )
+  );
 }
 
-export default App
+function App() {
+  return (
+    <Router>
+      <AppContent />
+    </Router>
+  );
+}
+
+export default App;
+

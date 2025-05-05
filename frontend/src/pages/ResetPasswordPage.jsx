@@ -31,9 +31,6 @@ const ResetPasswordPage = () => {
             toast.error(error.message || "Error resetting password");
         }
     };
-
-
-
     return (
         <div className="login-page">
             <div className="login-card">
@@ -63,9 +60,6 @@ const ResetPasswordPage = () => {
                                 required
                             />
                         </div>
-
-
-
                         <button type="submit" className="login-btn" disabled={isLoading}>
                             {isLoading ? "Resetting..." : "Set New Password"}
                         </button>

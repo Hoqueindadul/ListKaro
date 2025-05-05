@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
-import axios from "axios";
 import { useAuthStore } from "../store/authStore";
 import { Mail, Lock, Loader } from "lucide-react";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Cookies from 'js-cookie';
 
 import "./LoginPage.css";
 
@@ -24,7 +22,7 @@ const LoginPage = () => {
 			toast.success("You are logged in successfully");
 			
 			setTimeout(() => {
-				navigate(from, { replace: true }); // Redirect to the page user came from
+				navigate(from, { replace: true }); 
 			}, 2000);
 		} catch (error) {
 			const errorMessage =
@@ -33,10 +31,6 @@ const LoginPage = () => {
 			toast.error(errorMessage);
 		}
 	};
-
-
-
-
     return (
 		<>
 		

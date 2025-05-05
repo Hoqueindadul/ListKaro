@@ -1,7 +1,4 @@
-.orderbody{
-  background-color: rgba(10, 10, 25, 0.95);
-  color: white;
-}
+.orderbody{ background-color: rgba(10, 10, 25, 0.95); color: white }
 .order-page {
     min-width: 700px;  
     display: flex;
@@ -28,10 +25,9 @@
   }
   
   .delivery-form h2 {
-    text-align: center;
-    color: #a3a3ff;
-    margin-bottom: 20px;
-  }
+ text-align: center;
+ color: #a3a3ff;
+ margin-bottom: 20px; }
   
   .delivery-form form {
     display: flex;
@@ -71,14 +67,12 @@
   }
   
   #ordersubmit:hover{
-    background-color: #7f5af090;
-  }
+ background-color: #7f5af090; }
   
   .deladdress {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
+ display: flex;
+ gap: 10px;
+ flex-wrap: wrap; }
   #addressfeild{ width: 100%; height: auto;}
 
   .order-summary {
@@ -92,10 +86,9 @@
   }
   
   .order-summary h3 {
-    text-align: center;
-    color: #f0f0ff;
-    margin-bottom: 20px;
-  }
+ text-align: center;
+ color: #f0f0ff;
+ margin-bottom: 20px; }
   
   .order-summary ul {
     list-style: none;
@@ -104,10 +97,9 @@
   }
   
   .order-summary ul li {
-    padding: 8px 0;
-    border-bottom: 1px solid #444;
-    color: #ddd;
-  }
+ padding: 8px 0;
+ border-bottom: 1px solid #444;
+ color: #ddd; }
   
   .order-summary p {
     text-align: center;

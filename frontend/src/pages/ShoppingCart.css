@@ -35,8 +35,7 @@
   }
   
   .viewProducts:hover {
-    background-color: var(--primary-dark); 
-  }
+background-color: var(--primary-dark); }
   .cart-items {
     background: #ffffff;
     border-radius: 12px;
@@ -137,8 +136,7 @@
   }
   
   .quantity-button:hover {
-    color:var(--text-primary)
-  }
+color:var(--text-primary)}
   
   .quantity-input {
     width: 50px;
@@ -150,9 +148,8 @@
   }
   
   .item-total {
-    font-weight: 600;
-    color: #1a1a1a;
-  }
+font-weight: 600;
+color: #1a1a1a;}
   
   .item-actions {
     display: flex;
@@ -172,18 +169,15 @@
 
   
   .remove-item-btn {
-    background:gray;
-    color: var(--bg-primary)
-  }
+background:gray;
+color: var(--bg-primary)}
   
   .update-item-btn:hover,
   .remove-item-btn:hover {
-    opacity: 0.9;
-  }
+opacity: 0.9;}
   .remove-item-btn:hover{
-    background:rgb(63, 62, 62);
-    color: var(--bg-primary)
-  }
+background:rgb(63, 62, 62);
+color: var(--bg-primary)}
   
   .price-summary {
     background: #ffffff;
@@ -241,18 +235,11 @@
     transition: all 0.2s;
   }
   
-  .checkout-btn:hover {
-    background: gray
-  }
+  .checkout-btn:hover { background: gray}
 
-
-  
   @media (max-width: 1024px) {
 
-    .cart-page {
-      grid-template-columns: 1fr 300px;
-      gap: 1.5rem;
-    }
+    .cart-page { grid-template-columns: 1fr 300px; gap: 1.5rem }
   }
   
   @media (max-width: 768px) {
@@ -264,12 +251,12 @@
     }
     
     .cart-items {
-      padding: 1rem;
-    }
+  padding: 1rem;
+}
   
     .cart-table-header {
-      display: none;
-    }
+  display: none;
+}
     
     .cart-item {
       grid-template-columns: 1fr;
@@ -303,14 +290,14 @@
     }
   
     .item-name {
-      font-size: 1.1rem;
-      margin-bottom: 0.25rem;
-    }
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
+}
   
     .item-price {
-      font-size: 1rem;
-      color: #4a4a4a;
-    }
+  font-size: 1rem;
+  color: #4a4a4a;
+}
   
     .quantity-controls {
       display: flex;
@@ -371,21 +358,15 @@
       width: 100%;
     }
   
-  
     .price-summary {
       border-radius: 12px;
       padding: 1.25rem;
       margin-top: 1rem;
     }
   
-    .summary-item {
-      padding: 0.75rem 0;
-    }
+    .summary-item { padding: 0.75rem 0 }
   
-    .summary-total {
-      margin-top: 1rem;
-      padding-top: 1rem;
-    }
+    .summary-total { margin-top: 1rem; padding-top: 1rem }
   
     .checkout-btn {
       padding: 1rem;
@@ -395,38 +376,19 @@
   }
   
   @media (max-width: 480px) {
-
-
-    .cart-page {
-      padding: 0.75rem;
-    }
+    .cart-page { padding: 0.75rem }
   
-    .cart-items {
-      padding: 0.75rem;
-    }
+    .cart-items { padding: 0.75rem }
   
-    .cart-item {
-      padding: 1rem;
-    }
+    .cart-item { padding: 1rem }
   
-    .item-info {
-      grid-template-columns: 70px 1fr;
-      gap: 0.75rem;
-    }
+    .item-info { grid-template-columns: 70px 1fr; gap: 0.75rem }
   
-    .item-image {
-      width: 70px;
-      height: 70px;
-    }
+    .item-image { width: 70px; height: 70px }
   
-    .item-name {
-      font-size: 1rem;
-    }
+    .item-name { font-size: 1rem }
   
-    .quantity-controls {
-      padding: 0.4rem;
-      gap: 0.5rem;
-    }
+    .quantity-controls { padding: 0.4rem; gap: 0.5rem }
   
     .quantity-button {
       width: 32px;
@@ -434,38 +396,22 @@
       font-size: 1rem;
     }
   
-    .quantity-input {
-      width: 50px;
-      height: 32px;
-    }
+    .quantity-input { width: 50px; height: 32px }
   
-    .item-actions {
-      gap: 0.5rem;
-    }
+    .item-actions { gap: 0.5rem }
   
-    .update-item-btn,
-    .remove-item-btn {
+    .update-item-btn, .remove-item-btn {
       padding: 0.6rem;
       font-size: 0.9rem;
     }
   }
   
-  html {
-    scroll-behavior: smooth;
-  }
+  html { scroll-behavior: smooth }
   
-  .update-item-btn:disabled,
-  .remove-item-btn:disabled,
-  .checkout-btn:disabled {
+  .update-item-btn:disabled, .remove-item-btn:disabled, .checkout-btn:disabled {
     opacity: 0.7;
     cursor: not-allowed;
   }
-  
-  .cart-item,
-  .quantity-button,
-  .update-item-btn,
-  .remove-item-btn,
-  .checkout-btn {
+  .cart-item, .quantity-button, .update-item-btn, .remove-item-btn, .checkout-btn {
     transition: all 0.2s ease-in-out;
   }
-

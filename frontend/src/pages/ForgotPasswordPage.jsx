@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import axios from "axios";
 import { useAuthStore } from "../store/authStore";
 import { ArrowLeft, Loader, Mail } from "lucide-react";
 import "./LoginPage.css";
@@ -16,9 +15,6 @@ const ForgotPasswordPage = () => {
         await forgotPassword(email);
         setIsSubmitted(true);
     };
-
-
-
     return (
         <div className="login-page">
             <div className="login-card">
@@ -35,9 +31,6 @@ const ForgotPasswordPage = () => {
                                 required
                             />
                         </div>
-
-
-
                         <button type="submit" className="login-btn" disabled={isLoading}>
                             {isLoading ? (
                                 <Loader className="spinner-border text-light mx-auto d-block" />

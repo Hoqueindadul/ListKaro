@@ -1,8 +1,7 @@
 @media (min-width: 481px) and (max-width: 768px) {
   body {
-      padding: 0;
-      margin: 0;
-  }
+ padding: 0;
+ margin: 0; }
 
   .carocontainer {
       flex-direction: column;
@@ -21,19 +20,16 @@
   }
 
   .slider {
-      height: 300px;
-      border-radius: 0.25rem;
-  }
+ height: 300px;
+ border-radius: 0.25rem; }
 
   .slider-nav {
-      left: 50%; 
-      margin-top: 10rem;
-  }
+ left: 50%; 
+ margin-top: 10rem; }
 
   .slider-nav a {
-      height: 0.5rem;
-      width: 0.5rem;
-  }
+ height: 0.5rem;
+ width: 0.5rem; }
 
   .card-container {
       border: 1px solid #ccc;
@@ -55,8 +51,7 @@
   }
 
   .card-body {
-      padding: 12px;
-  }
+ padding: 12px; }
 
   .card-title {
       font-size: 1.5rem;
@@ -83,8 +78,7 @@
   }
 
   .card-button:hover {
-      background-color: #0056b3;
-  }
+ background-color: #0056b3; }
 
   .categories {
       margin: 0px 20px;
@@ -120,9 +114,8 @@
   }
 
   .offercontainer h3 {
-      font-size: 28px;
-      font-weight: bold;
-  }
+ font-size: 28px;
+ font-weight: bold; }
 
   .offercontainer p {
       font-size: 14px;
@@ -156,8 +149,7 @@
   }
 
   .newsletter p {
-      font-size: 12px;
-  }
+ font-size: 12px; }
 
   .newsletter .emailbox {
       width: 300px;
@@ -182,9 +174,8 @@
   }
 
   .emailbtn:hover {
-      background-color: #ffa500;
-      transform: scale(0.9);
-  }
+ background-color: #ffa500;
+ transform: scale(0.9); }
 
   .newsletter img {
       border-radius: 20px;
@@ -204,14 +195,12 @@
   footer .aboutus,
   footer .consumers,
   footer .programs {
-      display: flex;
-      flex-direction: column;
-  }
+ display: flex;
+ flex-direction: column; }
 
   footer p {
-      font-size: 16px;
-      font-weight: bold;
-  }
+ font-size: 16px;
+ font-weight: bold; }
 
   footer a {
       text-decoration: none;
@@ -221,9 +210,8 @@
   }
 
   .nav-holder .my-brand {
-      text-decoration: none;
-      color: #ffa600b0;
-  }
+ text-decoration: none;
+ color: #ffa600b0; }
 
   .offerPopupContainer {
       background: linear-gradient(#2144c3, #8797e0);
@@ -251,13 +239,11 @@
   }
 
   .offerPopupContent {
-      font-size: 14px;
-      padding: 10px;
-  }
+ font-size: 14px;
+ padding: 10px; }
 
   .offerPopupContent h3 {
-      font-size: 22px;
-  }
+ font-size: 22px; }
 
   .offerPopupContent .ccbtn {
       background-color: #c3ff00;
@@ -294,14 +280,12 @@
   }
 
   .ulogout {
-      color: red;
-  }
+ color: red; }
 
   .menucontainer {
-      width: 100%;
-      padding: 10px;
-      border-radius: 0px;
-  }
+ width: 100%;
+ padding: 10px;
+ border-radius: 0px; }
 
   .menucontainer input[type="search"] {
       font-size: 14px;
@@ -311,17 +295,14 @@
 
   .upload-list,
   .upload-list a {
-      font-size: 14px;
-      padding: 8px;
-  }
+ font-size: 14px;
+ padding: 8px; }
 
   .menucontainer .pl-6 {
-      padding-left: 10px;
-  }
+ padding-left: 10px; }
 
   .menucontainer .space-y-2 > * + * {
-      margin-top: 8px;
-  }
+ margin-top: 8px; }
 
   .menucontainer .pl-6 {
       display: flex;
@@ -335,20 +316,14 @@
     width: 570px;
     background-color: #f1ecec;
   }
-  .signupbtn{
-    margin: 0 auto;
-  }
-  .ahac{
-    margin-top: 20px;
-    font-size: 18px;
-  }
+  .signupbtn{ margin: 0 auto; }
+  .ahac{ margin-top: 20px; font-size: 18px; }
 }
 
 @media (max-width: 1024px) {
   body{
-      padding: 0;
-      margin: 0;
-  }
+ padding: 0;
+ margin: 0; }
   .carocontainer {
     align-items: center;
     gap: 1rem;
@@ -357,8 +332,7 @@
   }
 
   .slide-wrapper {
-      padding: 0;
-    }
+ padding: 0; }
     
   .slider {
     height: 360px;
@@ -366,16 +340,11 @@
     border-radius: 12px;
   }
 
-  .slider-nav {
-    left: 25%; 
-    margin-top: 21rem; 
+  .slider-nav { left: 25%;  margin-top: 21rem; 
+ }
 
-  }
-
-  .slider-nav a {
-    height: 0.5rem;
-    width: 0.5rem;
-  }
+  .slider-nav a { height: 0.5rem;
+    width: 0.5rem; }
 
   .card-container {
       border: 1px solid #ccc;
@@ -395,8 +364,7 @@
   }
     
   .card-body {
-      padding: 6px;
-  }
+ padding: 6px; }
     
   .card-title {
       font-size: 1.1rem;
@@ -422,8 +390,7 @@
   }
     
   .card-button:hover {
-      background-color: #0056b3;
-  }
+ background-color: #0056b3; }
   .categories{
       margin: 0px;
       display: flex;
@@ -443,9 +410,8 @@
       margin: 0;
   }
   .offercontainer h3{
-      font-size: 30px;
-      font-weight: bold;
-  }
+ font-size: 30px;
+ font-weight: bold; }
 
   .offercontainer #price{
       font-size: 20px;
@@ -488,14 +454,8 @@
   from { opacity: 0; transform: translateY(20px);}
   to{opacity: 1; transform: translateY(0px);}
   }
-  .offerPopupContent{
-  font-size: 24px;
-  padding: 10px;
-  }
-  .offerPopupContent h3{
-  font-size: 50px;
-  width: 300px;
-  }
+  .offerPopupContent{ font-size: 24px; padding: 10px; }
+  .offerPopupContent h3{ font-size: 50px; width: 300px; }
   .offerPopupContent .ccbtn{
   background-color: #c3ff00;
   color: rgb(67, 67, 67);
@@ -530,9 +490,7 @@
   box-shadow: 0 0 20px #0b35dd76 ;
   border: 1px solid #007bff0e;
   }
-  .ulogout{
-    color: red;
-    }
+  .ulogout{ color: red; }
   .menucontainer {
     width: 100%;
     padding: 10px;
@@ -545,18 +503,11 @@
     margin-bottom: 10px;
   }
 
-  .upload-list, .upload-list a {
-    font-size: 14px;
-    padding: 8px;
-  }
+  .upload-list, .upload-list a { font-size: 14px; padding: 8px; }
 
-  .menucontainer .pl-6 {
-    padding-left: 10px;
-  }
+  .menucontainer .pl-6 { padding-left: 10px; }
 
-  .menucontainer .space-y-2 > * + * {
-    margin-top: 8px;
-  }
+  .menucontainer .space-y-2 > * + * { margin-top: 8px; }
   .menucontainer .pl-6{
     display: flex;
     flex-direction: column;
@@ -569,21 +520,15 @@
     width: 350px;
     background-color: #f1ecec;
   }
-  .signupbtn{
-    margin: 0 auto;
-  }
-  .ahac{
-    margin-top: 20px;
-    font-size: 18px;
-  }
+  .signupbtn{ margin: 0 auto; }
+  .ahac{ margin-top: 20px; font-size: 18px; }
 }
 
 /* SmartPhone */
 @media (max-width: 480px) {
   body{
-      padding: 0;
-      margin: 0;
-  }
+ padding: 0;
+ margin: 0; }
   .carocontainer {
     flex-direction: column;
     align-items: center;
@@ -598,19 +543,11 @@
       width: 100%;
       padding: 0;
   }
-  .slider {
-    height: 250px;
-    border-radius: 0.25rem;
+  .slider { height: 250px; border-radius: 0.25rem;
   }
-  .slider-nav {
-    left: 50%; 
-    margin-top: 16rem; 
-
-  }
-  .slider-nav a {
-    height: 0.5rem;
-    width: 0.5rem;
-  }
+  .slider-nav { left: 50%;  margin-top: 16rem; 
+ }
+  .slider-nav a { height: 0.5rem; width: 0.5rem; }
   .card-container {
       border: 1px solid #ccc;
       border-radius: 12px;
@@ -628,8 +565,7 @@
       object-fit: cover;
   }
   .card-body {
-      padding: 8px;
-  }
+ padding: 8px; }
   .card-title {
       font-size: 1.3rem;
       font-weight: 600;
@@ -637,8 +573,7 @@
       color: #333;
   }
   .card-body strong{
-      margin: 0;
-  }
+ margin: 0; }
   .card-text {
       font-size: 0.75rem;
       color: #666;
@@ -655,8 +590,7 @@
       transition: background-color 0.2s ease;
   } 
   .card-button:hover {
-      background-color: #0056b3;
-  }
+ background-color: #0056b3; }
   .categories{
       margin: 0px;
       display: flex;
@@ -686,9 +620,8 @@
       margin: 0;
   }
   .offercontainer h3{
-      font-size: 30px;
-      font-weight: bold;
-  }
+ font-size: 30px;
+ font-weight: bold; }
   .offercontainer p{
       font-size: 14px;
       font-weight: bold;
@@ -700,8 +633,7 @@
       color: yellow;
   }
   .offercontainer #star{
-      color: rgba(0, 0, 0, 0.358);
-  }
+ color: rgba(0, 0, 0, 0.358); }
   .offercontainer input{
       width: 120px;
       border-radius: 10px;
@@ -713,9 +645,8 @@
       transition: transform 0.3s ease;
   }
   .offercontainer input:hover{
-      background-color: blue;
-      transform: scale(0.9);
-  }
+ background-color: blue;
+ transform: scale(0.9); }
   .newsletter{
       margin:20px;
       padding: 20px;
@@ -735,8 +666,7 @@
       margin-bottom: 15px;
   }
   .newsletter p{
-      font-size:12px;
-  }
+ font-size:12px; }
   .newsletter .emailbox{
       width: 300px;
       max-width: 350px;
@@ -779,23 +709,18 @@
   footer .aboutus,
   footer .consumers,
   footer .programs {
-      display: flex;
-      flex-direction: column;
-  }
+ display: flex;
+ flex-direction: column; }
   footer p {
-      font-size: 16px;
-      font-weight: bold;
-  }
+ font-size: 16px;
+ font-weight: bold; }
   footer a {
       text-decoration: none;
       color: black;
       margin-bottom: 5px;
       font-size: 14px;
   }
-  .nav-holder .my-brand{
-  text-decoration: none;
-  color:white;
-  }  
+  .nav-holder .my-brand{ text-decoration: none; color:white; }  
   .offerPopupContainer {
   background: linear-gradient(#2144c3,  #8797e0);
   height: 180px;
@@ -812,13 +737,8 @@
   from { opacity: 0; transform: translateY(20px);}
   to{opacity: 1; transform: translateY(0px);}
   }
-  .offerPopupContent{
-  font-size: 14px;
-  padding: 10px;
-  }
-  .offerPopupContent h3{
-  font-size: 22px;
-  }
+  .offerPopupContent{ font-size: 14px; padding: 10px; }
+  .offerPopupContent h3{ font-size: 22px; }
   .offerPopupContent .ccbtn{
     background-color: #c3ff00;
     color: rgb(67, 67, 67);
@@ -851,9 +771,7 @@
   box-shadow: 0 0 20px #0b35dd76 ;
   border: 1px solid #007bff0e;
   }
-  .ulogout{
-    color: red;
-  }
+  .ulogout{ color: red; }
 
 
   .menucontainer {
@@ -868,18 +786,11 @@
     margin-bottom: 10px;
   }
 
-  .upload-list, .upload-list a {
-    font-size: 14px;
-    padding: 8px;
-  }
+  .upload-list, .upload-list a { font-size: 14px; padding: 8px; }
 
-  .menucontainer .pl-6 {
-    padding-left: 10px;
-  }
+  .menucontainer .pl-6 { padding-left: 10px; }
 
-  .menucontainer .space-y-2 > * + * {
-    margin-top: 8px;
-  }
+  .menucontainer .space-y-2 > * + * { margin-top: 8px; }
   .menucontainer .pl-6{
     display: flex;
     flex-direction: column;
@@ -892,13 +803,8 @@
     width: 350px;
     background-color: #f1ecec;
   }
-  .signupbtn{
-    margin: 0 auto;
-  }
-  .ahac{
-    margin-top: 20px;
-    font-size: 18px;
-  }
+  .signupbtn{ margin: 0 auto; }
+  .ahac{ margin-top: 20px; font-size: 18px; }
 }
 
 
