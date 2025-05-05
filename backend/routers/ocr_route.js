@@ -6,8 +6,6 @@ import { verifyToken } from '../middleware/verifyToken.js'
 
 const router = express.Router();
 
-
-
 const upload = multer({ dest: 'uploads/' });
 
 router.post('/upload-ocr', verifyToken, upload.single('image'), extractProductDataFromImage);

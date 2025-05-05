@@ -21,7 +21,7 @@ export const upload = multer({ storage });
 
 export const createProduct = handleAsyncError(async (req, res) => {
   try {
-    
+
 
     // Validate image upload
     if (!req.files || req.files.length === 0) {
@@ -99,111 +99,109 @@ export const createProduct = handleAsyncError(async (req, res) => {
 // SEARCH PRODUCTS BY KEYWORDS
 export const searchProductsByKeyword = handleAsyncError(async (req, res, next) => {
 
-    const apiFeatures = new APIFunctionality(Products.find(), req.query).search().filter();
+  const apiFeatures = new APIFunctionality(Products.find(), req.query).search().filter();
 
-    const allProducts = await apiFeatures.query;
+  const allProducts = await apiFeatures.query;
 
-    if (!allProducts || allProducts.length === 0) {
-        return next(new HandleError("No products found", 404));
-    }
+  if (!allProducts || allProducts.length === 0) {
+    return next(new HandleError("No products found", 404));
+  }
 
-    res.status(200).json({
-        success: true,
-        totalProduct: allProducts.length,
-        message: "Products fetched successfully",
-        data: allProducts
-    });
+  res.status(200).json({
+    success: true,
+    totalProduct: allProducts.length,
+    message: "Products fetched successfully",
+    data: allProducts
+  });
 });
 
 // GET ALL PRODUCT
-export const getAllProducts = async(req, res, next) => {
-    try {
-        const products = await Product.find();
-        if(!products){
-            return next(new HandleError("Products not found", 404));
-        }
-        res.status(200).json({ 
-            success: true,
-            message: "Products found successfully.",
-            data: products
-         })
-    } catch (error) {
-        console.log(error)
+export const getAllProducts = async (req, res, next) => {
+  try {
+    const products = await Product.find();
+    if (!products) {
+      return next(new HandleError("Products not found", 404));
     }
+    res.status(200).json({
+      success: true,
+      message: "Products found successfully.",
+      data: products
+    })
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 // UPDATE PRODUCT
-// UPDATE PRODUCT
 export const updateProduct = async (req, res, next) => {
-    try {
-        const updatedFields = req.body;
+  try {
+    const updatedFields = req.body;
 
-        // Optional: Prevent updating certain fields
-        // delete updatedFields.createdAt;
+    // Optional: Prevent updating certain fields
+    // delete updatedFields.createdAt;
 
-        const updatedProduct = await Product.findByIdAndUpdate(req.params.id, updatedFields, {
-            new: true, // return the updated document
-            runValidators: true, // run schema validations
-        });
+    const updatedProduct = await Product.findByIdAndUpdate(req.params.id, updatedFields, {
+      new: true, // return the updated document
+      runValidators: true, // run schema validations
+    });
 
-        if (!updateProduct) {
-            return res.status(404).json({
-                success: false,
-                message: "Product not found"
-            });
-        }
-
-        res.status(200).json({
-            success: true,
-            message: "Product updated successfully",
-            data: updatedProduct
-        });
-
-    } catch (error) {
-        if (error.name === "ValidationError") {
-            const firstError = Object.values(error.errors)[0].message;
-            return res.status(400).json({
-                success: false,
-                message: firstError
-            });
-        }
-
-        console.error("Update product error:", error);
-        next(error);
+    if (!updateProduct) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found"
+      });
     }
-};
 
+    res.status(200).json({
+      success: true,
+      message: "Product updated successfully",
+      data: updatedProduct
+    });
+
+  } catch (error) {
+    if (error.name === "ValidationError") {
+      const firstError = Object.values(error.errors)[0].message;
+      return res.status(400).json({
+        success: false,
+        message: firstError
+      });
+    }
+
+    console.error("Update product error:", error);
+    next(error);
+  }
+};
 
 // DELETE PRODUCT
 export const deleteProduct = async (req, res, next) => {
-    try {
-        const product = await Product.findByIdAndDelete(req.params.id);
-        if (!product) {
-            return next(new HandleError("Product not found", 404));
-        }
-        res.status(200).json({
-            success: true,
-            message: "Product deleted successfully",
-            data: product
-        });
-    } catch (error) {
-        next(error);
+  try {
+    const product = await Product.findByIdAndDelete(req.params.id);
+    if (!product) {
+      return next(new HandleError("Product not found", 404));
     }
+    res.status(200).json({
+      success: true,
+      message: "Product deleted successfully",
+      data: product
+    });
+  } catch (error) {
+    next(error);
+  }
 }
 
 // GET SINGLE PRODUCT
 export const getSingleProduct = async (req, res, next) => {
-    try {
-        const product = await Product.findById(req.params.id);
-        if (!product) {
-            return next(new HandleError("Product not found", 404));
-        }
-        res.status(200).json({
-            success: true,
-            message: "Product fetched successfully",
-            data: product
-        });
-    } catch (error) {
-        next(error);
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+      return next(new HandleError("Product not found", 404));
     }
+    res.status(200).json({
+      success: true,
+      message: "Product fetched successfully",
+      data: product
+    });
+  } catch (error) {
+    next(error);
+  }
 }

@@ -16,7 +16,6 @@ export const sendVarificationEmail = async (email, varificationToken) => {
     }
 }
 
-
 export const sendWelcomeEmail = async (email, name) => {
 
     try {
@@ -33,7 +32,6 @@ export const sendWelcomeEmail = async (email, name) => {
         
     }
 }
-
 
 export const sendPasswordResetEmail = async (email, resetURL) => {
     try {

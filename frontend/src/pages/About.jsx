@@ -1,3 +1,6 @@
+
+
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './About.css';
@@ -27,36 +30,31 @@ function About() {
             case 'company':
                 return (
                     <>
-                        <div className="logocontainer text-center">
-                            <img src="/images/logo.png" alt="Logo" className="img-fluid" />
+                        <div className="logocontainer">
+                            <img src="/images/logo.png" alt="Logo" />
                             <h1>ListKaro</h1>
                         </div>
                         <hr />
-                        <div className="companydetails container">
+                        <div className="companydetails">
                             <p>
                                 <strong>ListKaro</strong> is your one-stop online destination for all your grocery and food essentials.
-                                From fresh — <br />
-                                <b>dairy products and pantry staples to canned goods, snacks, chocolates, cakes</b>, and more —<br />
-                                we bring everything you need right to your doorstep.
+                                From fresh — <br /> <b>dairy products and pantry staples to canned goods, snacks, chocolates, cakes,</b> and more<br />
+                                we bring everything you need right to your doorstep.<br /><br />
+                                <ul>
+                                    <li>Enjoy <strong>free delivery</strong> on orders above ₹499</li>
+                                    <li>Superfast delivery within <strong>45 minutes</strong></li>
+                                    <li><strong>Upload Your Grocery List</strong> & Buy Everything at Once</li>
+                                    <li>Exclusive <strong>Discounts</strong> on All Dairy Products!</li>
+                                </ul><br />
+                                What makes ListKaro truly unique is our <strong>smart list upload</strong> feature —
+                                customers can simply upload an image or file of their handwritten or typed shopping list,<br />
+                                and our AI technology will automatically detect the items and create a cart, ready for checkout in seconds.
+                                Say goodbye to manual searches and hello to effortless shopping!<br />
+                                We support multiple secure payment methods through trusted partners like <strong>Visa, PhonePe, Paytm, UPI</strong>, and more,
+                                making your checkout smooth and reliable.<br />
+                                With ListKaro, shopping is not just faster — it's smarter.
                             </p>
-                            <ul>
-                                <li><strong>Free delivery</strong> on orders above ₹499</li>
-                                <li><strong>Delivery in 45 minutes</strong></li>
-                                <li><strong>Upload Your Grocery List</strong> to auto-create a cart</li>
-                                <li><strong>Exclusive Discounts</strong> on Dairy Products</li>
-                            </ul>
-                            <p>
-                                What makes ListKaro unique is the <strong>smart list upload</strong> — just upload your grocery list and our AI creates your cart instantly.
-                                We support secure payments: <strong>Visa, PhonePe, Paytm, UPI</strong>, etc. ListKaro makes shopping not just faster — it's smarter.
-                            </p>
-                            <div className="text-center">
-                                <img
-                                    src={LightMode ? '/images/hq.png' : '/images/hqnight.png'}
-                                    alt="Headquarters"
-                                    className="img-fluid mt-4"
-                                    style={{ maxHeight: '400px' }}
-                                />
-                            </div>
+                            <img src={LightMode ? '/images/hq.png' : '/images/hqnight.png'} alt="Headquarters" height="600px" width="600px" />
                         </div>
                     </>
                 );

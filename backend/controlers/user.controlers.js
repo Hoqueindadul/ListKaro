@@ -14,10 +14,10 @@ export const signup = async (req, res) => {
         }
 
         // Check if the user already exists
-        const userAlreadyExists = await User.findOne({email})
+        const userAlreadyExists = await User.findOne({ email })
         if (userAlreadyExists) {
             return res.status(400).json({
-                success: false, 
+                success: false,
                 message: "User already exists",
             })
         }
@@ -27,9 +27,9 @@ export const signup = async (req, res) => {
         const varificationToken = Math.floor(100000 + Math.random() * 900000).toString();
         const user = new User({
             name,
-            email, 
-            phone, 
-            password: hashPassword, 
+            email,
+            phone,
+            password: hashPassword,
             varificationToken,
             varificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 1000 // 24 hours
         })
@@ -38,18 +38,18 @@ export const signup = async (req, res) => {
         await user.save();
 
         // generate jwt token and set in cookie
-       generateTokenAndSetCookie(res, user._id);
+        generateTokenAndSetCookie(res, user._id);
 
         // Send the verification email
         await sendVarificationEmail(user.email, varificationToken);
         res.status(201).json({
-        success: true,
-        message: "User created successfully",
-        user: {
-            ...user._doc,
-            password: undefined,
-        }
-       })
+            success: true,
+            message: "User created successfully",
+            user: {
+                ...user._doc,
+                password: undefined,
+            }
+        })
     } catch (error) {
         res.status(500).json({
             success: false,
@@ -58,16 +58,15 @@ export const signup = async (req, res) => {
     }
 }
 
-
 // Login Controller
 export const login = async (req, res) => {
     // take the value of email and password from the request body
-   
+
     const { email, password } = req.body;
     try {
-        const user = await User.findOne({email});
+        const user = await User.findOne({ email });
         // and check if the user exists in the database
-        if(!user){
+        if (!user) {
             return res.status(400).json({
                 success: false,
                 message: "Invalid credentials"
@@ -76,7 +75,7 @@ export const login = async (req, res) => {
 
         // check password is valid or not
         const isPasswordValid = await bcryptjs.compare(password, user.password);
-        if(!isPasswordValid){
+        if (!isPasswordValid) {
             return res.status(400).json({
                 success: false,
                 message: "Invalid credentials"
@@ -104,7 +103,6 @@ export const login = async (req, res) => {
     }
 }
 
-
 // Logout Controller
 export const logout = async (req, res) => {
     try {
@@ -113,29 +111,28 @@ export const logout = async (req, res) => {
 
         // send success response
         res.status(200).json({
-            success:true,
+            success: true,
             message: "Logged out successfully",
         })
     } catch (error) {
-        
+
     }
 }
-
 
 // Email Varification Controller
 export const varifyEmail = async (req, res) => {
     // take the value of verification code from the request body
-    const {code} = req.body;
+    const { code } = req.body;
     try {
         const user = await User.findOne({
             varificationToken: code,
-            varificationTokenExpiresAt: { $gt: Date.now()}
+            varificationTokenExpiresAt: { $gt: Date.now() }
         })
-       
+
         // check code and user exist or not
         if (!user) {
             return res.status(400).json({
-                success:false,
+                success: false,
                 message: "Invalid or expired verification code"
             })
         }
@@ -159,20 +156,19 @@ export const varifyEmail = async (req, res) => {
     } catch (error) {
         console.log("error in varifyEmail", error);
         res.status(500).json({
-            success:false,
+            success: false,
             message: "server error",
             error: error.message,
         })
     }
 }
 
-
 // Forgot Password Controller
-export const forgotPassword = async(req, res) => {
-    const {email} = req.body;
+export const forgotPassword = async (req, res) => {
+    const { email } = req.body;
     try {
-        const user = await User.findOne({email});
-        if (!user){
+        const user = await User.findOne({ email });
+        if (!user) {
             return res.status(400).json({
                 success: false,
                 message: "User not found"
@@ -192,27 +188,27 @@ export const forgotPassword = async(req, res) => {
         await sendPasswordResetEmail(user.email, `${process.env.CLIENT_URL}/reset-password/${resetToken}`)
 
         res.status(200).json({
-            success: true, 
+            success: true,
             message: "Password reset link sent to your email."
         })
     } catch (error) {
         console.log("error in forgotPassword", error)
-        res.status(400).json({success:false, message: error.message})
+        res.status(400).json({ success: false, message: error.message })
     }
 }
 
-
-export const resetPassword = async(req, res) => {
+// Reset Password Controller
+export const resetPassword = async (req, res) => {
     try {
-        const {token} = req.params;
-        const {password} = req.body
+        const { token } = req.params;
+        const { password } = req.body
 
         const user = await User.findOne({
             resetPasswordToken: token,
-            resetPasswordExpiresAt: {$gt: Date.now()}
+            resetPasswordExpiresAt: { $gt: Date.now() }
         })
 
-        if(!user){
+        if (!user) {
             return res.status(400).json({
                 success: false,
                 message: "Invalid or expired reset token"
@@ -226,7 +222,7 @@ export const resetPassword = async(req, res) => {
         user.resetPasswordToken = undefined;
         user.resetPasswordExpiresAt = undefined;
         await user.save();
-        
+
         await sendResetSuccessEmail(user.email);
 
         res.status(200).json({
@@ -235,17 +231,17 @@ export const resetPassword = async(req, res) => {
         })
     } catch (error) {
         console.log("Error in resetPassword: ", error)
-        res.status(400).json({success:false, message: error.message})
+        res.status(400).json({ success: false, message: error.message })
     }
 }
 
 // Check Auth Controller
 // This controller is used to check if the user is authenticated or not
-export const checkAuth = async(req, res) => {
+export const checkAuth = async (req, res) => {
     try {
         // Check if the user is authenticated or not
         const user = await User.findById(req.userId).select("-password");
-        if(!user){
+        if (!user) {
             return res.status(401).json({
                 success: false,
                 message: "User not found"
@@ -255,11 +251,11 @@ export const checkAuth = async(req, res) => {
             user: {
                 ...user._doc,
                 password: undefined,
-                isVerified: user.isVarified  
+                isVerified: user.isVarified
             }
         })
     } catch (error) {
         console.log("Error in checkAuth: ", error)
-        res.status(400).json({success:false, message: error.message})
+        res.status(400).json({ success: false, message: error.message })
     }
 }

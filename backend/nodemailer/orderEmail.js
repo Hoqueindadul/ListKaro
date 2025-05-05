@@ -4,24 +4,23 @@ import express from "express";
 const orderEmail = express.Router();
 
 orderEmail.post("/sendconfirmationemail", async (req, res) => {
-    const { to, name, items, total, address, zip,email, phone } = req.body;
+    const { to, name, items, total, address, zip, email, phone } = req.body;
 
+    const itemList = items.map(item => `${item.name} - ₹${item.price}`).join("<br>");
 
-  const itemList = items.map(item => `${item.name} - ₹${item.price}`).join("<br>");
+    const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: process.env.Company_Mail,
+            pass: process.env.Company_Pass,
+        },
+    });
 
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.Company_Mail,
-      pass: process.env.Company_Pass,
-    },
-  });
-
-  const mailOptions = {
-    from: `"ListKaro" <${process.env.Company_Mail}>`,
-    to: `${to}, ${process.env.Company_Mail}`, 
-    subject: "Order Confirmation from Listkaro",
-    html: `
+    const mailOptions = {
+        from: `"ListKaro" <${process.env.Company_Mail}>`,
+        to: `${to}, ${process.env.Company_Mail}`,
+        subject: "Order Confirmation from Listkaro",
+        html: `
         <div style="background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%); color: white; max-width: 500px; font-size: 18px; padding: 20px; border-radius: 30px;">
             <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 20px;">
                 <img src="https://i.imgur.com/R2aSKKN.png" alt="Logo" height="60" width="60">
@@ -66,15 +65,14 @@ orderEmail.post("/sendconfirmationemail", async (req, res) => {
         </div>
         `,
 
-  };
-
-  try {
-    await transporter.sendMail(mailOptions);
-    res.status(200).json({ message: "Confirmation email sent." });
-  } catch (error) {
-    console.error("Email error:", error);
-    res.status(500).json({ message: "Failed to send email" });
-  }
+    };
+    try {
+        await transporter.sendMail(mailOptions);
+        res.status(200).json({ message: "Confirmation email sent." });
+    } catch (error) {
+        console.error("Email error:", error);
+        res.status(500).json({ message: "Failed to send email" });
+    }
 });
 
 export default orderEmail;
