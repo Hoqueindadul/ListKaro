@@ -325,7 +325,6 @@ export const useBulkUploadStore = create((set) => ({
                 withCredentials: true,
             });
             set({ loading: false });
-            return response
             console.log("Bulk upload successful", response.data);
         } catch (error) {
             set({ error: "Failed to bulk upload products", loading: false });

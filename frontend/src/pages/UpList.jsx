@@ -131,22 +131,40 @@ function UpList() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
         if (!isAuthenticated) {
             toast.warn("Please log in to upload.");
             navigate('/login');
             return;
         }
-
+    
         try {
-            await useBulkUploadStore.getState().bulkUploadProducts(productInputs);
-            toast.success("Bulk upload successful!");
-            setProductInputs([{ name: '', quantity: '' }]);
+            const response = await useBulkUploadStore.getState().bulkUploadProducts(productInputs);
+    
+            // Assuming the store method returns the actual API response
+            if (response?.data) {
+                const { addedItems, notFoundItems } = response.data;
+    
+                if (addedItems.length > 0) {
+                    toast.success(`Uploaded ${addedItems.length} product(s) successfully.`);
+                }
+    
+                if (notFoundItems.length > 0) {
+                    const unfoundNames = notFoundItems.map(item => `"${item.name}"`).join(", ");
+                    toast.warn(`Some products not found: ${unfoundNames}`);
+                }
+    
+                setProductInputs([{ name: '', quantity: '' }]);
+            } else {
+                toast.error("Unexpected response from the server.");
+            }
+    
         } catch (error) {
             toast.error("Failed to bulk upload products.");
             console.error("Bulk upload error:", error);
         }
     };
+    
 
     return (
         <>
@@ -245,7 +263,7 @@ function UpList() {
                     </div>
                 </div>
 
-                <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
+                
             </div>
         </>
     );

@@ -48,9 +48,12 @@ const ShoppingCart = () => {
         }
     };
     const originalPrice = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-    const savings = cartItems.length > 0 ? 299 : 0;
-    const storePickup = cartItems.length > 0 ? 99 : 0;
-    const tax = cartItems.length > 0 ? 799 : 0;
+    // const savings = cartItems.length > 0 ? 299 : 0;
+    // const storePickup = cartItems.length > 0 ? 99 : 0;
+    // const tax = cartItems.length > 0 ? 799 : 0;
+    const savings =  0;
+    const storePickup = 0;
+    const tax = 0;
     const total = originalPrice - savings + storePickup + tax;
 
     return (
