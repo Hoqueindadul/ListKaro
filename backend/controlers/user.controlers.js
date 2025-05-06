@@ -7,56 +7,61 @@ import { sendVarificationEmail, sendWelcomeEmail, sendPasswordResetEmail, sendRe
 // Signup Controller
 export const signup = async (req, res) => {
     try {
-        const { name, email, phone, password } = req.body;
+        const { name, email, phone, password, role } = req.body;
+
         // Validate the request body
         if (!name || !email || !phone || !password) {
             throw new Error("Please fill all the fields");
         }
 
         // Check if the user already exists
-        const userAlreadyExists = await User.findOne({ email })
+        const userAlreadyExists = await User.findOne({ email });
         if (userAlreadyExists) {
             return res.status(400).json({
                 success: false,
                 message: "User already exists",
-            })
+            });
         }
 
         // Hash the password
         const hashPassword = await bcryptjs.hash(password, 10);
         const varificationToken = Math.floor(100000 + Math.random() * 900000).toString();
+
         const user = new User({
             name,
             email,
             phone,
             password: hashPassword,
             varificationToken,
-            varificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 1000 // 24 hours
-        })
+            varificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 1000, // 24 hours
+            role: role || "user"  // ← If role is provided (even "admin"), use it; else default to "user"
+        });
 
-        // save into database
+        // Save to database
         await user.save();
 
-        // generate jwt token and set in cookie
+        // Set cookie
         generateTokenAndSetCookie(res, user._id);
 
-        // Send the verification email
+        // Send verification email
         await sendVarificationEmail(user.email, varificationToken);
+
         res.status(201).json({
             success: true,
             message: "User created successfully",
             user: {
                 ...user._doc,
                 password: undefined,
-            }
-        })
+            },
+        });
     } catch (error) {
         res.status(500).json({
             success: false,
             message: error.message,
-        })
+        });
     }
-}
+};
+
 
 // Login Controller
 export const login = async (req, res) => {

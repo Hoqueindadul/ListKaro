@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button, Form, Spinner } from "react-bootstrap";
 import { useProductStore } from "../store/authStore";
+import { toast } from 'react-toastify';
+
 import "./Dashboard.css";
 
 export default function Dashboard() {
@@ -37,7 +39,8 @@ export default function Dashboard() {
 
     const handleDelete = async (productId) => {
         if (!window.confirm("Are you sure you want to delete this product?")) return;
-        await deleteProduct(productId);
+        await deleteProduct(productId)
+        toast.success("Product deleted successfully!")
     };
 
     const handleInputChange = (e) => {
@@ -75,8 +78,9 @@ export default function Dashboard() {
         formData.append("price", newProduct.price);
         formData.append("category", newProduct.category);
         formData.append("stock", newProduct.stock);
-        formData.append("quantityValue", newProduct.quantityValue);
-        formData.append("quantityUnit", newProduct.quantityUnit);
+        formData.append("quantity.value", newProduct.quantityValue);
+        formData.append("quantity.unit", newProduct.quantityUnit);
+
 
         Array.from(selectedImages).forEach((file) => {
             formData.append("images", file);
@@ -84,9 +88,11 @@ export default function Dashboard() {
 
         try {
             if (isEditing) {
-                await updateProduct(editingProductId, formData);
+               const response = await updateProduct(editingProductId, formData);
+                toast.success(response.message || "Product updated successfully!");
             } else {
-                await createProduct(formData);
+                const response = await createProduct(formData);
+                toast.success(response.message || "Product created successfully!")
             }
 
             await fetchProducts();
@@ -94,6 +100,10 @@ export default function Dashboard() {
             resetForm();
         } catch (err) {
             console.error("Upload/Update Error:", err);
+            const errorMessage =
+            err.message || "Something went wrong. Please try again.";
+
+            toast.error(errorMessage);
         }
     };
 
@@ -246,7 +256,6 @@ export default function Dashboard() {
                     <p>No products available.</p>
                 )}
             </div>
-
             <Modal show={showModal} onHide={() => setShowModal(false)}>
                 <Modal.Header closeButton>
                     <Modal.Title>{isEditing ? "Update Product" : "Add Product"}</Modal.Title>

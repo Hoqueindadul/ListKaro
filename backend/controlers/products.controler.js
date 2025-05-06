@@ -35,8 +35,8 @@ export const createProduct = handleAsyncError(async (req, res) => {
       price,
       category,
       stock,
-      quantityValue,
-      quantityUnit
+      ["quantity.value"]: quantityValue,
+      ["quantity.unit"]: quantityUnit
     } = req.body;
 
     if (
@@ -135,17 +135,24 @@ export const getAllProducts = async (req, res, next) => {
 // UPDATE PRODUCT
 export const updateProduct = async (req, res, next) => {
   try {
-    const updatedFields = req.body;
+    const updatedFields = { ...req.body };
 
-    // Optional: Prevent updating certain fields
-    // delete updatedFields.createdAt;
+    // Reconstruct nested quantity object from flat fields
+    if (req.body["quantity.value"] && req.body["quantity.unit"]) {
+      updatedFields.quantity = {
+        value: req.body["quantity.value"],
+        unit: req.body["quantity.unit"]
+      };
+      delete updatedFields["quantity.value"];
+      delete updatedFields["quantity.unit"];
+    }
 
     const updatedProduct = await Product.findByIdAndUpdate(req.params.id, updatedFields, {
       new: true, // return the updated document
       runValidators: true, // run schema validations
     });
 
-    if (!updateProduct) {
+    if (!updatedProduct) {
       return res.status(404).json({
         success: false,
         message: "Product not found"
@@ -171,6 +178,7 @@ export const updateProduct = async (req, res, next) => {
     next(error);
   }
 };
+
 
 // DELETE PRODUCT
 export const deleteProduct = async (req, res, next) => {

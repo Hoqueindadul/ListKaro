@@ -239,7 +239,7 @@ export const useProductStore = create((set) => ({
                 products: [...state.products, response.data.product],
                 loading: false,
             }));
-            console.log("Product created successfully", response.data);
+            return response.data
         } catch (error) {
             set({ error: "Failed to create product", loading: false });
             console.error("Error creating product:", error);
@@ -278,6 +278,7 @@ export const useProductStore = create((set) => ({
                 ),
 
             }));
+            return response.data;
         } catch (error) {
             console.error("Error updating product:", error);
             set({ error: error.message });
