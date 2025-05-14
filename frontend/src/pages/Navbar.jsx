@@ -3,8 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import SignUp from "./Signup";
 import { useAuthStore } from '../store/authStore';
 import { ShoppingCart, Menu, X, User, Upload, Info, Package, LogOut } from 'lucide-react';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import toast from 'react-hot-toast';
 import { useCartStore } from "../store/authStore";
 import './Home.css';
 import './HomeDark.css';
@@ -227,7 +226,7 @@ export default function Navbar() {
                         </div>
                     </div>
                 )}
-                <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
+                
             </nav>
 
             <SignUp showPopup={showPopup} setShowPopup={setShowPopup} />

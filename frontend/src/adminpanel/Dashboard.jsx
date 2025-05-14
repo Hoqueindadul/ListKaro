@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button, Form, Spinner } from "react-bootstrap";
 import { useProductStore } from "../store/authStore";
-import { toast } from 'react-toastify';
+import toast from 'react-hot-toast';
 
 import "./Dashboard.css";
 

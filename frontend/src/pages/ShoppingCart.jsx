@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import '../pages/ShoppingCart.css';
 import { useCartStore, useAuthStore } from "../store/authStore";
+import toast from 'react-hot-toast';
 
 const ShoppingCart = () => {
     const {
@@ -38,7 +39,12 @@ const ShoppingCart = () => {
     const handleCheckout = () => {
         if (!isAuthenticated) {
             navigate("/login", { state: { from: location } }); 
-        } else {
+        }
+        else if (cartItems.length === 0){
+            toast.success("Shope products then go to further process!")
+            navigate("/products")
+        } 
+        else {
             navigate("/order", {
                 state: {
                     cartItems,

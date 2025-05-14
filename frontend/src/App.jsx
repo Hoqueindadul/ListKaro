@@ -1,8 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import toast, { Toaster } from 'react-hot-toast';
 import './App.css'
 
 import Home from './pages/Home'
@@ -52,9 +51,14 @@ function AppContent() {
           <Route path="/order" element={<OrderPage />} />
           <Route path="/orderplaced" element={<Placed />} />
         </Routes>
-        <ToastContainer position="top-right" autoClose={3000} />
+        <Toaster
+          position="top-right"
+          reverseOrder={false}
+        />
+
+
       </div>
-      
+
     </>
   );
 }

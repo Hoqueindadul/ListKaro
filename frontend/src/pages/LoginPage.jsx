@@ -2,8 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
 import { Mail, Lock, Loader } from "lucide-react";
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import toast from 'react-hot-toast';
 
 import "./LoginPage.css";
 
@@ -73,7 +72,7 @@ const LoginPage = () => {
 					Don't have an account? <a href="/register">Sign up</a>
 				</p>
 			</div>
-			<ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
+			
 		</div>
 		</>
     );
