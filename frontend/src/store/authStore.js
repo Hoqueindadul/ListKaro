@@ -5,7 +5,7 @@ import { DEPLOYMENT_URL } from "../deploy-backend-url";
 
 const API_URL = import.meta.env.MODE === "development"
     ? "http://localhost:5000/api/auth"
-    : `${DEPLOYMENT_URL}api/auth`;
+    : `${DEPLOYMENT_URL}/api/auth`;
 
 axios.defaults.withCredentials = true;
 
@@ -168,7 +168,7 @@ export const useAuthStore = create(
 
 const CART_API_URL = import.meta.env.MODE === "development"
     ? "http://localhost:5000/api/cart"
-    : `${DEPLOYMENT_URL}api/cart`;
+    : `${DEPLOYMENT_URL}/api/cart`;
 
 export const useCartStore = create((set) => ({
     cartItems: [],
@@ -220,7 +220,7 @@ export const useCartStore = create((set) => ({
 
 const PRODUCT_API_URL = import.meta.env.MODE === "development"
     ? "http://localhost:5000/api/products/"
-    : `${DEPLOYMENT_URL}api/products/`;
+    : `${DEPLOYMENT_URL}/api/products/`;
 
 export const useProductStore = create((set) => ({
     products: [],
@@ -316,7 +316,7 @@ export const useProductStore = create((set) => ({
 
 const ONE_CLICK_BUY_URL = import.meta.env.MODE === "development"
     ? "http://localhost:5000/api/"
-    : `${DEPLOYMENT_URL}api/`;
+    : `${DEPLOYMENT_URL}/api/`;
 
 export const useBulkUploadStore = create((set) => ({
     bulkUploadProducts: async (products) => {
