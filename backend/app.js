@@ -30,6 +30,9 @@ const allowedOrigins = [
   process.env.DEPLOYMENT_CLIENT_URL,
 ];
 
+console.log(allowedOrigins);
+
+
 // Log incoming request origins
 app.use((req, res, next) => {
   const origin = req.headers.origin;
