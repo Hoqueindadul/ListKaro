@@ -322,12 +322,20 @@ export const useBulkUploadStore = create((set) => ({
     bulkUploadProducts: async (products) => {
         set({ loading: true, error: null });
         try {
-            const response = await axios.post(`${ONE_CLICK_BUY_URL}bulk-upload`, { products }, {
-                withCredentials: true,
-            });
+            const token = localStorage.getItem("token"); // 🔑 Get auth token
+            const response = await axios.post(
+                `${ONE_CLICK_BUY_URL}bulk-upload`,
+                { products },
+                {
+                    withCredentials: true,
+                    headers: {
+                        Authorization: `Bearer ${token}`, // 🛡️ Send token
+                    },
+                }
+            );
             set({ loading: false });
             console.log("Bulk upload successful", response.data);
-            return response
+            return response;
         } catch (error) {
             set({ error: "Failed to bulk upload products", loading: false });
             console.error("Error during bulk upload:", error);
