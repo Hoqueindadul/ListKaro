@@ -21,38 +21,42 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI;
-
 const __dirname = path.resolve();
 
 // Allowed origins for CORS
 const allowedOrigins = [
-  process.env.CLIENT_URL,
-  process.env.DEPLOYMENT_CLIENT_URL,
-];
+  process.env.CLIENT_URL,              // http://localhost:5173
+  process.env.DEPLOYMENT_CLIENT_URL    // https://list-karo.vercel.app
+].filter(Boolean); // remove undefined/null
 
-console.log(allowedOrigins);
-
+console.log("🚀 Allowed origins:", allowedOrigins);
 
 // Log incoming request origins
 app.use((req, res, next) => {
   const origin = req.headers.origin;
-  console.log(`Incoming request from origin: ${origin}`);
+  console.log("🌐 Incoming request origin:", origin);
   next();
 });
 
-// CORS config
+// CORS configuration
 app.use(
   cors({
     origin: (origin, callback) => {
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
+        console.warn("❌ CORS Blocked Origin:", origin);
         callback(new Error("Not allowed by CORS"));
       }
     },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
+// Handle preflight requests (OPTION) — very important for CORS
+app.options("*", cors());
 
 // Connect to MongoDB
 connectDB(MONGO_URI);
@@ -61,7 +65,7 @@ connectDB(MONGO_URI);
 app.use(express.json());
 app.use(cookieParser());
 
-// Routes
+// API Routes
 app.use("/api", ocrRoute);
 app.use("/api/cart", cartRoute);
 app.use("/api/search", searchProductRoute);
@@ -72,7 +76,7 @@ app.use("/api", paymentRoute);
 app.use("/api/order", orderRoute);
 app.use("/api", orderEmail);
 
-// Error handler middleware (should be after routes)
+// Error handler (always last route middleware)
 app.use(errorHandleMiddleware);
 
 // Default route
@@ -82,5 +86,5 @@ app.get("/", (req, res) => {
 
 // Start server
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+  console.log(`🚀 Server running on port ${port}`);
 });
