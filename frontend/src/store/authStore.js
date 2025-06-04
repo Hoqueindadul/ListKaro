@@ -326,6 +326,8 @@ export const useBulkUploadStore = create((set) => ({
     set({ loading: true, error: null });
     try {
       const token = localStorage.getItem("token");
+      console.log("token: ", token);
+      
       const formData = new FormData();
       formData.append("image", imageFile);
 
@@ -336,7 +338,7 @@ export const useBulkUploadStore = create((set) => ({
           withCredentials: true,
           headers: {
             Authorization: `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data',
+            'Content-Type': 'application/json',
           },
         }
       );
