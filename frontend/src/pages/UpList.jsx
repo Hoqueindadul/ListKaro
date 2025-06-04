@@ -133,7 +133,7 @@ function UpList() {
         e.preventDefault();
 
         if (!isAuthenticated) {
-            toast.warn("Please log in to upload.");
+            toast.error("Please log in to upload.");
             navigate('/login');
             return;
         }
@@ -143,8 +143,8 @@ function UpList() {
         try {
             const response = await useBulkUploadStore.getState().bulkUploadProducts(productInputs);
 
-            if (response?.data) {
-                const { addedItems, notFoundItems } = response.data;
+            if (response) {
+                const { addedItems, notFoundItems } = response;
 
                 if (addedItems.length > 0) {
                     toast.success(`Uploaded ${addedItems.length} product(s) successfully.`);

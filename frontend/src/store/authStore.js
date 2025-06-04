@@ -315,30 +315,43 @@ export const useProductStore = create((set) => ({
 
 
 const ONE_CLICK_BUY_URL = import.meta.env.MODE === "development"
-    ? "http://localhost:5000/api/"
-    : `${DEPLOYMENT_URL}/api/`;
+  ? "http://localhost:5000/api/"
+  : `${DEPLOYMENT_URL}/api/`;
 
 export const useBulkUploadStore = create((set) => ({
-    bulkUploadProducts: async (products) => {
-        set({ loading: true, error: null });
-        try {
-            const token = localStorage.getItem("token"); // Get auth token
-            const response = await axios.post(
-                `${ONE_CLICK_BUY_URL}bulk-upload`,
-                { products },
-                {
-                    withCredentials: true,
-                    headers: {
-                        Authorization: `Bearer ${token}`, // Send token
-                    },
-                }
-            );
-            set({ loading: false });
-            console.log("Bulk upload successful", response.data);
-            return response;
-        } catch (error) {
-            set({ error: "Failed to bulk upload products", loading: false });
-            console.error("Error during bulk upload:", error);
+  loading: false,
+  error: null,
+
+  bulkUploadProducts: async (products) => {
+    set({ loading: true, error: null });
+
+    try {
+      const token = localStorage.getItem("token");
+      console.log("Token used for request:", token);
+
+      if (!token) {
+        throw new Error("No token found. Please login first.");
+      }
+
+      const response = await axios.post(
+        `${ONE_CLICK_BUY_URL}bulk-upload`,
+        { products },
+        {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-    },
+      );
+
+      set({ loading: false });
+      console.log("Bulk upload successful", response.data);
+      return response.data;
+
+    } catch (error) {
+      const message = error.response?.data?.message || error.message;
+      console.error("Error during bulk upload:", message);
+      set({ error: message, loading: false });
+    }
+  },
 }));

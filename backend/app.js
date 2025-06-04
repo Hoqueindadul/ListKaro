@@ -29,12 +29,12 @@ const allowedOrigins = [
   process.env.DEPLOYMENT_CLIENT_URL    // https://list-karo.vercel.app
 ].filter(Boolean); // remove undefined/null
 
-console.log("🚀 Allowed origins:", allowedOrigins);
+// console.log("🚀 Allowed origins:", allowedOrigins);
 
 // Log incoming request origins
 app.use((req, res, next) => {
   const origin = req.headers.origin;
-  console.log("🌐 Incoming request origin:", origin);
+  console.log("Incoming request origin:", origin);
   next();
 });
 
@@ -45,7 +45,7 @@ app.use(
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
-        console.warn("❌ CORS Blocked Origin:", origin);
+        console.warn("CORS Blocked Origin:", origin);
         callback(new Error("Not allowed by CORS"));
       }
     },
@@ -86,5 +86,5 @@ app.get("/", (req, res) => {
 
 // Start server
 app.listen(port, () => {
-  console.log(`🚀 Server running on port ${port}`);
+  console.log(`Server running on port ${port}`);
 });

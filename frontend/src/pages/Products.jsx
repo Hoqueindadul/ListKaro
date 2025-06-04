@@ -3,17 +3,13 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './HomeDark.css';
 import { Star, StarHalf } from 'lucide-react';
-import { DEPLOYMENT_URL } from "../deploy-backend-url";
-
-const API_URL = import.meta.env.MODE === "development"
-    ? "http://localhost:5000/api/products"
-    : `${DEPLOYMENT_URL}/api/products`;
+import { DEPLOYMENT_URL, LOCAL_URL } from "../deploy-backend-url";
 
 const ProductList = () => {
     const [products, setProducts] = useState({});
 
     useEffect(() => {
-        axios.get(`${API_URL}/getAllProducts`, { withCredentials: true })
+        axios.get(`${DEPLOYMENT_URL}/api/products/getAllProducts`, { withCredentials: true })
             .then(res => {
                 const allProducts = res.data.data || [];
                 const grouped = {};
