@@ -2,23 +2,24 @@ import './UpList.css';
 import './UpListDark.css';
 import './UpListSmall.css';
 import { useState } from 'react';
+import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-import { useBulkUploadStore, useAuthStore } from '../store/authStore';
+import { useBulkUploadStore } from '../store/authStore';
+import { useAuthStore } from '../store/authStore';
 
 function UpList() {
     const [ocrText, setOcrText] = useState([]);
     const [productInputs, setProductInputs] = useState([{ name: '', quantity: '' }]);
     const [selectedImage, setSelectedImage] = useState(null);
     const [previewUrl, setPreviewUrl] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [formLoading, setFormLoading] = useState(false); // <-- NEW
     const [errorMsg, setErrorMsg] = useState('');
     const [ocrResult, setOcrResult] = useState(null);
 
     const navigate = useNavigate();
     const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-    const uploadOCRImage = useBulkUploadStore((state) => state.uploadOCRImage);
-    const bulkUploadProducts = useBulkUploadStore((state) => state.bulkUploadProducts);
-    const loading = useBulkUploadStore((state) => state.loading);
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
@@ -48,11 +49,24 @@ function UpList() {
             return;
         }
 
+        const formData = new FormData();
+        formData.append('image', selectedImage);
+
+        setLoading(true);
         setErrorMsg('');
         setOcrResult(null);
 
         try {
-            const response = await uploadOCRImage(selectedImage);
+            const response = await axios.post(
+                'http://localhost:5000/api/upload-ocr',
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                    withCredentials: true,
+                }
+            );
 
             if (response.data?.lines) {
                 const extractedItems = extractItems(response.data.lines);
@@ -64,7 +78,7 @@ function UpList() {
 
             setOcrResult(response.data);
         } catch (error) {
-            console.error('OCR Upload failed:', error);
+            console.error('Upload failed:', error);
             if (error.response && error.response.status === 401) {
                 setErrorMsg('Unauthorized. Please log in again.');
                 toast.error('Unauthorized. Please log in again.');
@@ -72,6 +86,8 @@ function UpList() {
                 setErrorMsg('Upload failed. Please try again.');
                 toast.error('Upload failed. Please try again.');
             }
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -117,13 +133,15 @@ function UpList() {
         e.preventDefault();
 
         if (!isAuthenticated) {
-            toast.error("Please log in to upload.");
+            toast.warn("Please log in to upload.");
             navigate('/login');
             return;
         }
 
+        setFormLoading(true); // <-- start loading
+
         try {
-            const response = await bulkUploadProducts(productInputs);
+            const response = await useBulkUploadStore.getState().bulkUploadProducts(productInputs);
 
             if (response?.data) {
                 const { addedItems, notFoundItems } = response.data;
@@ -145,6 +163,8 @@ function UpList() {
         } catch (error) {
             toast.error("Failed to bulk upload products.");
             console.error("Bulk upload error:", error);
+        } finally {
+            setFormLoading(false); // <-- stop loading
         }
     };
 
@@ -173,7 +193,7 @@ function UpList() {
                                         accept="image/png, image/jpeg"
                                         onChange={handleFileChange}
                                     />
-                                    <button onClick={upload} className="btn btn-primary mt-3 w-100">
+                                    <button onClick={upload} className="btn btn-primary mt-3 w-100" disabled={loading}>
                                         {loading ? 'Uploading...' : 'Upload'}
                                     </button>
                                 </div>
@@ -235,8 +255,8 @@ function UpList() {
                                         <button type="button" onClick={addNewProductField} className="btn btn-outline-success w-100 w-md-auto">
                                             Add New Product +
                                         </button>
-                                        <button type="submit" className="btn btn-primary w-100 w-md-auto">
-                                            Upload
+                                        <button type="submit" className="btn btn-primary w-100 w-md-auto" disabled={formLoading}>
+                                            {formLoading ? "Adding to cart..." : "Upload"}
                                         </button>
                                     </div>
                                 </form>
@@ -244,8 +264,6 @@ function UpList() {
                         </div>
                     </div>
                 </div>
-
-                
             </div>
         </>
     );

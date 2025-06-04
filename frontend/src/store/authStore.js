@@ -317,66 +317,28 @@ export const useProductStore = create((set) => ({
 const ONE_CLICK_BUY_URL = import.meta.env.MODE === "development"
     ? "http://localhost:5000/api/"
     : `${DEPLOYMENT_URL}/api/`;
+
 export const useBulkUploadStore = create((set) => ({
-  loading: false,
-  error: null,
-
-  // OCR Image Upload
-  uploadOCRImage: async (imageFile) => {
-    set({ loading: true, error: null });
-    try {
-      const token = localStorage.getItem("token");
-      console.log("token: ", token);
-      
-      const formData = new FormData();
-      formData.append("image", imageFile);
-
-      const response = await axios.post(
-        `${ONE_CLICK_BUY_URL}upload-ocr`,
-        formData,
-        {
-          withCredentials: true,
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
+    bulkUploadProducts: async (products) => {
+        set({ loading: true, error: null });
+        try {
+            const token = localStorage.getItem("token"); // Get auth token
+            const response = await axios.post(
+                `${ONE_CLICK_BUY_URL}bulk-upload`,
+                { products },
+                {
+                    withCredentials: true,
+                    headers: {
+                        Authorization: `Bearer ${token}`, // Send token
+                    },
+                }
+            );
+            set({ loading: false });
+            console.log("Bulk upload successful", response.data);
+            return response;
+        } catch (error) {
+            set({ error: "Failed to bulk upload products", loading: false });
+            console.error("Error during bulk upload:", error);
         }
-      );
-
-      set({ loading: false });
-      console.log("OCR upload success:", response.data);
-      return response;
-    } catch (error) {
-      set({ error: "OCR upload failed", loading: false });
-      console.error("OCR upload error:", error);
-      throw error;
-    }
-  },
-
-  // Bulk product upload
-  bulkUploadProducts: async (products) => {
-    set({ loading: true, error: null });
-    try {
-      const token = localStorage.getItem("token");
-
-      const response = await axios.post(
-        `${ONE_CLICK_BUY_URL}bulk-upload`,
-        { products },
-        {
-          withCredentials: true,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      set({ loading: false });
-      console.log("Bulk upload successful", response.data);
-      return response;
-    } catch (error) {
-      set({ error: "Failed to bulk upload products", loading: false });
-      console.error("Bulk upload error:", error);
-      throw error;
-    }
-  },
+    },
 }));
