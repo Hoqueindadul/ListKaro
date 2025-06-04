@@ -88,7 +88,7 @@ export default function Dashboard() {
 
         try {
             if (isEditing) {
-               const response = await updateProduct(editingProductId, formData);
+                const response = await updateProduct(editingProductId, formData);
                 toast.success(response.message || "Product updated successfully!");
             } else {
                 const response = await createProduct(formData);
@@ -100,11 +100,15 @@ export default function Dashboard() {
             resetForm();
         } catch (err) {
             console.error("Upload/Update Error:", err);
+
             const errorMessage =
-            err.message || "Something went wrong. Please try again.";
+                err?.response?.data?.message ||  // server-provided error
+                err?.message ||                  // default error message
+                "Something went wrong. Please try again."; // fallback
 
             toast.error(errorMessage);
         }
+
     };
 
     const handleEdit = (product) => {
