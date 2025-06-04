@@ -178,8 +178,13 @@ export const useCartStore = create((set) => ({
     fetchCartItems: async () => {
         set({ loading: true, error: null });
         try {
+            const token = localStorage.getItem("token");
+
             const response = await axios.get(`${CART_API_URL}/user-cart`, {
                 withCredentials: true,
+                headers: {
+                    Authorization: `Bearer ${token}`, 
+                },
             });
             set({ cartItems: response.data.data, loading: false });
         } catch (error) {
@@ -197,8 +202,12 @@ export const useCartStore = create((set) => ({
 
     removeItem: async (productId) => {
         try {
+            const token = localStorage.getItem("token");
             await axios.delete(`${CART_API_URL}/user-cart/${productId}`, {
                 withCredentials: true,
+                headers: {
+                    Authorization: `Bearer ${token}`, // ✅ Token added
+                },
             });
             set((state) => ({
                 cartItems: state.cartItems.filter((item) => item._id !== productId),
@@ -229,9 +238,12 @@ export const useProductStore = create((set) => ({
     createProduct: async (formData) => {
         set({ loading: true, error: null });
         try {
+            const token = localStorage.getItem("token");
+
             const response = await axios.post(`${PRODUCT_API_URL}createProduct`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
+                     Authorization: `Bearer ${token}`
                 },
                 withCredentials: true,
             });
@@ -266,10 +278,18 @@ export const useProductStore = create((set) => ({
         set({ loading: true, error: null }); // Show loading state
 
         try {
+            const token = localStorage.getItem("token");
+
             const response = await axios.put(
                 `${PRODUCT_API_URL}updateProduct/${productId}`,
                 updatedData,
-                { headers: { "Content-Type": "multipart/form-data" } }
+                { 
+                    headers: { 
+                    "Content-Type": "multipart/form-data",
+                    Authorization: `Bearer ${token}`, 
+                    },
+                    withCredentials: true, 
+                }
             );
 
             // Optionally: update the local state
@@ -295,8 +315,13 @@ export const useProductStore = create((set) => ({
         try {
             console.log("Deleting product with ID:", productId);
 
+             const token = localStorage.getItem("token");
+             
             await axios.delete(`${PRODUCT_API_URL}deleteProduct/${productId}`, {
                 withCredentials: true,
+                headers: {
+                    Authorization: `Bearer ${token}`, 
+                },
             });
 
             set((state) => ({
