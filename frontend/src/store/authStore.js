@@ -46,7 +46,7 @@ export const useAuthStore = create(
                         password,
                     });
 
-                    localStorage.setItem("token", response.data.jwt); // optional if you use Authorization headers
+                    localStorage.setItem("token", response.data.token); 
 
                     set({
                         isAuthenticated: true,
