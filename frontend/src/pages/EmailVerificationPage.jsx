@@ -54,14 +54,14 @@ export default function EmailVerificationPage() {
 	}, [code]);
 
 	return (
-		<div className="container mt-5 d-flex justify-content-center">
-			<div className="card p-4 shadow-lg" style={{ maxWidth: "400px", width: "100%" }}>
-				<h2 className="text-center mb-3 text-success">Verify Your Email</h2>
-				<p className="text-center text-muted mb-4">
+		<div className="flex items-center justify-center  px-4">
+			<div className="bg-gray-800 p-6 rounded-xl shadow-lg w-full max-w-sm">
+				<h2 className="text-2xl font-bold text-center mb-3 text-green-600">Verify Your Email</h2>
+				<p className="text-center text-gray-400 mb-4">
 					Enter the 6-digit code sent to your email address.
 				</p>
 				<form onSubmit={handleSubmit}>
-					<div className="d-flex justify-content-between mb-3">
+					<div className="flex justify-between mb-4">
 						{code.map((digit, index) => (
 							<input
 								key={index}
@@ -71,22 +71,16 @@ export default function EmailVerificationPage() {
 								value={digit}
 								onChange={(e) => handleChange(index, e.target.value)}
 								onKeyDown={(e) => handleKeyDown(index, e)}
-								className="form-control text-center mx-1"
-								style={{
-									width: "50px",
-									height: "50px",
-									fontSize: "1.5rem",
-									fontWeight: "bold",
-								}}
+								className="w-12 veryficationcode h-12 text-center text-xl font-bold border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 mx-1"
 							/>
 						))}
 					</div>
 					{error && (
-						<p className="text-danger text-center fw-semibold">{error}</p>
+						<p className="text-red-500 text-sm text-center font-medium mb-2">{error}</p>
 					)}
 					<button
 						type="submit"
-						className="btn btn-success w-100"
+						className="w-full py-3 bg-green-500 hover:bg-green-600 text-white font-semibold transition duration-300 rounded"
 						disabled={isLoading || code.some((digit) => !digit)}
 					>
 						{isLoading ? "Verifying..." : "Verify Email"}
@@ -94,5 +88,6 @@ export default function EmailVerificationPage() {
 				</form>
 			</div>
 		</div>
+
 	);
 }

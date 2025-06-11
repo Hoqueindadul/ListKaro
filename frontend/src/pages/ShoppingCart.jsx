@@ -14,7 +14,6 @@ const ShoppingCart = () => {
         error,
     } = useCartStore();
     const { isAuthenticated } = useAuthStore()
-    console.log(isAuthenticated);
 
     const navigate = useNavigate()
     const location = useLocation();

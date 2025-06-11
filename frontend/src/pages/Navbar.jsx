@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import SignUp from "./Signup";
 import { useAuthStore } from '../store/authStore';
 import { ShoppingCart, Menu, X, User, Upload, Info, Package, LogOut } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -69,6 +68,17 @@ export default function Navbar() {
         }
     };
 
+    const handleAdmin = () => {
+        if (!isAuthenticated) {
+            toast.error("Please login!");
+            navigate("/login");
+        } else if (user.role === "admin") {
+            navigate("/dashboard");
+        } else {
+            toast.error("Access denied. Please login as Admin.");
+        }
+    };
+
     useEffect(() => {
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
@@ -76,7 +86,7 @@ export default function Navbar() {
 
     return (
         <>
-            <nav className="my-navbar fixed top-0 z-50 dark:bg-gray-800 text-gray-800 dark:text-white shadow-md w-full  duration-300">
+            <nav className="my-navbar fixed top-0 z-50 dark:bg-gray-800 text-gray-800 dark:text-white shadow-md w-full duration-300">
                 <div className="nav-holder max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
                     <div className="flex items-center space-x-2">
                         <img src="/images/logo.png" alt="logo" className="h-8 w-8" />
@@ -109,12 +119,26 @@ export default function Navbar() {
                             className="w-6 h-6 cursor-pointer"
                         />
 
+                        {/* 👇 Login/Profile Icon Section */}
                         <div className="relative" ref={userDropdownRef}>
-                            <User
+                            <div
                                 onClick={() => setShowUserDropdown(!showUserDropdown)}
-                                size={24}
-                                className="cursor-pointer nav-user-icon"
-                            />
+                                className="cursor-pointer flex items-center gap-1 px-2 py-1 rounded bg-green-950 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200 ease-in-out"
+                            >
+
+                                {isAuthenticated ? (
+                                    <>
+                                        <User className="text-green-600" size={22} />
+                                        <span>{user?.name?.split(" ")[0] || "Profile"}</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <User className="text-amber-600 " size={22} />
+                                        <span>Login</span>
+                                    </>
+                                )}
+                            </div>
+
                             {showUserDropdown && (
                                 <div className="absolute right-0 mt-2 w-40 nav-dropdown bg-gray-800 dark:bg-gray-700 border dark:border-gray-600 rounded shadow-lg text-sm z-50">
                                     {isAuthenticated && user && (
@@ -135,10 +159,7 @@ export default function Navbar() {
                                             <Link
                                                 to="/signup"
                                                 className="block px-4 py-2 text-bold hover:bg-gray-100 dark:hover:bg-gray-600 nav-dropdown-link"
-                                                onClick={() => {
-                                                    setShowPopup(true);
-                                                    setShowUserDropdown(false);
-                                                }}
+                                                onClick={() => setShowUserDropdown(false)}
                                             >
                                                 Signup
                                             </Link>
@@ -192,6 +213,7 @@ export default function Navbar() {
                                 <Upload size={20} className="text-gray-800 dark:text-white" />
                                 One Click Shopping
                             </Link>
+
                             <div>
                                 <Link
                                     to="#"
@@ -211,7 +233,6 @@ export default function Navbar() {
                                         <Link to="/products" className="block text-sm no-underline text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 px-2 py-1 rounded">All Products</Link>
                                     </div>
                                 )}
-
                             </div>
 
                             <Link to="/about" className="flex items-center gap-2 text-sm font-semibold upload-list px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
@@ -219,17 +240,17 @@ export default function Navbar() {
                                 About
                             </Link>
 
-                            <Link to="/adminpanel" className="flex items-center gap-2 text-sm font-semibold upload-list px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
+                            <Link
+                                onClick={handleAdmin}
+                                className="flex items-center gap-2 text-sm font-semibold upload-list px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+                            >
                                 <Info size={20} className="text-gray-800 dark:text-white" />
                                 Admin Panel
                             </Link>
                         </div>
                     </div>
                 )}
-                
             </nav>
-
-            <SignUp showPopup={showPopup} setShowPopup={setShowPopup} />
         </>
     );
 }

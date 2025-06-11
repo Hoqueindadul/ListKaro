@@ -1,0 +1,28 @@
+.signupSubmitBtn{
+    margin-top: 10px;
+  width: 100%;
+  padding: 12px 16px;
+  background: linear-gradient(to right, #22c55e, #059669); /* from-green-500 to-emerald-600 */
+  color: white;
+  font-weight: bold;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: none;
+  cursor: pointer;
+  background-size: 200% auto; /* enable gradient animation */
+  transition: background-position 0.4s ease-in-out;
+}
+
+.signupSubmitBtn:hover {
+  background-position: right center; /* animate gradient */
+}
+.loginLink{
+    color: #22c55e;
+	text-decoration: none;
+}
+.loginLink:hover{
+    text-decoration-line: underline;
+}
+.veryficationcode{
+    color: black;
+}

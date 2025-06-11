@@ -12,6 +12,7 @@ import PaymentForm from './pages/PaymentForm'
 import FAQ from './pages/FAQ'
 import EmailVerificationPage from "./pages/EmailVerificationPage";
 import LoginPage from "./pages/LoginPage"
+import Signup from "./pages/Signup";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage"
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import Dashboard from "./adminpanel/Dashboard";
@@ -43,6 +44,7 @@ function AppContent() {
           <Route path="/faq" element={<FAQ />} />
           <Route path="/emailVerification" element={<EmailVerificationPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
           <Route path="/adminpanel" element={<Dashboard />} />
@@ -52,7 +54,7 @@ function AppContent() {
           <Route path="/orderplaced" element={<Placed />} />
         </Routes>
         <Toaster
-          position="top-right"
+          position="top-center"
           reverseOrder={false}
         />
 

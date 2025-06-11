@@ -1,68 +1,105 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useNavigate, Link } from "react-router-dom";
+import { Loader, Lock, Mail, PhoneCall, User } from "lucide-react";
+import Input from "../components/Input";
+import PasswordStrengthMeter from "../components/PasswordStrengthMeter";
 import toast from 'react-hot-toast';
+import { useAuthStore } from "../store/authStore";
+import "./Signup.css"
 
-const SignUp = ({ showPopup, setShowPopup }) => {
-    const navigate = useNavigate()
+const Signup = () => {
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [phone, setPhone] = useState("");
 
-    const [formData, setFormData] = useState({
-        name: "",
-        email: "",
-        password: "",
-        phone: ""
-    });
+    const navigate = useNavigate();
+    const { signup, error, isLoading } = useAuthStore();
 
-    const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
-    };
-
-    const handleRegistration = async (e) => {
+    const handleSignUp = async (e) => {
         e.preventDefault();
+
+        if (!name || !email || !password || !phone) {
+            toast.error("Please fill in all fields.");
+            return;
+        }
+
         try {
-            const response = await axios.post("http://localhost:5000/api/auth/signup", formData);
-            console.log("User registered:", response.data);
-            toast.success("Verify Your Email");
-            setShowPopup(false);
+            await signup(email, password, name, phone);
+            toast.success("Verify your email");
             navigate("/emailVerification");
-        } catch (error) {
-            const errorMessage = error.response?.data?.message || error.message || "Registration failed. Please try again.";
-            console.error("Registration error:", errorMessage);
-            toast.error(errorMessage);  
+        } catch (err) {
+            console.log(err);
+            toast.error(err?.message || "Something went wrong");
         }
     };
 
-    if (!showPopup) return null;  
-
     return (
-        <div className="signupcontainer">
-            <div className="signheader">
-                <span className="signuptitle">Sign Up</span>
-                <span onClick={() => setShowPopup(false)} className="close"> X </span>
+        
+        <div className="min-h-screen flex items-center justify-center ">
+            
+        <div className='max-w-md w-full bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-xl rounded-2xl shadow-xl overflow-hidden'>
+            <div className='p-8'>
+                <h2 className='text-3xl font-bold mb-6 text-center bg-gradient-to-r from-green-400 to-emerald-500 text-transparent bg-clip-text'>
+                    Create Account
+                </h2>
+
+                <form onSubmit={handleSignUp}>
+                    <Input
+                        icon={User}
+                        type='text'
+                        placeholder='Full Name'
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                    />
+                    <Input
+                        icon={Mail}
+                        type='email'
+                        placeholder='Email Address'
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <Input
+                        icon={PhoneCall}
+                        type='text'
+                        placeholder='Phone Number'
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                    />
+                    <Input
+                        icon={Lock}
+                        type='password'
+                        placeholder='Password'
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+
+                    {error && <p className='text-red-500 font-semibold mt-2'>{error}</p>}
+
+                    <PasswordStrengthMeter password={password} />
+
+                    <button
+                        className='signupSubmitBtn'
+                        type='submit'
+                        disabled={isLoading}
+                    >
+                        {isLoading ? <Loader className='animate-spin mx-auto' size={24} /> : "Sign Up"}
+                    </button>
+                </form>
             </div>
 
-            <form onSubmit={handleRegistration}>
-                <input name="name" type="text" placeholder="Enter your name" required value={formData.name} onChange={handleChange} /><br />
-                <input name="email" type="email" placeholder="Enter your email" required autoComplete="off" value={formData.email} onChange={handleChange} /><br />
-                <input name="password" type="password" placeholder="Set a password" required autoComplete="off" value={formData.password} onChange={handleChange} /><br />
-                <input name="phone" type="tel" placeholder="Phone Number (Optional)"
-                    value={formData.phone}
-                    onChange={handleChange}
-                />
-                <br />
-                By signing up, you agree to our <a href="" style={{ textDecoration: 'none' }}>terms and conditions</a><br /><br />
-                <input type="submit" value="Signup" className="signupbtn" />
-            </form>
-            <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
-            <p style={{ textAlign: 'center' }} className="ahac">Already have an account? <a href="/login" style={{ textDecoration: 'none' }}>Log in</a></p>
+            <div className='px-4 py-3 bg-gray-900 bg-opacity-50 flex justify-center'>
+                <p className=' text-gray-400'>
+                    Already have an account?{" "}
+                    <Link to={"/login"} className='loginLink'>
+                        Login
+                    </Link>
+                </p>
+            </div>
             
-            {/* Always render ToastContainer */}
-            
+        </div>
         </div>
     );
 };
 
-export default SignUp;
+export default Signup;

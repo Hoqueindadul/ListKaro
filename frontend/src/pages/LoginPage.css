@@ -1,73 +1,58 @@
-/* Full-screen center */
-.login-page {
-	height: 100vh;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	background: linear-gradient(135deg, #0f5132, #0d1b2a);
-	font-family: 'Segoe UI', sans-serif;
-}
 
-/* Login card */
-.login-card {
-	background-color: #101820;
-	color: #00ff88;
-	padding: 40px;
-	border-radius: 12px;
-	box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-	width: 320px;
+.items-end{
 	text-align: center;
 }
-
-/* Heading */
-.login-card h2 { margin-bottom: 20px; font-size: 24px }
-
-/* Input group */
-.logininput-group {
-	display: flex;
-    flex-wrap: nowrap;
-	background-color: #1f2b3a;
-	border-radius: 6px;
-	padding: 10px;
-	margin-bottom: 15px;
+.forgotPass{
+	color: rgb(77, 211, 77);
+	text-decoration: none;
+}
+.forgotPass:hover {
+  text-decoration-line: underline;
+}
+.loginSubmitBtn {
+  width: 100%;
+  padding: 12px 16px;
+  background: linear-gradient(to right, #22c55e, #059669); /* from-green-500 to-emerald-600 */
+  color: white;
+  font-weight: bold;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: none;
+  cursor: pointer;
+  background-size: 200% auto; /* enable gradient animation */
+  transition: background-position 0.4s ease-in-out;
 }
 
-.logininput-group .input-icon { margin-right: 8px; color: #00ff88 }
-
-.logininput-group input {
-	border: none;
-	outline: none;
-	background: transparent;
-	color: #ffffff;
-	width: 100%;
-	font-size: 16px;
+.loginSubmitBtn:hover {
+  background-position: right center; /* animate gradient */
 }
-
-/* Forgot password link */
-.forgot {
-	text-align: right;
-	font-size: 16px;
-	margin-bottom: 20px;
+.signupLink{
+	color: #22c55e;
+	text-decoration: none;
 }
-
-.forgot a { color: #00ff88; text-decoration: none }
-
-/* Login button */
-.login-btn {
-	width: 100%;
-	padding: 12px;
-	background: linear-gradient(to right, #00ff88, #00cc66);
-	color: #000;
-	border: none;
-	border-radius: 6px;
-	font-weight: bold;
-	cursor: pointer;
-	transition: background 0.3s;
+.signupLink:hover {
+  text-decoration-line: underline;
 }
-
-button:hover { background: linear-gradient(to right, #00cc66, #00ff88) }
-
-/* Signup link */
-.signup-link { margin-top: 20px; font-size: 16px }
-
-.signup-link a { color: #00ff88; text-decoration: none }
+.forgotPassbtn{
+	 width: 100%;
+  padding: 12px 16px;
+  background: linear-gradient(to right, #22c55e, #059669); /* from-green-500 to-emerald-600 */
+  color: white;
+  font-weight: bold;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: none;
+  cursor: pointer;
+  background-size: 200% auto; /* enable gradient animation */
+  transition: background-position 0.4s ease-in-out;
+}
+.forgotPassbtn:hover{
+	 background-position: right center; 
+}
+.backToLogin{
+	color: #22c55e;
+	text-decoration: none;
+}
+.backToLogin:hover{
+	text-decoration-line: underline;
+}

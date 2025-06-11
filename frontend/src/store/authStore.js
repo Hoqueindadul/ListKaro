@@ -19,13 +19,14 @@ export const useAuthStore = create(
             isCheckingAuth: true,
             message: null,
 
-            signup: async (email, password, name) => {
+            signup: async (email, password, name, phone) => {
                 set({ isLoading: true, error: null });
                 try {
                     const response = await axios.post(`${API_URL}/signup`, {
                         email,
                         password,
                         name,
+                        phone
                     });
                     set({ user: response.data.user, isAuthenticated: true, isLoading: false });
                     console.log("Sign up successful", response.data);
@@ -219,7 +220,6 @@ export const useCartStore = create((set) => ({
 
     getCartCount: () => {
         const items = useCartStore.getState().cartItems;
-        console.log("Cart count:", items.length);
         return items.length;
 
 
@@ -352,7 +352,6 @@ export const useBulkUploadStore = create((set) => ({
 
     try {
       const token = localStorage.getItem("token");
-      console.log("Token used for request:", token);
 
       if (!token) {
         throw new Error("No token found. Please login first.");
@@ -370,7 +369,7 @@ export const useBulkUploadStore = create((set) => ({
       );
 
       set({ loading: false });
-      console.log("Bulk upload successful", response.data);
+      
       return response.data;
 
     } catch (error) {
