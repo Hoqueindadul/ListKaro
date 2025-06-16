@@ -6,6 +6,7 @@ import Cart from '../models/cart.model.js';
 const AZURE_KEY = process.env.AZURE_KEY;
 const AZURE_ENDPOINT = process.env.AZURE_ENDPOINT;
 const AZURE_OCR_URL = AZURE_ENDPOINT + 'vision/v3.2/read/analyze';
+
 export const extractProductDataFromImage = async (req, res) => {
     try {
         const imagePath = req.file.path;
@@ -39,15 +40,29 @@ export const extractProductDataFromImage = async (req, res) => {
 
         fs.unlinkSync(imagePath);
 
-        // Process the OCR result and split by key-value
-        const keyValuePairs = {};
         const allLines = result.flatMap(page => page.lines.map(line => line.text));
 
-        // Update regex to handle "=" along with "-", ":", and spaces
-        for (const line of allLines) {
-            const regex = /([a-zA-Z\s]+)[\s\-:=]+(\d+(\.\d+)?\s*(kg|g|lb|oz)?)/i;
-            const match = line.match(regex);
+        // Step 1: Merge broken lines like "Grapes -" and "2 kg"
+        const mergedLines = [];
+        for (let i = 0; i < allLines.length; i++) {
+            const current = allLines[i];
+            const next = allLines[i + 1] || "";
 
+            // Merge if current ends with separator and next has quantity
+            if (/[\-:=]\s*$/.test(current) && /\d+(\.\d+)?\s*(kg|g|lb|oz|ml|liter)/i.test(next)) {
+                mergedLines.push(`${current} ${next}`);
+                i++; // skip next line
+            } else {
+                mergedLines.push(current);
+            }
+        }
+
+        // Step 2: Extract product and quantity using regex
+        const keyValuePairs = {};
+        const regex = /([a-zA-Z\s]+)[\s\-:=]+(\d+(\.\d+)?\s*(kg|g|lb|oz|ml|liter)?)/i;
+
+        for (const line of mergedLines) {
+            const match = line.match(regex);
             if (match) {
                 const productName = match[1].trim();
                 const quantityText = match[2].trim();
@@ -64,15 +79,12 @@ export const extractProductDataFromImage = async (req, res) => {
                 const qtyMatch = quantityText.match(/\d+/);
                 const numericQty = qtyMatch ? parseInt(qtyMatch[0]) : 1;
 
-                // Check if the user is logged in (userId should be available if token is verified)
                 if (!req.userId) {
                     return res.status(401).json({ success: false, message: "User is not authenticated" });
                 }
 
-                // Find the user's cart, create one if it doesn't exist
                 let cart = await Cart.findOne({ userId: req.userId });
 
-                // If cart doesn't exist, create it
                 if (!cart) {
                     cart = new Cart({
                         userId: req.userId,
@@ -80,24 +92,20 @@ export const extractProductDataFromImage = async (req, res) => {
                     });
                 }
 
-                // Check if the product already exists in the cart
                 const existingProductIndex = cart.products.findIndex(
                     item => item.productId.toString() === product._id.toString()
                 );
 
                 if (existingProductIndex !== -1) {
-                    // If the product exists, update its quantity
                     cart.products[existingProductIndex].quantity += numericQty;
                 } else {
-                    // If the product doesn't exist, add it to the cart
                     cart.products.push({
                         productId: product._id,
                         quantity: numericQty,
-                        source: 'ocr', // Indicate that this item was added via OCR
+                        source: 'ocr',
                     });
                 }
 
-                // Save the updated cart
                 await cart.save();
 
                 results[productName] = {
@@ -132,6 +140,7 @@ export const extractProductDataFromImage = async (req, res) => {
             lines: allLines,
             data: results,
         });
+
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Something went wrong during OCR.' });

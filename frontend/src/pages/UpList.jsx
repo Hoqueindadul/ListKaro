@@ -7,6 +7,8 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { useBulkUploadStore } from '../store/authStore';
 import { useAuthStore } from '../store/authStore';
+import { LOCAL_URL } from '../deploy-backend-url';
+import { DEPLOYMENT_URL } from '../deploy-backend-url';
 
 function UpList() {
     const [ocrText, setOcrText] = useState([]);
@@ -33,7 +35,7 @@ function UpList() {
 
     const upload = async () => {
         if (!isAuthenticated) {
-            toast.warn("Please log in to upload.");
+            toast.error("Please log in to upload.");
             navigate('/login');
             return;
         }
@@ -58,7 +60,7 @@ function UpList() {
 
         try {
             const response = await axios.post(
-                'http://localhost:5000/api/upload-ocr',
+                `${DEPLOYMENT_URL}/api/upload-ocr`,
                 formData,
                 {
                     headers: {
@@ -71,9 +73,9 @@ function UpList() {
             if (response.data?.lines) {
                 const extractedItems = extractItems(response.data.lines);
                 setOcrText(extractedItems);
-                toast.success("File uploaded and list extracted successfully!");
+                toast.success(response.data.message || "File uploaded and list extracted successfully!");
             } else {
-                toast.error("Failed to extract list items!");
+                toast.error(response.data.message || "Failed to extract list items!");
             }
 
             setOcrResult(response.data);
@@ -152,7 +154,7 @@ function UpList() {
 
                 if (notFoundItems.length > 0) {
                     const unfoundNames = notFoundItems.map(item => `"${item.name}"`).join(", ");
-                    toast.warn(`Some products not found: ${unfoundNames}`);
+                    toast.error(`Some products not found: ${unfoundNames}`);
                 }
 
                 setProductInputs([{ name: '', quantity: '' }]);
