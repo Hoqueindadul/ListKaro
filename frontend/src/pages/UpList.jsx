@@ -34,8 +34,9 @@ function UpList() {
     };
 
     const upload = async () => {
-        if (!isAuthenticated) {
-            toast.error("Please log in to upload.");
+         const token = localStorage.getItem("token");
+        if (!isAuthenticated || !token) {
+            toast.error("Please log in to upload product list.");
             navigate('/login');
             return;
         }
@@ -64,6 +65,7 @@ function UpList() {
                 formData,
                 {
                     headers: {
+                        "Authorization": `Bearer ${token}`,
                         'Content-Type': 'multipart/form-data',
                     },
                     withCredentials: true,
