@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { LOCAL_URL } from '../deploy-backend-url';
+import { DEPLOYMENT_URL } from '../deploy-backend-url';
 
 const PaymentForm = () => {
     const { state } = useLocation();
@@ -9,7 +10,7 @@ const PaymentForm = () => {
     useEffect(() => {
         const sendConfirmationEmail = async () => {
             try {
-                const response = await fetch("http://localhost:5000/api/sendconfirmationemail", {
+                const response = await fetch(`${DEPLOYMENT_URL}/api/sendconfirmationemail`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -55,7 +56,7 @@ const PaymentForm = () => {
 
     const initiatePayment = async () => {
         try {
-            const response = await fetch("http://localhost:5000/api/payment", {
+            const response = await fetch(`${DEPLOYMENT_URL}/api/payment`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

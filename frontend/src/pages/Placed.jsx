@@ -2,6 +2,8 @@ import { useLocation } from "react-router-dom";
 import React, { useEffect, useRef } from "react";
 import html2pdf from "html2pdf.js";
 import './PlacedSmall.css'
+import { LOCAL_URL } from '../deploy-backend-url';
+import { DEPLOYMENT_URL } from '../deploy-backend-url';
 const Placed = () => {
     const { state } = useLocation()
     const { customerDetails, cartItems, totalAmount } = state || {};
@@ -10,7 +12,7 @@ const Placed = () => {
     useEffect(() => {
         const sendConfirmationEmail = async () => {
             try {
-                const response = await fetch("http://localhost:5000/api/sendconfirmationemail", {
+                const response = await fetch(`${DEPLOYMENT_URL}/api/sendconfirmationemail`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

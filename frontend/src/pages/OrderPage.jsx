@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import './OrderPage.css';
+import { LOCAL_URL } from '../deploy-backend-url';
+import { DEPLOYMENT_URL } from '../deploy-backend-url';
 
 const OrderPage = () => {
     const { state } = useLocation();
@@ -32,7 +34,7 @@ const OrderPage = () => {
             };
 
             try {
-                const response = await fetch("http://localhost:5000/api/order", {
+                const response = await fetch(`${DEPLOYMENT_URL}/api/order`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
