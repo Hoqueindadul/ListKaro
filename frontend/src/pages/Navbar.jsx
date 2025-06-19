@@ -73,7 +73,7 @@ export default function Navbar() {
             toast.error("Please login!");
             navigate("/login");
         } else if (user.role === "admin") {
-            navigate("/dashboard");
+            navigate("/adminpanel");
         } else {
             toast.error("Access denied. Please login as Admin.");
         }
