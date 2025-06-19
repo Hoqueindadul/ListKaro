@@ -5,8 +5,9 @@ import { LOCAL_URL } from '../deploy-backend-url';
 import { DEPLOYMENT_URL } from '../deploy-backend-url';
 
 const OrderPage = () => {
-    const { state } = useLocation();
+const { state } = useLocation();
     const { cartItems, totalAmount } = state || {};
+
     const [paymentMode, setPaymentMode] = useState("cashOnDelivery");
     const [formData, setFormData] = useState({
         name: "",
@@ -16,7 +17,7 @@ const OrderPage = () => {
         phone: "",
     });
 
-    const navigate = useNavigate(); // Initialize navigate function for redirection
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -25,14 +26,14 @@ const OrderPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (paymentMode === "cashOnDelivery") {
-            const orderData = {
-                customerDetails: formData,
-                cartItems,
-                totalAmount,
-                paymentMode,
-            };
+        const orderData = {
+            customerDetails: formData,
+            cartItems,
+            totalAmount,
+            paymentMode,
+        };
 
+        if (paymentMode === "cashOnDelivery") {
             try {
                 const response = await fetch(`${DEPLOYMENT_URL}/api/order`, {
                     method: "POST",
@@ -61,7 +62,10 @@ const OrderPage = () => {
                 alert("Something went wrong!");
             }
         } else {
+            // Online Payment flow
+            localStorage.setItem("orderData", JSON.stringify(orderData));
             localStorage.removeItem("emailSent");
+
             navigate("/completepayment", {
                 state: {
                     customerDetails: formData,
@@ -72,50 +76,51 @@ const OrderPage = () => {
         }
     };
 
-    return (
-        <div className="orderbody">
-            <div className="order-page">
-                <div className="delivery-form">
-                    <h2>Delivery Details</h2>
 
-                    <form onSubmit={handleSubmit}>
+return (
+    <div className="orderbody">
+        <div className="order-page">
+            <div className="delivery-form">
+                <h2>Delivery Details</h2>
 
-                        <label htmlFor="name">Customer's name : </label>
-                        <input type="text" name="name" placeholder="Enter Receiver's Name" required onChange={handleChange} />
+                <form onSubmit={handleSubmit}>
 
-                        <label htmlFor="addresstotal">Delivery Address : </label>
-                        <div className="deladdress" id="addresstotal">
-                            <input type="text" name="address" placeholder="Address" id="addressfeild" required onChange={handleChange} />
-                            <input type="text" name="zip" placeholder="Pin Code" required onChange={handleChange} />
-                        </div>
+                    <label htmlFor="name">Customer's name : </label>
+                    <input type="text" name="name" placeholder="Enter Receiver's Name" required onChange={handleChange} />
 
-                        <input type="email" name="email" placeholder="Email" required onChange={handleChange} />
+                    <label htmlFor="addresstotal">Delivery Address : </label>
+                    <div className="deladdress" id="addresstotal">
+                        <input type="text" name="address" placeholder="Address" id="addressfeild" required onChange={handleChange} />
+                        <input type="text" name="zip" placeholder="Pin Code" required onChange={handleChange} />
+                    </div>
 
-                        <input type="tel" name="phone" placeholder="Phone Number" required onChange={handleChange} />
+                    <input type="email" name="email" placeholder="Email" required onChange={handleChange} />
 
-                        <label>Payment Method</label>
-                        <select value={paymentMode} onChange={(e) => setPaymentMode(e.target.value)}>
-                            <option value="cashOnDelivery">Cash on Delivery</option>
-                            <option value="online">Online Payment</option>
-                        </select>
-                        <button type="submit" id="ordersubmit">Place Order</button>
-                    </form>
-                </div>
+                    <input type="tel" name="phone" placeholder="Phone Number" required onChange={handleChange} />
 
-                <div className="order-summary">
-                    <h3>Order Summary</h3>
-                    <ul>
-                        {cartItems?.map((item) => (
-                            <li key={item._id || item.product._id}>{item.name}</li>
-                        ))}
-                    </ul>
-                    <p>
-                        <strong>Total: ₹{totalAmount}</strong>
-                    </p>
-                </div>
+                    <label>Payment Method</label>
+                    <select value={paymentMode} onChange={(e) => setPaymentMode(e.target.value)}>
+                        <option value="cashOnDelivery">Cash on Delivery</option>
+                        <option value="online">Online Payment</option>
+                    </select>
+                    <button type="submit" id="ordersubmit">Place Order</button>
+                </form>
+            </div>
+
+            <div className="order-summary">
+                <h3>Order Summary</h3>
+                <ul>
+                    {cartItems?.map((item) => (
+                        <li key={item._id || item.product._id}>{item.name}</li>
+                    ))}
+                </ul>
+                <p>
+                    <strong>Total: ₹{totalAmount}</strong>
+                </p>
             </div>
         </div>
-    );
+    </div>
+);
 };
 
 export default OrderPage;

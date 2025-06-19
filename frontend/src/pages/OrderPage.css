@@ -1,16 +1,14 @@
-.orderbody{ background-color: rgba(10, 10, 25, 0.95); color: white }
+
 .order-page {
-    min-width: 700px;  
+    width: 100%;
     display: flex;
     justify-content: space-around;
     align-items: flex-start;
     padding: 30px;
     flex-wrap: wrap;
     gap: 25px;
-    background-color: rgba(10, 10, 25, 0.95);
-    border-radius: 20px;
+    color: black;
     margin: 0px auto; 
-    max-width: 1100px;
     box-shadow: 0 0 30px rgba(150, 150, 255, 0.1);  
   }
 
@@ -18,12 +16,11 @@
     flex: 1;
     min-width: 300px;
     max-width: 450px;
-    background-color: rgba(30, 30, 60, 0.8);
     padding: 25px;
     border-radius: 20px;
     box-shadow: 0 0 15px rgba(100, 100, 255, 0.2);
   }
-  
+
   .delivery-form h2 {
  text-align: center;
  color: #a3a3ff;
@@ -41,7 +38,6 @@
     padding: 12px;
     border-radius: 15px;
     border: 1px solid #333;
-    background-color: #1f1f3f;
     color: white;
     font-size: 15px;
   }
@@ -51,7 +47,8 @@
     outline: none;
     border-color: #7f5af0;
     box-shadow: 0 0 10px #7f5af0;
-    background-color: #2a2a4a;
+    background-color: white;
+    color: black;
   }
   
   .delivery-form form #ordersubmit {
@@ -79,15 +76,17 @@
     flex: 1;
     min-width: 250px;
     max-width: 400px;
-    background-color: rgba(40, 40, 70, 0.85);
+    /* background-color: rgba(40, 40, 70, 0.85); */
+    background-color: white;
+    color: black;
     padding: 25px;
     border-radius: 20px;
-    box-shadow: 0 0 15px rgba(200, 200, 255, 0.15);
+    box-shadow: 0 0 15px rgba(100, 100, 255, 0.2);
   }
   
   .order-summary h3 {
  text-align: center;
- color: #f0f0ff;
+ color: #a3a3ff;
  margin-bottom: 20px; }
   
   .order-summary ul {
@@ -99,12 +98,35 @@
   .order-summary ul li {
  padding: 8px 0;
  border-bottom: 1px solid #444;
- color: #ddd; }
+ color: black; }
   
   .order-summary p {
     text-align: center;
     font-size: 18px;
     font-weight: bold;
-    color: #fff;
+    color: black;
   }
   
+
+  body.dark label{
+      color: white;
+  }
+ 
+  body.dark  .delivery-form form input{
+    background-color: rgb(29, 51, 77);
+  }
+  body.dark .order-summary{
+    background-color: rgb(12, 12, 43);
+  }
+  body.dark  .order-summary ul li {
+    color: white;
+  }
+  body.dark p{
+    color: white;
+  }
+
+
+body.dark .delivery-form form select{
+  background-color: rgb(29, 51, 77);
+  color: white;
+}

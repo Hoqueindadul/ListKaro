@@ -101,25 +101,43 @@ export const WELCOME_TEMPLATE = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Welcome to our website</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Welcome to Our Platform</title>
 </head>
 <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+  <!-- Header -->
   <div style="background: linear-gradient(to right, #4CAF50, #45a049); padding: 20px; text-align: center;">
-    <h1 style="color: white; margin: 0;">Welcome</h1>
+    <h1 style="color: white; margin: 0;">Welcome to Our Community!</h1>
   </div>
+
+  <!-- Body -->
   <div style="background-color: #f9f9f9; padding: 20px; border-radius: 0 0 5px 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-    <p>Hello, {name}</p>
-    <p>We received a request to reset your password. If you didn't make this request, please ignore this email.</p>
-    <p>To reset your password, click the button below:</p>
-    
-    <p>This link will expire in 1 hour for security reasons.</p>
-    <p>Best regards,<br>Your App Team</p>
+    <p>Hi <strong>{name}</strong>,</p>
+
+    <p>We're excited to have you join us! 🎉</p>
+
+    <p>Your account has been successfully created, and you're now part of a growing community that's here to support your journey.</p>
+
+    <p>Here’s what you can do next:</p>
+    <ul>
+      <li>🚀 Explore your dashboard and features</li>
+      <li>🛒 Shop products by uploading handwritten list</li>
+      <li>📩 Stay connected for updates and tips</li>
+    </ul>
+
+    <p>If you have any questions, feel free to reach out. We’re here to help!</p>
+
+    <p>Enjoy your experience with us, and welcome aboard!</p>
+
+    <p>Warm regards,<br/>The YourApp Team</p>
   </div>
+
+  <!-- Footer -->
   <div style="text-align: center; margin-top: 20px; color: #888; font-size: 0.8em;">
-    <p>This is an automated message, please do not reply to this email.</p>
+    <p>This is an automated email. Please do not reply directly to this message.</p>
   </div>
 </body>
 </html>
+
 `;

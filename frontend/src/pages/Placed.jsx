@@ -5,14 +5,19 @@ import './PlacedSmall.css'
 import { LOCAL_URL } from '../deploy-backend-url';
 import { DEPLOYMENT_URL } from '../deploy-backend-url';
 const Placed = () => {
-    const { state } = useLocation()
-    const { customerDetails, cartItems, totalAmount } = state || {};
+    const { state } = useLocation();
+    const localData = JSON.parse(localStorage.getItem("orderData") || "{}");
+
+    const customerDetails = state?.customerDetails || localData.customerDetails;
+    const cartItems = state?.cartItems || localData.cartItems;
+    const totalAmount = state?.totalAmount || localData.totalAmount;
+
     const invoiceRef = useRef();
 
     useEffect(() => {
         const sendConfirmationEmail = async () => {
             try {
-                const response = await fetch(`${DEPLOYMENT_URL}/api/sendconfirmationemail`, {
+                const response = await fetch(`${LOCAL_URL}/api/sendconfirmationemail`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -65,7 +70,7 @@ const Placed = () => {
     };
     return (
         <>
-            <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', backgroundColor: '#f0f0f0', }} className="placedcontainer">
+            <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', }} className="placedcontainer">
 
                 <div style={{ minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '20px', }}>
                     {/* container */}
@@ -118,7 +123,6 @@ const Placed = () => {
                     className="invoice"
                     style={{
                         width: '600px',
-                        backgroundColor: 'white',
                         padding: '20px',
                         boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
                         borderRadius: '10px',
@@ -183,4 +187,7 @@ const Placed = () => {
 };
 
 export default Placed;
+
+
+
 

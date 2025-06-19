@@ -21,3 +21,11 @@
         font-size: 10px;
     }
 }
+
+
+body.dark .placedcontainer{
+    background-color: rgb(12, 12, 43);
+}
+body.dark .invoice{
+    background-color: rgb(34, 34, 75);
+}

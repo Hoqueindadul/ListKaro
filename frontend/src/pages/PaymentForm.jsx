@@ -5,7 +5,12 @@ import { DEPLOYMENT_URL } from '../deploy-backend-url';
 
 const PaymentForm = () => {
     const { state } = useLocation();
-    const { customerDetails, cartItems, totalAmount } = state || {};
+    const localData = JSON.parse(localStorage.getItem("orderData") || "{}");
+
+    const customerDetails = state?.customerDetails || localData.customerDetails;
+    const cartItems = state?.cartItems || localData.cartItems;
+    const totalAmount = state?.totalAmount || localData.totalAmount;
+
 
     useEffect(() => {
         const sendConfirmationEmail = async () => {
@@ -25,12 +30,12 @@ const PaymentForm = () => {
                         email: customerDetails.email,
                         phone: customerDetails.phone
                     }),
-
                 });
 
                 const result = await response.json();
                 if (response.ok) {
                     console.log("Email sent successfully!");
+                    localStorage.setItem("emailSent", "true");
                 } else {
                     console.error("Failed to send email:", result.message);
                 }
@@ -39,7 +44,7 @@ const PaymentForm = () => {
             }
         };
 
-        if (customerDetails && cartItems) {
+        if (customerDetails && cartItems && !localStorage.getItem("emailSent")) {
             sendConfirmationEmail();
         }
     }, [customerDetails, cartItems, totalAmount]);
@@ -56,7 +61,7 @@ const PaymentForm = () => {
 
     const initiatePayment = async () => {
         try {
-            const response = await fetch(`${DEPLOYMENT_URL}/api/payment`, {
+            const response = await fetch(`${LOCAL_URL}/api/payment`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -108,7 +113,7 @@ const PaymentForm = () => {
             </div>
 
             <div>
-                <p>Please Wait</p>
+                <p>Please Wait...</p>
             </div>
             <div>
                 <h3>Redirecting to Razorpay Gateway</h3>

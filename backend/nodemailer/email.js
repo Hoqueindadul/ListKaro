@@ -6,7 +6,7 @@ export const sendVarificationEmail = async (email, varificationToken) => {
         const response = await mailTranporter.sendMail({
             from: "calender3434@gmail.com",
             to: email,
-            subject: "Varify you email",
+            subject: "Verify you email",
             html: VERIFICATION_EMAIL_TEMPLATE.replace("{verificationCode}", varificationToken),
             category: "Email Verification",
         })
