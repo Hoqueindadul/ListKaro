@@ -172,7 +172,7 @@ export default function Dashboard() {
                 <div className="offcanvas-body">
                     <ul className="navbar-nav">
                         <li className="nav-item"><a href="/adminpanel" className="nav-link">Dashboard</a></li>
-                        <li className="nav-item"><a href="/allproducts" className="nav-link">All Products</a></li>
+                        <li className="nav-item"><a href="/products" className="nav-link">All Products</a></li>
                         <li className="nav-item"><a href="/" className="nav-link">Go to Home Page</a></li>
                     </ul>
                 </div>
@@ -197,7 +197,7 @@ export default function Dashboard() {
                     <div className="table-responsive">
                         <table className="table table-striped">
                             <thead>
-                                <tr>
+                                <tr className="uploadproductlabel">
                                     <th>Name</th>
                                     <th>Category</th>
                                     <th>Price</th>
