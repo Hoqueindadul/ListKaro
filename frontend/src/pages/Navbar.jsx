@@ -240,13 +240,13 @@ export default function Navbar() {
                                 About
                             </Link>
 
-                            <Link
+                            <button
                                 onClick={handleAdmin}
                                 className="flex items-center gap-2 text-sm font-semibold upload-list px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
                             >
                                 <Info size={20} className="text-gray-800 dark:text-white" />
                                 Admin Panel
-                            </Link>
+                            </button>
                         </div>
                     </div>
                 )}
