@@ -56,3 +56,6 @@
 .backToLogin:hover{
 	text-decoration-line: underline;
 }
+.resetPasswordBtn{
+  border-radius: 6px;
+}
