@@ -61,7 +61,7 @@ function UpList() {
 
         try {
             const response = await axios.post(
-                `${DEPLOYMENT_URL}/api/upload-ocr`,
+                `${LOCAL_URL}/api/upload-ocr`,
                 formData,
                 {
                     headers: {

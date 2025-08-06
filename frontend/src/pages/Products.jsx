@@ -9,7 +9,7 @@ const ProductList = () => {
     const [products, setProducts] = useState({});
 
     useEffect(() => {
-        axios.get(`${DEPLOYMENT_URL}/api/products/getAllProducts`, { withCredentials: true })
+        axios.get(`${LOCAL_URL}/api/products/getAllProducts`, { withCredentials: true })
             .then(res => {
                 const allProducts = res.data.data || [];
                 const grouped = {};

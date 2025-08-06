@@ -15,7 +15,7 @@ const PaymentForm = () => {
     useEffect(() => {
         const sendConfirmationEmail = async () => {
             try {
-                const response = await fetch(`${DEPLOYMENT_URL}/api/sendconfirmationemail`, {
+                const response = await fetch(`${LOCAL_URL}/api/sendconfirmationemail`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -61,7 +61,7 @@ const PaymentForm = () => {
 
     const initiatePayment = async () => {
         try {
-            const response = await fetch(`${DEPLOYMENT_URL}/api/payment`, {
+            const response = await fetch(`${LOCAL_URL}/api/payment`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

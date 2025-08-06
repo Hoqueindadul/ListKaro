@@ -6,7 +6,7 @@ const orderSchema = new mongoose.Schema({
     address: String,
     zip: Number,
     email: String,
-    phone: Number,
+    phone: String, // Changed from Number
   },
   cartItems: [
     {
@@ -28,8 +28,23 @@ const orderSchema = new mongoose.Schema({
     },
   ],
   totalAmount: Number,
-  paymentMode: { type: String, required: true, enum: ["cashOnDelivery", "online"] },
-});
+  paymentMode: {
+    type: String,
+    required: true,
+    enum: ["cashOnDelivery", "online"],
+  },
+  paymentStatus: {
+    type: String,
+    enum: ["pending", "paid", "failed"],
+    default: "pending",
+  },
+  status: {
+    type: String,
+    enum: ["pending", "confirmed", "preparing", "outForDelivery", "delivered", "cancelled"],
+    default: "pending",
+  },
+}, { timestamps: true });
 
 const Order = mongoose.model("Order", orderSchema);
 export default Order;
+

@@ -14,14 +14,14 @@ export const bulkUploadProducts = async (req, res) => {
         const addedItems = [];
         const notFoundItems = [];
 
-        const STOP_WORDS = ['amul', 'brand', 'pack', 'offer', 'new']; // optional: add more
+        const STOP_WORDS = ['amul', 'brand', 'pack', 'offer', 'new']; 
 
         for (const item of products) {
             const quantity = parseQuantity(item.quantity);
             const source = item.source || "manual";
             const rawName = item.name.trim();
 
-            // Step 1: Prepare keyword-based regex pattern
+            // Prepare keyword-based regex pattern
             const keywords = rawName
                 .toLowerCase()
                 .split(/\s+/)
@@ -35,7 +35,7 @@ export const bulkUploadProducts = async (req, res) => {
             const regexPattern = keywords.map(word => `(?=.*${word})`).join('');
             const regex = new RegExp(regexPattern, 'i');
 
-            // Step 2: Find product using keyword-matching regex
+            // Find product using keyword-matching regex
             const product = await Product.findOne({ name: { $regex: regex } });
 
             if (product) {
@@ -55,7 +55,7 @@ export const bulkUploadProducts = async (req, res) => {
             }
         }
 
-        // Step 3: Update or create cart
+        // Update or create cart
         let cart = await Cart.findOne({ userId });
 
         if (!cart) {

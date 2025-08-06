@@ -1,8 +1,9 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import toast, { Toaster } from 'react-hot-toast';
 import './App.css'
+import useAutoLogout from "./store/useAutoLogout";
 
 import Home from './pages/Home'
 import UpList from "./pages/UpList";
@@ -24,7 +25,21 @@ import Products from "./pages/Products"
 
 function AppContent() {
   const location = useLocation();
+  const navigate = useNavigate();
 
+  // Get token from localStorage (or your AuthContext if you have one)
+  const token = localStorage.getItem("token");
+
+  // Define your logout function
+  const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    toast.error("Session expired. Please login again.");
+    navigate("/login");
+  };
+
+  // Apply the hook
+  useAutoLogout(token, logout, 5 * 60 * 1000); // 5 minutes inactivity timeout
   // Define routes where Navbar should be hidden
   const hideNavbarRoutes = ["/adminpanel"];
 

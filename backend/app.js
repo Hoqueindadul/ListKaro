@@ -12,7 +12,7 @@ import userRoute from "./routers/user.route.js";
 import newsletterRoute from "./routers/newsletter_route.js";
 import paymentRoute from "./routers/payment_route.js";
 import cartRoute from "./routers/cart.route.js";
-import orderRoute from "./routers/order_route.js";
+import orderRoute from "./routers/order.route.js"
 import orderEmail from "./nodemailer/orderEmail.js";
 import errorHandleMiddleware from "./middleware/error.js";
 
@@ -73,7 +73,7 @@ app.use("/api/products", productsRoute);
 app.use("/api/auth", userRoute);
 app.use("/api", newsletterRoute);
 app.use("/api", paymentRoute);
-app.use("/api/order", orderRoute);
+app.use("/api", orderRoute);
 app.use("/api", orderEmail);
 
 // Error handler (always last route middleware)

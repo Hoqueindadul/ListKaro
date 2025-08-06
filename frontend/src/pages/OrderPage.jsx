@@ -35,7 +35,7 @@ const { state } = useLocation();
 
         if (paymentMode === "cashOnDelivery") {
             try {
-                const response = await fetch(`${DEPLOYMENT_URL}/api/order`, {
+                const response = await fetch(`${LOCAL_URL}/api/order`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

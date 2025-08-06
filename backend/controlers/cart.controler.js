@@ -43,7 +43,7 @@ export const getUserCart = async (req, res) => {
       stock: item.productId.stock,
       quantity: item.quantity,
       description: item.productId.description || "",
-      source: item.source || "manual", // OCR/manual
+      source: item.source || "manual", 
     }));
 
     // Send the response
