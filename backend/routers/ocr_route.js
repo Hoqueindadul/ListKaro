@@ -10,6 +10,7 @@ const router = express.Router();
 const upload = multer({ dest: 'uploads/' });
 
 router.post('/upload-ocr', verifyToken, upload.single('image'), extractProductDataFromImage);
-router.post('/bulk-upload', authenticate, bulkUploadProducts);
+router.post('/bulk-upload', verifyToken, bulkUploadProducts);
+
 
 export default router;

@@ -99,7 +99,7 @@ export const createProduct = handleAsyncError(async (req, res) => {
 // SEARCH PRODUCTS BY KEYWORDS
 export const searchProductsByKeyword = handleAsyncError(async (req, res, next) => {
 
-  const apiFeatures = new APIFunctionality(Products.find(), req.query).search().filter();
+  const apiFeatures = new APIFunctionality(Product.find(), req.query).search().filter();
 
   const allProducts = await apiFeatures.query;
 
