@@ -7,4 +7,4 @@ const router = express.Router();
 router.post("/order", verifyToken, customerOrder)
 router.get("/get-all-orders", verifyToken, getAllOrders)
 
-export default router;affa
+export default router;
