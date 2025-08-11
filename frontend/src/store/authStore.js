@@ -207,7 +207,7 @@ export const useCartStore = create((set) => ({
             await axios.delete(`${CART_API_URL}/user-cart/${productId}`, {
                 withCredentials: true,
                 headers: {
-                    Authorization: `Bearer ${token}`, // ✅ Token added
+                    Authorization: `Bearer ${token}`, 
                 },
             });
             set((state) => ({
