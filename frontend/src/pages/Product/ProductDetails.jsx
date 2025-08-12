@@ -66,6 +66,7 @@ export default function ProductDetails() {
     // Buy product
     const handleBuyProduct = () => {
         if (!isAuthenticated) {
+            toast.error("Please login!")
             navigate("/login", { state: { from: location } });
         } else {
             navigate("/order", {
