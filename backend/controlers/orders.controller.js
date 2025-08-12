@@ -50,7 +50,7 @@ export const singleProductOrder = async (req, res) => {
 export const customerOrder = async (req, res) => {
   try {
     const { customerDetails, cartItems, totalAmount, paymentMode } = req.body;
-    console.log("Request body:", req.body);
+    // console.log("Request body:", req.body);
 
     if (!customerDetails || !cartItems || !totalAmount || !paymentMode) {
       return res.status(400).json({ message: "Missing required fields" });

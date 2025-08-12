@@ -7,25 +7,24 @@ export const verifyToken = handleAsyncError(async (req, res, next) => {
   let token;
 
   // Debug logging
-  console.log("🔍 === TOKEN VERIFICATION DEBUG ===");
-  console.log("🌐 Request origin:", req.headers.origin);
-  console.log("🍪 Raw cookie header:", req.headers.cookie);
-  console.log("🔑 Authorization header:", req.headers.authorization);
-  console.log("🍪 Parsed cookies:", req.cookies);
+  // console.log("Request origin:", req.headers.origin);
+  console.log("Raw cookie header:", req.headers.cookie);
+  console.log("Authorization header:", req.headers.authorization);
+  // console.log("Parsed cookies:", req.cookies);
 
   // Try to get token from cookies first (preferred for web browsers)
   if (req.cookies && req.cookies.token) {
     token = req.cookies.token;
-    console.log("✅ Token found in cookies");
+    // console.log("Token found in cookies");
   }
   // Fallback to Authorization header (good for mobile apps, API clients)
   else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
     token = req.headers.authorization.split(' ')[1];
-    console.log("✅ Token found in Authorization header");
+    // console.log("Token found in Authorization header");
   }
 
   if (!token) {
-    console.log("❌ No token found in cookies or headers");
+    // console.log(" No token found in cookies or headers");
     return res.status(401).json({
       success: false,
       message: 'Unauthorized - no token provided',
@@ -35,12 +34,11 @@ export const verifyToken = handleAsyncError(async (req, res, next) => {
   try {
     // Verify the token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log("✅ Token verified for user:", decoded.userId);
+    // console.log("Token verified for user:", decoded.userId);
 
     // Find user in database
     const user = await User.findById(decoded.userId);
     if (!user) {
-      console.log("❌ User not found in database");
       return res.status(404).json({
         success: false,
         message: 'User not found',
@@ -50,11 +48,10 @@ export const verifyToken = handleAsyncError(async (req, res, next) => {
     // Attach user to request
     req.user = user;
     req.userId = user._id;
-    console.log("✅ User attached to request");
 
     next();
   } catch (error) {
-    console.error('❌ Token verification error:', error.message);
+    console.error('Token verification error:', error.message);
     
     // Handle specific JWT errors
     if (error.name === 'JsonWebTokenError') {
