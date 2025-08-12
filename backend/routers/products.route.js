@@ -1,5 +1,14 @@
 import express from 'express';
-import { upload, createProduct, searchProductsByKeyword, getAllProducts, updateProduct, deleteProduct, getSingleProduct } from '../controlers/products.controler.js';
+import { 
+    upload, 
+    createProduct, 
+    searchProductsByKeyword, 
+    getAllProducts, 
+    updateProduct, 
+    deleteProduct, 
+    getSingleProduct,
+    submitReview 
+} from '../controlers/products.controler.js';
 import { verifyToken, roleBasedAccess } from '../middleware/verifyToken.js';
 
 const router = express.Router();
@@ -12,10 +21,10 @@ router.post('/createProduct', verifyToken, roleBasedAccess('admin'),  upload.arr
 router.get('/searchProductsByKeyword', searchProductsByKeyword);
 
 // Route to get all products
-router.get('/getAllProducts', getAllProducts);
+router.get('/getAllProducts', verifyToken, getAllProducts);
 
 // Route to get a single product by ID
-router.get('/singleProduct/:id', verifyToken, getSingleProduct);
+router.get('/singleProduct/:id', getSingleProduct);
 
 // Route to update a product by ID
 router.put('/updateProduct/:id', verifyToken, upload.array('images'), updateProduct);
@@ -23,5 +32,8 @@ router.put('/updateProduct/:id', verifyToken, upload.array('images'), updateProd
 
 // Route to delete a product by ID
 router.delete('/deleteProduct/:id', verifyToken, deleteProduct);
+
+// Route to submit a review for a product
+router.post('/submitReview/:id', verifyToken, submitReview);
 
 export default router;

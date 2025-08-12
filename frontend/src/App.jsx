@@ -5,23 +5,24 @@ import toast, { Toaster } from 'react-hot-toast';
 import './App.css'
 import useAutoLogout from "./store/useAutoLogout";
 
-import Home from './pages/Home'
-import UpList from "./pages/UpList";
-import Profile from "./pages/Profile"
-import About from "./pages/About";
-import PaymentForm from './pages/PaymentForm'
-import FAQ from './pages/FAQ'
-import EmailVerificationPage from "./pages/EmailVerificationPage";
-import LoginPage from "./pages/LoginPage"
-import Signup from "./pages/Signup";
-import ForgotPasswordPage from "./pages/ForgotPasswordPage"
-import ResetPasswordPage from "./pages/ResetPasswordPage";
+import Home from './pages/Home/Home'
+import UpList from "./pages/ListUpload/UpList";
+import Profile from "./pages/Common/Profile"
+import About from "./pages/AboutUs/About";
+import PaymentForm from './pages/Payment/PaymentForm'
+import FAQ from './pages/FAQ/FAQ'
+import EmailVerificationPage from "./pages/EmailPassword/EmailVerificationPage";
+import LoginPage from "./pages/Auth/LoginPage"
+import Signup from "./pages/Auth/Signup";
+import ForgotPasswordPage from "./pages/EmailPassword/ForgotPasswordPage"
+import ResetPasswordPage from "./pages/EmailPassword/ResetPasswordPage";
 import Dashboard from "./adminpanel/Dashboard";
-import ShoppingCart from "./pages/ShoppingCart";
-import OrderPage from "./pages/OrderPage";
-import Placed from "./pages/Placed";
-import Navbar from "./pages/Navbar";
-import Products from "./pages/Products"
+import ShoppingCart from "./pages/Cart/ShoppingCart";
+import OrderPage from "./pages/Order/OrderPage";
+import Placed from "./pages/Order/Placed";
+import Navbar from "./pages/Common/Navbar";
+import Products from "./pages/Product/Products"
+import ProductDetails from "./pages/Product/ProductDetails";
 
 function AppContent() {
   const location = useLocation();
@@ -65,6 +66,7 @@ function AppContent() {
           <Route path="/adminpanel" element={<Dashboard />} />
           <Route path="/shopping-cart" element={<ShoppingCart />} />
           <Route path="/products" element={<Products />} />
+          <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/order" element={<OrderPage />} />
           <Route path="/orderplaced" element={<Placed />} />
         </Routes>

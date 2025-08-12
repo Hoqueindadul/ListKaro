@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import '../pages/ShoppingCart.css';
-import { useCartStore, useAuthStore } from "../store/authStore";
+import '../Cart/ShoppingCart.css';
+import { useCartStore, useAuthStore } from "../../store/authStore";
 import toast from 'react-hot-toast';
 
 const ShoppingCart = () => {

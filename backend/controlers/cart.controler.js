@@ -1,4 +1,78 @@
 import Cart from "../models/cart.model.js";
+import Product from "../models/products.model.js"; // Make sure this path matches your project
+
+export const addToCart = async (req, res) => {
+  try {
+    const { productId, quantity = 1, source = "manual" } = req.body;
+    const userId = req.userId;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized - You are not logged in",
+      });
+    }
+
+    // Check if product exists
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
+    }
+
+    if (product.stock < quantity) {
+      return res.status(400).json({
+        success: false,
+        message: "Not enough stock available",
+      });
+    }
+
+    // Find the user's cart
+    let cart = await Cart.findOne({ userId });
+
+    // If no cart exists, create a new one
+    if (!cart) {
+      cart = new Cart({
+        userId,
+        products: [{ productId, quantity, source }],
+      });
+    } else {
+      // Check if product already exists in cart
+      const existingProductIndex = cart.products.findIndex(
+        (item) => item.productId.toString() === productId
+      );
+
+      if (existingProductIndex > -1) {
+        // Update quantity
+        cart.products[existingProductIndex].quantity += quantity;
+      } else {
+        // Add new product
+        cart.products.push({ productId, quantity, source });
+      }
+    }
+
+    await cart.save();
+
+    // Populate product details before sending
+    const populatedCart = await Cart.findOne({ userId }).populate("products.productId");
+
+    return res.status(200).json({
+      success: true,
+      message: "Product added to cart successfully",
+      data: populatedCart.products,
+    });
+
+  } catch (error) {
+    console.error("Error adding to cart:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
 
 export const getUserCart = async (req, res) => {
   try {

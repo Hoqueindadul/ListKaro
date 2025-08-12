@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuthStore } from '../store/authStore';
+import { useAuthStore } from '../../store/authStore';
 import { ShoppingCart, Menu, X, User, Upload, Info, Package, LogOut } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { useCartStore } from "../store/authStore";
-import './Home.css';
-import './HomeDark.css';
+import { useCartStore } from "../../store/authStore";
+import '../Home/Home.css';
+import '../Home/HomeDark.css';
 
 export default function Navbar() {
     const [showPopup, setShowPopup] = useState(false);

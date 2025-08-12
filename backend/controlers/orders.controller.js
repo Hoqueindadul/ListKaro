@@ -1,6 +1,51 @@
 import express from "express";
 import Order from "../models/order_model.js";
+import Product from "../models/products.model.js";
 
+
+export const singleProductOrder = async (req, res) => {
+  try {
+    const { customerDetails, paymentMode, product, quantity, totalAmount } = req.body;
+
+    console.log("body quantity:", quantity);
+    // Validate required fields
+    if (!customerDetails || !product || !quantity || !totalAmount || !paymentMode) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    // Find the product
+    const existingProduct = await Product.findById(product);
+    if (!existingProduct) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    // available quantity check
+    if (existingProduct.quantity < quantity) {
+      return res.status(400).json({ message: "Insufficient stock" });
+    }
+    console.log("Product found:", existingProduct);
+    console.log("Quantity requested:", quantity);
+    // Reduce stock
+    existingProduct.quantity -= quantity;
+    await existingProduct.save();
+
+    // Create new order with customerDetails and dynamic paymentMode
+    const newOrder = new Order({
+      customerDetails,
+      cartItems: [{ product, quantity }],
+      totalAmount,
+      paymentMode,
+      paymentStatus: "pending",
+      status: "pending"
+    });
+
+    const savedOrder = await newOrder.save();
+    res.status(201).json({ message: "Order placed successfully", order: savedOrder });
+  } catch (error) {
+    console.error("Order save error:", error);
+    res.status(500).json({ message: "Failed to place order" });
+  }
+};
 
 export const customerOrder = async (req, res) => {
   try {
@@ -27,6 +72,21 @@ export const customerOrder = async (req, res) => {
       return res.status(400).json({ message: "Cart items cannot be empty" });
     }
 
+    // Check and update stock for each cart item
+    for (const item of cartItems) {
+      const existingProduct = await Product.findById(item.product);
+      if (!existingProduct) {
+        return res.status(404).json({ message: `Product not found: ${item.product}` });
+      }
+      if (existingProduct.quantity.value < item.quantity) {
+        return res.status(400).json({ message: `Insufficient stock for product: ${existingProduct.name}` });
+      }
+
+      existingProduct.quantity.value -= item.quantity; // update value, not whole object
+      await existingProduct.save();
+    }
+
+
     const newOrder = new Order({
       customerDetails,
       cartItems,
@@ -52,9 +112,9 @@ export const getAllOrders = async (req, res) => {
   try {
     const orders = await Order.find().sort({ createdAt: -1 });
     const totalOrders = orders.length;
-    res.status(200).json({ message: "All orders fetch successfully.", totalOrders: totalOrders, orders})
+    res.status(200).json({ message: "All orders fetch successfully.", totalOrders: totalOrders, orders })
   } catch (error) {
     console.log(error)
-    res.status(500).json({ message: "Faild to fetch all orders."})
+    res.status(500).json({ message: "Faild to fetch all orders." })
   }
 }

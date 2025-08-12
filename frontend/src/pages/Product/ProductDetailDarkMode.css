@@ -1,0 +1,24 @@
+body.dark .addReview{
+    background-color: rgb(34, 34, 75);
+}
+body.dark .reviewTextArea{
+    background-color: rgb(105, 105, 129);
+}
+body.dark .addToCartBtn:hover{
+    background-color: rgb(29, 29, 58);
+}
+body.dark .addWhitListBtn:hover{
+    background-color: rgb(29, 29, 58);
+}
+body.dark .buyNowBtn {
+  background: linear-gradient(to right, #23295c, #434343) !important;
+  color: white !important;
+}
+body.dark .buyNowBtn:hover {
+  background: linear-gradient(to right, #222222, #555555) !important;
+}
+body.dark .buyNowBtn:disabled {
+  background: #555555 !important;
+  color: #cccccc !important;
+  cursor: not-allowed !important;
+}

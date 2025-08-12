@@ -213,3 +213,53 @@ export const getSingleProduct = async (req, res, next) => {
     next(error);
   }
 }
+
+export const submitReview = async (req, res) => {
+  try {
+    const { rating, comment } = req.body;
+    const productId = req.params.id;
+
+    if (!rating || !comment.trim()) {
+      return res.status(400).json({ success: false, message: "Rating and comment are required" });
+    }
+
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({ success: false, message: "Product not found" });
+    }
+
+    // Check if user already reviewed
+    const alreadyReviewed = product.reviews.find(
+      review => review.user.toString() === req.user._id.toString()
+    );
+
+    if (alreadyReviewed) {
+      return res.status(400).json({ success: false, message: "You have already reviewed this product" });
+    }
+
+    // Create review
+    const newReview = {
+      user: req.user._id,
+      name: req.user.name,
+      rating: Number(rating),
+      comment
+    };
+
+    product.reviews.push(newReview);
+
+    // Update number of reviews
+    product.noOfReviews = product.reviews.length;
+
+    // Update average rating
+    product.ratings = Number(
+      (product.reviews.reduce((acc, review) => acc + review.rating, 0) / product.reviews.length).toFixed(2)
+    );
+
+    await product.save();
+
+    res.status(201).json({ success: true, message: "Review submitted successfully", data: newReview });
+  } catch (error) {
+    console.error("Error submitting review:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};

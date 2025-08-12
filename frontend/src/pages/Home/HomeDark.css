@@ -96,15 +96,19 @@ body.dark .product-category-title{
   color: white !important;
 }
 body.dark .product-price{
-  color: white;
+  color: white !important;
 }
-body.dark .card-title {
+body.dark .product-card-title {
     border-radius: 20px;
-    color: #f0f0f5
+    color: #0e0ef5
+    
   }
   
 body.dark  .card-text {
     color: #f0f0f5;
+  }
+body.dark  .product-desc {
+    color: #f0f0f5 !important;
   }
   
 body.dark .card-button {

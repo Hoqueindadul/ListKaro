@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Loader, Lock, Mail, PhoneCall, User } from "lucide-react";
-import Input from "../components/Input";
-import PasswordStrengthMeter from "../components/PasswordStrengthMeter";
+import Input from "../../components/Input";
+import PasswordStrengthMeter from "../../components/PasswordStrengthMeter";
 import toast from 'react-hot-toast';
-import { useAuthStore } from "../store/authStore";
+import { useAuthStore } from "../../store/authStore";
 import "./Signup.css"
 
 const Signup = () => {

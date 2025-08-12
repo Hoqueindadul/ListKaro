@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { LOCAL_URL } from '../deploy-backend-url';
-import { DEPLOYMENT_URL } from '../deploy-backend-url';
+import { LOCAL_URL } from '../../deploy-backend-url';
+import { DEPLOYMENT_URL } from '../../deploy-backend-url';
 
 const PaymentForm = () => {
     const { state } = useLocation();

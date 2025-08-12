@@ -2,8 +2,8 @@ import { useLocation } from "react-router-dom";
 import React, { useEffect, useRef } from "react";
 import html2pdf from "html2pdf.js";
 import './PlacedSmall.css'
-import { LOCAL_URL } from '../deploy-backend-url';
-import { DEPLOYMENT_URL } from '../deploy-backend-url';
+import { LOCAL_URL } from '../../deploy-backend-url';
+import { DEPLOYMENT_URL } from '../../deploy-backend-url';
 const Placed = () => {
     const { state } = useLocation();
     const localData = JSON.parse(localStorage.getItem("orderData") || "{}");

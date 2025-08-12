@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuthStore } from "../store/authStore";
+import { useAuthStore } from "../../store/authStore";
 
 export default function EmailVerificationPage() {
 	const [code, setCode] = useState(["", "", "", "", "", ""]);

@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './HomeDark.css';
+import '../Home/HomeDark.css';
 import { Star, StarHalf } from 'lucide-react';
-import { DEPLOYMENT_URL, LOCAL_URL } from "../deploy-backend-url";
+import { DEPLOYMENT_URL, LOCAL_URL } from "../../deploy-backend-url";
 
 const ProductList = () => {
     const [products, setProducts] = useState({});
 
     useEffect(() => {
-        axios.get(`${LOCAL_URL}/api/products/getAllProducts`, { withCredentials: true })
+        axios.get(`${DEPLOYMENT_URL}/api/products/getAllProducts`, { withCredentials: true })
             .then(res => {
                 const allProducts = res.data.data || [];
                 const grouped = {};
@@ -71,17 +72,22 @@ const ProductList = () => {
                             <div key={product._id} className="col-md-4 mb-4">
                                 <div className="card h-100 shadow-sm bg-white text-black card-container">
                                     {product.image?.[0]?.url && (
-                                        <img
-                                            src={product.image[0].url}
-                                            className="card-img-top"
-                                            alt={product.name}
-                                            style={{ height: '200px', objectFit: 'cover' }}
-                                        />
+                                        <Link to={`/product/${product._id}`}>
+                                            <img
+                                                src={product.image[0].url}
+                                                className="card-img-top"
+                                                alt={product.name}
+                                                style={{ height: '200px', objectFit: 'cover' }}
+                                            />
+                                        </Link>
+                                        
                                     )}
                                     <div className="card-body d-flex flex-column">
-                                        <h5 className="card-title fs-4 text-capitalize">{product.name}</h5>
+                                        <Link to={`/product/${product._id}`} className="no-underline">
+                                            <h5 className="product-card-title fs-5 !font-bold text-capitalize">{product.name}</h5>
+                                        </Link>
                                         <p
-                                            className="card-text text-truncate"
+                                            className="card-text product-desc text-truncate text-black"
                                             title={product.description}
                                             style={{ minHeight: '3rem' }}
                                         >
@@ -94,7 +100,7 @@ const ProductList = () => {
                                             </span>
                                         </div>
                                         <div className="d-flex justify-content-between align-items-center mt-auto">
-                                            <h2 className="mb-0 card-title product-price fw-bold fs-3">
+                                            <h2 className="mb-0 product-price text-black fw-bold fs-3">
                                                 ₹ {product.price?.toFixed(2) ?? 'N/A'}
                                             </h2>
                                             <button className="btn btn-primary fw-bold">Buy Now</button>

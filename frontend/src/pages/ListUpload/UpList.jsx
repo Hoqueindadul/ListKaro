@@ -5,10 +5,10 @@ import { useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-import { useBulkUploadStore } from '../store/authStore';
-import { useAuthStore } from '../store/authStore';
-import { LOCAL_URL } from '../deploy-backend-url';
-import { DEPLOYMENT_URL } from '../deploy-backend-url';
+import { useBulkUploadStore } from '../../store/authStore';
+import { useAuthStore } from '../../store/authStore';
+import { LOCAL_URL } from '../../deploy-backend-url';
+import { DEPLOYMENT_URL } from '../../deploy-backend-url';
 
 function UpList() {
     const [ocrText, setOcrText] = useState([]);

@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
-import { useAuthStore } from "../store/authStore";
+import { useAuthStore } from "../../store/authStore";
 import { Mail, Lock, Loader } from "lucide-react";
 import toast from 'react-hot-toast';
-import Input from "../components/Input";
+import Input from "../../components/Input";
 import "./LoginPage.css";
 
 const LoginPage = () => {
