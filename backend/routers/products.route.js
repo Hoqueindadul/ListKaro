@@ -21,7 +21,7 @@ router.post('/createProduct', verifyToken, roleBasedAccess('admin'),  upload.arr
 router.get('/searchProductsByKeyword', searchProductsByKeyword);
 
 // Route to get all products
-router.get('/getAllProducts', verifyToken, getAllProducts);
+router.get('/getAllProducts', getAllProducts);
 
 // Route to get a single product by ID
 router.get('/singleProduct/:id', getSingleProduct);
