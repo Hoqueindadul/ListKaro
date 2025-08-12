@@ -60,8 +60,13 @@ const OrderPage = () => {
 
     if (paymentMode === "cashOnDelivery") {
       try {
+        const token = localStorage.getItem("token")
         const response = await axios.post(`${DEPLOYMENT_URL}/api/order`, orderData, {
           withCredentials: true,
+          headers: {
+              "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${token}`
+          },
         });
         console.log(response.data.order)
         if (response.status === 201) {
