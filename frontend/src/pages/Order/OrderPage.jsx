@@ -64,7 +64,7 @@ const OrderPage = () => {
         const response = await axios.post(`${DEPLOYMENT_URL}/api/order`, orderData, {
           withCredentials: true,
           headers: {
-              "Content-Type": "multipart/form-data",
+              "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`
           },
         });
