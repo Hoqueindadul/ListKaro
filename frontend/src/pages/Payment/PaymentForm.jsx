@@ -154,7 +154,7 @@ console.log(state)
         totalAmount,
       };
 
-      const res = await axios.post(`${LOCAL_URL}/api/single-product-order`, orderData, {
+      const res = await axios.post(`${DEPLOYMENT_URL}/api/single-product-order`, orderData, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,

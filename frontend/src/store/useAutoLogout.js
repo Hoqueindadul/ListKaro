@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { jwtDecode } from 'jwt-decode';
 
 
-const useAutoLogout = (token, logoutFn, inactivityTimeout = 5* 60 * 1000) => {
+const useAutoLogout = (token, logoutFn, inactivityTimeout = 2 * 24 * 60 * 60 * 1000) => {
     useEffect(() => {
         if (!token) return;
 

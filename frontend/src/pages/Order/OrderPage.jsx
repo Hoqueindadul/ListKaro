@@ -105,7 +105,7 @@ const OrderPage = () => {
                 const token = localStorage.getItem("token");
 
                 const paymentResponse = await axios.post(
-                    `${LOCAL_URL}/api/payment`,
+                    `${DEPLOYMENT_URL}/api/payment`,
                     { price: totalAmount },
                     {
                         headers: { Authorization: `Bearer ${token}` },
