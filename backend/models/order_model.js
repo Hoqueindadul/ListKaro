@@ -6,7 +6,7 @@ const orderSchema = new mongoose.Schema({
     address: String,
     zip: Number,
     email: String,
-    phone: String, // Changed from Number
+    phone: String,
   },
   cartItems: [
     {
@@ -37,6 +37,11 @@ const orderSchema = new mongoose.Schema({
     type: String,
     enum: ["pending", "paid", "failed"],
     default: "pending",
+  },
+  paymentDetails: {
+    razorpayOrderId: { type: String, default: null },
+    razorpayPaymentId: { type: String, default: null },
+    razorpaySignature: { type: String, default: null },
   },
   status: {
     type: String,

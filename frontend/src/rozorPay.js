@@ -1,0 +1,1 @@
+export const REACT_APP_RAZORPAY_KEY_ID="rzp_test_sIWGak0qwRvULV"
