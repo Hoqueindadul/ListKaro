@@ -91,11 +91,15 @@ export default function ProductDetails() {
         }
         try {
             setSubmittingReview(true);
+            const token = localStorage.getItem("token");
             await axios.post(
                 `${DEPLOYMENT_URL}/api/products/submitReview/${product._id}`,
                 { rating, comment },
                 {
                     withCredentials: true,
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
                 }
             );
             toast.success("Thank you for giving review 👍!");
