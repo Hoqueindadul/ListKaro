@@ -11,33 +11,33 @@ import axios from 'axios';
 const PaymentForm = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
-  console.log(state)
+console.log(state)
   const paymentMode = state?.paymentMode || "cashOnDelivery"; // get payment mode from previous page
   const productId = state?.product?._id; // single product ID
   const quantity = state?.quantity || 1;
   const customerDetails = state?.customerDetails || {};
   const totalAmount = state?.totalAmount || 0;
   const razorpayOrder = state?.razorpayOrder; // only for online
-
+  
 
   useEffect(() => {
-    if (!productId) {
+    if (!productId ) {
       toast.error("Missing productId");
       navigate("/order");
       return;
     }
-    if (!customerDetails) {
+    if (!customerDetails ) {
       toast.error("Missing customer details");
       navigate("/order");
       return;
     }
-    if (!totalAmount) {
+    if (!totalAmount ) {
       toast.error("Missing total amount");
       navigate("/order");
       return;
     }
-
-
+    
+    
 
     if (paymentMode === "online") {
       if (!razorpayOrder) {
@@ -177,15 +177,16 @@ const PaymentForm = () => {
 
   return (
     <div
-      className="spinner-border"
-      role="status"
       style={{
-        borderTopColor: "red",
-        borderRightColor: "yellow",
-        borderBottomColor: "green",
-        borderLeftColor: "blue",
-        width: "3rem",
-        height: "3rem",
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        display: "flex",
+        justifyContent: "center",
+        alignContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
       }}
     >
       <div className="spinner-border" role="status" />
