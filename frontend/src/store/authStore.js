@@ -28,8 +28,7 @@ export const useAuthStore = create(
                         name,
                         phone
                     });
-                    set({ user: response.data.user, isAuthenticated: true, isLoading: false });
-                    console.log("Sign up successful", response.data);
+                    set({ isLoading: false });
                 } catch (error) {
                     set({
                         error: error.response?.data?.message || "Error signing up",
@@ -47,7 +46,7 @@ export const useAuthStore = create(
                         password,
                     });
 
-                    localStorage.setItem("token", response.data.token); 
+                    localStorage.setItem("token", response.data.token);
 
                     set({
                         isAuthenticated: true,
@@ -91,8 +90,8 @@ export const useAuthStore = create(
                 try {
                     const response = await axios.post(`${API_URL}/verify-email`, { code });
                     set({
-                        user: response.data.user,
-                        isAuthenticated: true,
+                        //     user: response.data.user,
+                        //     isAuthenticated: true,
                         isLoading: false,
                     });
                     console.log(response.data);
@@ -184,7 +183,7 @@ export const useCartStore = create((set) => ({
             const response = await axios.get(`${CART_API_URL}/user-cart`, {
                 withCredentials: true,
                 headers: {
-                    Authorization: `Bearer ${token}`, 
+                    Authorization: `Bearer ${token}`,
                 },
             });
             set({ cartItems: response.data.data, loading: false });
@@ -207,7 +206,7 @@ export const useCartStore = create((set) => ({
             await axios.delete(`${CART_API_URL}/user-cart/${productId}`, {
                 withCredentials: true,
                 headers: {
-                    Authorization: `Bearer ${token}`, 
+                    Authorization: `Bearer ${token}`,
                 },
             });
             set((state) => ({
@@ -243,7 +242,7 @@ export const useProductStore = create((set) => ({
             const response = await axios.post(`${PRODUCT_API_URL}createProduct`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
-                     Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${token}`
                 },
                 withCredentials: true,
             });
@@ -283,12 +282,12 @@ export const useProductStore = create((set) => ({
             const response = await axios.put(
                 `${PRODUCT_API_URL}updateProduct/${productId}`,
                 updatedData,
-                { 
-                    headers: { 
-                    "Content-Type": "multipart/form-data",
-                    Authorization: `Bearer ${token}`, 
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        Authorization: `Bearer ${token}`,
                     },
-                    withCredentials: true, 
+                    withCredentials: true,
                 }
             );
 
@@ -315,12 +314,12 @@ export const useProductStore = create((set) => ({
         try {
             console.log("Deleting product with ID:", productId);
 
-             const token = localStorage.getItem("token");
-             
+            const token = localStorage.getItem("token");
+
             await axios.delete(`${PRODUCT_API_URL}deleteProduct/${productId}`, {
                 withCredentials: true,
                 headers: {
-                    Authorization: `Bearer ${token}`, 
+                    Authorization: `Bearer ${token}`,
                 },
             });
 
@@ -340,42 +339,42 @@ export const useProductStore = create((set) => ({
 
 
 const ONE_CLICK_BUY_URL = import.meta.env.MODE === "development"
-  ? "http://localhost:5000/api/"
-  : `${DEPLOYMENT_URL}/api/`;
+    ? "http://localhost:5000/api/"
+    : `${DEPLOYMENT_URL}/api/`;
 
 export const useBulkUploadStore = create((set) => ({
-  loading: false,
-  error: null,
+    loading: false,
+    error: null,
 
-  bulkUploadProducts: async (products) => {
-    set({ loading: true, error: null });
+    bulkUploadProducts: async (products) => {
+        set({ loading: true, error: null });
 
-    try {
-      const token = localStorage.getItem("token");
+        try {
+            const token = localStorage.getItem("token");
 
-      if (!token) {
-        throw new Error("No token found. Please login first.");
-      }
+            if (!token) {
+                throw new Error("No token found. Please login first.");
+            }
 
-      const response = await axios.post(
-        `${ONE_CLICK_BUY_URL}bulk-upload`,
-        { products },
-        {
-          withCredentials: true,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+            const response = await axios.post(
+                `${ONE_CLICK_BUY_URL}bulk-upload`,
+                { products },
+                {
+                    withCredentials: true,
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            set({ loading: false });
+
+            return response.data;
+
+        } catch (error) {
+            const message = error.response?.data?.message || error.message;
+            console.error("Error during bulk upload:", message);
+            set({ error: message, loading: false });
         }
-      );
-
-      set({ loading: false });
-      
-      return response.data;
-
-    } catch (error) {
-      const message = error.response?.data?.message || error.message;
-      console.error("Error during bulk upload:", message);
-      set({ error: message, loading: false });
-    }
-  },
+    },
 }));

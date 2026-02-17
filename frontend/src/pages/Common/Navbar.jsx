@@ -8,7 +8,6 @@ import '../Home/Home.css';
 import '../Home/HomeDark.css';
 
 export default function Navbar() {
-    const [showPopup, setShowPopup] = useState(false);
     const [lightMode, setLightMode] = useState(true);
     const [showUserDropdown, setShowUserDropdown] = useState(false);
     const [showSidebar, setShowSidebar] = useState(false);
@@ -21,6 +20,7 @@ export default function Navbar() {
     const userDropdownRef = useRef(null);
     const sidebarRef = useRef(null);
 
+    // --- Theme Logic ---
     const toggleDarkMode = () => {
         const newMode = !lightMode;
         setLightMode(newMode);
@@ -39,6 +39,7 @@ export default function Navbar() {
         }
     }, []);
 
+    // --- Logout Logic ---
     const handleLogout = async () => {
         try {
             await logout();
@@ -51,19 +52,12 @@ export default function Navbar() {
         }
     };
 
+    // --- Click Outside Logic ---
     const handleClickOutside = (event) => {
-        if (
-            userDropdownRef.current &&
-            !userDropdownRef.current.contains(event.target)
-        ) {
+        if (userDropdownRef.current && !userDropdownRef.current.contains(event.target)) {
             setShowUserDropdown(false);
         }
-
-        if (
-            sidebarRef.current &&
-            !sidebarRef.current.contains(event.target) &&
-            !event.target.closest(".nav-toggle-icon")
-        ) {
+        if (sidebarRef.current && !sidebarRef.current.contains(event.target) && !event.target.closest(".nav-toggle-icon")) {
             setShowSidebar(false);
         }
     };
@@ -86,171 +80,159 @@ export default function Navbar() {
 
     return (
         <>
-            <nav className="my-navbar fixed top-0 z-50 dark:bg-gray-800 text-gray-800 dark:text-white shadow-md w-full duration-300">
-                <div className="nav-holder max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-                    <div className="flex items-center space-x-2">
-                        <img src="/images/logo.png" alt="logo" className="h-8 w-8" />
-                        <Link to="/" className="text-xl font-bold my-brand">ListKaro</Link>
-                    </div>
+            {/* 1. FIXED HEADER WRAPPER (This holds both Nav and Categories) */}
+            <header className="fixed top-0 left-0 w-full z-50 shadow-md bg-white dark:bg-gray-800 transition-colors duration-300">
 
-                    <div className="hidden lg:flex items-center gap-4">
-                        <input
-                            type="search"
-                            placeholder="Search for items"
-                            className="searchinput px-3 py-1 rounded-md border dark:border-gray-600 dark:bg-gray-700 text-sm focus:outline-none"
-                        />
-                        <Link to="/uploadlist" className="flex gap-2 text-sm font-semibold upload-list-lg">
-                            <Upload size={20} className="text-gray-800 dark:text-white" />One Click Shopping
-                        </Link>
-                    </div>
+                {/* --- MAIN NAVBAR --- */}
+                <nav className=" dark:bg-gray-800 text-gray-800 dark:text-white border-b border-gray-200 dark:border-gray-700">
+                    <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+                        <div className="flex items-center space-x-2">
+                            <img src="/images/logo.png" alt="logo" className="h-8 w-8" />
+                            <Link to="/" className="text-xl font-bold my-brand">ListKaro</Link>
+                        </div>
 
-                    <div className="flex items-center gap-4">
-                        <Link to="/shopping-cart" className="relative px-1 py-1 rounded-md text-sm hover:bg-green-700 transition">
-                            <ShoppingCart size={24} className="nav-cart-icon" />
-                            {cartCount > 0 && (
-                                <span className="absolute -top-1 -right-1 bg-red-600 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">{cartCount}</span>
-                            )}
-                        </Link>
+                        {/* Search Bar (Desktop) */}
+                        <div className="hidden lg:flex items-center gap-4">
+                            <input
+                                type="search"
+                                placeholder="Search for items"
+                                className="searchinput px-3 py-1 rounded-md border text-sm focus:outline-none"
+                            />
+                            <Link to="/uploadlist" className="flex gap-2 text-sm font-semibold upload-list-lg">
+                                <Upload size={20} /> One Click Shopping
+                            </Link>
+                        </div>
 
-                        <img
-                            src={lightMode ? "/images/sun.png" : "/images/moon.png"}
-                            onClick={toggleDarkMode}
-                            alt="Toggle Theme"
-                            className="w-6 h-6 cursor-pointer"
-                        />
+                        {/* Right Actions */}
+                        <div className="flex items-center gap-4">
+                            <Link to="/shopping-cart" className="relative px-1 py-1 rounded-md text-sm hover:bg-green-700 transition">
+                                <ShoppingCart size={24} className="nav-cart-icon" />
+                                {cartCount > 0 && (
+                                    <span className="absolute -top-1 -right-1 bg-red-600 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">{cartCount}</span>
+                                )}
+                            </Link>
 
-                        {/* 👇 Login/Profile Icon Section */}
-                        <div className="relative" ref={userDropdownRef}>
-                            <div
-                                onClick={() => setShowUserDropdown(!showUserDropdown)}
-                                className="cursor-pointer flex items-center gap-1 px-2 py-1 rounded bg-green-950 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200 ease-in-out"
-                            >
+                            <img
+                                src={lightMode ? "/images/sun.png" : "/images/moon.png"}
+                                onClick={toggleDarkMode}
+                                alt="Toggle Theme"
+                                className="w-6 h-6 cursor-pointer"
+                            />
 
-                                {isAuthenticated ? (
-                                    <>
-                                        <User className="text-green-600" size={22} />
-                                        <span>{user?.name?.split(" ")[0] || "Profile"}</span>
-                                    </>
-                                ) : (
-                                    <>
-                                        <User className="text-amber-600 " size={22} />
-                                        <span>Login</span>
-                                    </>
+                            {/* User Dropdown */}
+                            <div className="relative" ref={userDropdownRef}>
+                                <div
+                                    onClick={() => setShowUserDropdown(!showUserDropdown)}
+                                    className="cursor-pointer flex items-center gap-1 px-2 py-1 rounded bg-green-900 text-white hover:bg-green-800 transition"
+                                >
+                                    {isAuthenticated ? (
+                                        <>
+                                            <User className="text-green-400" size={20} />
+                                            <span>{user?.name?.split(" ")[0] || "Profile"}</span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <User className="text-amber-400" size={20} />
+                                            <span>Login</span>
+                                        </>
+                                    )}
+                                </div>
+
+                                {showUserDropdown && (
+                                    <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border dark:border-gray-700 rounded shadow-xl text-sm z-[60]">
+                                        {isAuthenticated && (
+                                            <div className="px-4 py-3 text-gray-700 dark:text-gray-200 border-b dark:border-gray-700">
+                                                Hello, <b>{user?.name}</b>
+                                            </div>
+                                        )}
+                                        {!isAuthenticated ? (
+                                            <>
+                                                <Link to="/login" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700" onClick={() => setShowUserDropdown(false)}>Login</Link>
+                                                <Link to="/signup" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700" onClick={() => setShowUserDropdown(false)}>Signup</Link>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Link to="/orders" className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700" onClick={() => setShowUserDropdown(false)}>
+                                                    <Package size={16} /> Your Orders
+                                                </Link>
+                                                <button onClick={handleLogout} className="flex w-full items-center gap-2 px-4 py-2 text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                                    <LogOut size={16} /> Logout
+                                                </button>
+                                            </>
+                                        )}
+                                    </div>
                                 )}
                             </div>
 
-                            {showUserDropdown && (
-                                <div className="absolute right-0 mt-2 w-40 nav-dropdown bg-gray-800 dark:bg-gray-700 border dark:border-gray-600 rounded shadow-lg text-sm z-50">
-                                    {isAuthenticated && user && (
-                                        <div className="block px-4 py-2 text-white font-semibold">
-                                            Hello, {user.name}
-                                        </div>
-                                    )}
-                                    <hr />
-                                    {!isAuthenticated && (
-                                        <>
-                                            <Link
-                                                to="/login"
-                                                className="block px-4 py-2 text-bold hover:bg-gray-100 dark:hover:bg-gray-600 nav-dropdown-link"
-                                                onClick={() => setShowUserDropdown(false)}
-                                            >
-                                                Login
-                                            </Link>
-                                            <Link
-                                                to="/signup"
-                                                className="block px-4 py-2 text-bold hover:bg-gray-100 dark:hover:bg-gray-600 nav-dropdown-link"
-                                                onClick={() => setShowUserDropdown(false)}
-                                            >
-                                                Signup
-                                            </Link>
-                                        </>
-                                    )}
-                                    {isAuthenticated && (
-                                        <Link
-                                            to="/orders"
-                                            className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 nav-dropdown-link uorders"
-                                        >
-                                            <Package className="w-5 h-5" /> Your Orders
-                                        </Link>
-                                    )}
-                                    <hr className="border-gray-600 my-2" />
-                                    {isAuthenticated && (
-                                        <Link
-                                            to="/"
-                                            className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 nav-dropdown-link ulogout"
-                                            onClick={handleLogout}
-                                        >
-                                            <LogOut className="w-5 h-5" /> Logout
-                                        </Link>
-                                    )}
-                                </div>
-                            )}
-                        </div>
-
-                        <div className="block">
                             <button onClick={() => setShowSidebar(true)}>
                                 <Menu className="w-6 h-6 nav-toggle-icon dark:text-white" />
                             </button>
                         </div>
                     </div>
-                </div>
+                </nav>
 
-                {showSidebar && (
+                {/* --- CATEGORY BAR --- */}
+                <div className="bg-gray-100 dark:bg-gray-700 border-b dark:border-gray-600 py-2 overflow-x-auto no-scrollbar w-full">
+                    <div className="max-w-7xl mx-auto px-4 flex items-center gap-6 text-sm font-medium whitespace-nowrap">
+                        <button onClick={() => setShowSidebar(true)} className="flex items-center gap-1 hover:text-green-600 transition dark:text-white">
+                            <Menu size={18} /> All
+                        </button>
+                        <Link to="/products" className="category-links no-underline transition">All Products</Link>
+                        <Link to="/dairy-products" className="category-links no-underline transition">Dairy Products</Link>
+                        <Link to="/Fruits" className="category-links no-underline transition">Fruits</Link>
+                        <Link to="/vegetables" className="category-links no-underline transition">Vegetables</Link>
+                        <Link to="/canned-products" className="category-links no-underline transition">Canned Products</Link>
+                        <Link to="/snacks" className="category-links no-underline transition">Snacks & Munchies</Link>
+                        <Link to="/beverages" className="category-links no-underline transition">Beverages</Link>
+                    </div>
+                </div>
+            </header>
+
+            {/* 2. SPACER (Prevents page content from hiding behind the fixed header) */}
+            <div className="h-[108px]"></div>
+
+            {/* 3. SIDEBAR DRAWER */}
+            {showSidebar && (
+                <>
+                    {/* Backdrop */}
+                    <div className="fixed inset-0 bg-black bg-opacity-50 z-[60]" onClick={() => setShowSidebar(false)}></div>
+
                     <div
                         ref={sidebarRef}
-                        className="fixed top-0 right-0 h-full w-80 nav-mob-screen-dropdown shadow-lg z-50 transform transition-transform duration-300 ease-in-out translate-x-0"
+                        className="fixed top-0 right-0 h-full w-80 bg-orange-200 dark:bg-gray-900 shadow-2xl z-[70] transform transition-transform duration-300 translate-x-0"
                     >
-                        <div className="flex justify-between items-center p-4 border-b dark:border-gray-600 bg-orange-300 menuheader">
-                            <span className="text-lg font-semibold nav-sidebarheader-text dark:text-white">Menu</span>
+                        <div className="flex justify-between items-center p-4 border-b dark:border-gray-700 bg-orange-300 dark:bg-gray-800">
+                            <span className="text-lg font-bold dark:text-white">Menu</span>
                             <button onClick={() => setShowSidebar(false)}>
-                                <X className="w-5 h-5 nav-sidebar-close" />
+                                <X className="w-6 h-6 dark:text-white" />
                             </button>
                         </div>
 
-                        <div className="menucontainer p-0 bg-orange-200 h-full">
-                            <input type="search" placeholder="Search for items" className="searchinput m-4 w-full px-3 py-2 mb-4 rounded-md border dark:border-gray-600 dark:bg-gray-700 text-sm focus:outline-none" />
-                            <Link to="/uploadlist" className="flex gap-2 items-center text-sm font-semibold upload-list px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <Upload size={20} className="text-gray-800 dark:text-white" />
-                                One Click Shopping
-                            </Link>
+                        <div className="p-4 space-y-4">
+                            <input type="search" placeholder="Search..." className="w-full px-3 py-2 rounded border dark:bg-gray-800 dark:border-gray-700" />
+                            <Link to="/uploadlist" className="flex items-center gap-2 font-semibold"><Upload size={18} /> One Click Shopping</Link>
 
                             <div>
-                                <Link
-                                    to="#"
-                                    className="flex items-center gap-2 text-sm font-semibold upload-list px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
-                                    onClick={() => setShowSubTabs(prev => !prev)}
-                                >
-                                    <Package size={20} className="text-gray-800 dark:text-white" />
-                                    All Products
-                                </Link>
-
+                                <button onClick={() => setShowSubTabs(!showSubTabs)} className="flex items-center gap-2 font-semibold w-full">
+                                    <Package size={18} /> All Products
+                                </button>
                                 {showSubTabs && (
-                                    <div className="pl-6 mt-2 space-y-2">
-                                        <Link to="/dairy-products" className="block text-sm no-underline text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 px-2 py-1 rounded">Dairy Products</Link>
-                                        <Link to="/Fruits" className="block text-sm no-underline text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 px-2 py-1 rounded">Fruits</Link>
-                                        <Link to="/vegetables" className="block text-sm no-underline text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 px-2 py-1 rounded">Vegetables</Link>
-                                        <Link to="/canned-products" className="block text-sm no-underline text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 px-2 py-1 rounded">Canned Products</Link>
-                                        <Link to="/products" className="block text-sm no-underline text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 px-2 py-1 rounded">All Products</Link>
+                                    <div className="pl-6 mt-2 space-y-2 text-sm">
+                                        <Link to="/dairy-products" className="block">Dairy Products</Link>
+                                        <Link to="/Fruits" className="block">Fruits</Link>
+                                        <Link to="/vegetables" className="block">Vegetables</Link>
                                     </div>
                                 )}
                             </div>
 
-                            <Link to="/about" className="flex items-center gap-2 text-sm font-semibold upload-list px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <Info size={20} className="text-gray-800 dark:text-white" />
-                                About
-                            </Link>
-
-                            <button
-                                onClick={handleAdmin}
-                                className="flex items-center gap-2 text-sm font-semibold upload-list px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
-                            >
-                                <Info size={20} className="text-gray-800 dark:text-white" />
-                                Admin Panel
+                            <Link to="/about" className="flex items-center gap-2 font-semibold"><Info size={18} /> About</Link>
+                            <button onClick={handleAdmin} className="flex items-center gap-2 font-semibold text-amber-700 dark:text-amber-400">
+                                <User size={18} /> Admin Panel
                             </button>
                         </div>
                     </div>
-                )}
-            </nav>
+                </>
+            )}
         </>
     );
 }

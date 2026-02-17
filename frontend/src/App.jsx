@@ -28,18 +28,18 @@ import ProductDetails from "./pages/Product/ProductDetails";
 function AppContent() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { logout } = useAuthStore(); 
+  const { logout } = useAuthStore();
   // Get token from localStorage (or your AuthContext if you have one)
   const token = localStorage.getItem("token");
 
   // Define your logout function
-  const handleAutoLogout = async() => {
-    await logout(); 
+  const handleAutoLogout = async () => {
+    await logout();
     toast.error("Session expired. Please login again.");
     navigate("/login");
   };
   // auto logout
- useAutoLogout(token, handleAutoLogout, 2 * 24 * 60 * 60 * 1000); // 2 days inactivity timeout
+  useAutoLogout(token, handleAutoLogout, 2 * 24 * 60 * 60 * 1000); // 2 days inactivity timeout
 
   // Define routes where Navbar should be hidden
   const hideNavbarRoutes = ["/adminpanel"];
@@ -50,7 +50,7 @@ function AppContent() {
     <>
       {!shouldHideNavbar && <Navbar />}
 
-      <div className={!shouldHideNavbar ? "pt-6" : ""} style={!shouldHideNavbar ? { paddingTop: "100px" } : {}}>
+      <div className={!shouldHideNavbar ? "pt-6" : ""} style={!shouldHideNavbar ? { paddingTop: "0px" } : {}}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/uploadlist" element={<UpList />} />

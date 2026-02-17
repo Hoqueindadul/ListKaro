@@ -2,8 +2,7 @@ import { User } from "../models/user.model.js";
 import bcryptjs from "bcryptjs";
 import crypto from "crypto"
 import { generateTokenAndSetCookie } from "../utils/generateTokenAndSetCookie.js";
-import { sendVarificationEmail, sendWelcomeEmail, sendPasswordResetEmail, sendResetSuccessEmail } from "../nodemailer/email.js";
-
+import sendSMS from "../nodemailer/sendSMSToPhone.js";
 // Signup Controller
 export const signup = async (req, res) => {
     try {
@@ -15,11 +14,21 @@ export const signup = async (req, res) => {
         }
 
         // Check if the user already exists
-        const userAlreadyExists = await User.findOne({ email });
+        const userAlreadyExists = await User.findOne({
+            $or: [
+                { email },
+                { phone }
+            ]
+        });
+
         if (userAlreadyExists) {
+            const isEmailExist = userAlreadyExists.email === email;
+
             return res.status(400).json({
                 success: false,
-                message: "User already exists",
+                message: isEmailExist ?
+                    "User already exists with your entered email" :
+                    "User already exists with your entered phone number",
             });
         }
 
@@ -41,10 +50,13 @@ export const signup = async (req, res) => {
         await user.save();
 
         // Set cookie
-        generateTokenAndSetCookie(res, user._id);
+        const token = generateTokenAndSetCookie(res, user._id);
+        console.log("signup token", token);
 
         // Send verification email
-        await sendVarificationEmail(user.email, varificationToken);
+        const smsBody = `Your ListKaro verification code is: ${varificationToken}. Valid for 10 minutes.`;
+        const phoneNumber = `+91${phone}`;
+        await sendSMS(phoneNumber, smsBody);
 
         res.status(201).json({
             success: true,
@@ -145,9 +157,6 @@ export const varifyEmail = async (req, res) => {
         user.varificationToken = undefined;;
         user.varificationTokenExpiresAt = undefined;
         await user.save();
-
-        // send welcome email
-        await sendWelcomeEmail(user.email, user.name);
 
         // send success response
         res.status(200).json({

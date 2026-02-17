@@ -1,2 +1,18 @@
 @import "tailwindcss";
 @import 'flowbite';
+
+/* Hide scrollbar for the category bar while allowing horizontal scroll on mobile */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Adjust the main page padding-top so content starts below both bars */
+body {
+    padding-top: 11px;
+    /* Adjust this value based on the combined height of both bars */
+}

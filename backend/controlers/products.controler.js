@@ -22,7 +22,6 @@ export const upload = multer({ storage });
 export const createProduct = handleAsyncError(async (req, res) => {
   try {
 
-
     // Validate image upload
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({ success: false, message: 'No image uploaded' });

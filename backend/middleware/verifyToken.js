@@ -8,8 +8,8 @@ export const verifyToken = handleAsyncError(async (req, res, next) => {
 
   // Debug logging
   // console.log("Request origin:", req.headers.origin);
-  console.log("Raw cookie header:", req.headers.cookie);
-  console.log("Authorization header:", req.headers.authorization);
+  // console.log("Raw cookie header:", req.headers.cookie);
+  // console.log("Authorization header:", req.headers.authorization);
   // console.log("Parsed cookies:", req.cookies);
 
   // Try to get token from cookies first (preferred for web browsers)
@@ -52,7 +52,7 @@ export const verifyToken = handleAsyncError(async (req, res, next) => {
     next();
   } catch (error) {
     console.error('Token verification error:', error.message);
-    
+
     // Handle specific JWT errors
     if (error.name === 'JsonWebTokenError') {
       return res.status(401).json({
@@ -65,7 +65,7 @@ export const verifyToken = handleAsyncError(async (req, res, next) => {
         message: 'Token expired',
       });
     }
-    
+
     return res.status(500).json({
       success: false,
       message: 'Internal server error',
