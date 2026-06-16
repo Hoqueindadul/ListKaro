@@ -1,230 +1,388 @@
-@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap');
+/* ============================================
+   DARK MODE OVERRIDES
+   ============================================ */
 
-body.dark{
-    background-color: #0d0d2b;
-    color: #f0f0f5;
-}
-body.dark .my-navbar {
-    background-color: #1a1a3e;
-    color: white;
-}
-body.dark .nav-dropdown{
-  background-color: #1a1a3e;
-  color: white;
-}
-body.dark .nav-mob-screen-dropdown{
-  background-color: #1a1a3e;
-  color: white;
-}
-body.dark .nav-toggle-icon{
-  color: white;
-}
-body.dark .nav-user-icon{
-  color: white;
-}
-body.dark .nav-cart-icon{
-  color: white;
-}
-body.dark .nav-sidebar-close{ color: white}
-body.dark .nav-sidebarheader-text{ color: white;}
-body.dark .my-brand { color: white; transition: all 0.3s ease-in; }
-body.dark .my-brand:hover { color: #6a9bd0; }
-body.dark .carocontainer, body.dark .categories, body.dark .categoriestitle { background-color:#0d0d2b ;}
-body.dark .searchinput {background-color: #1a1a3e;border: 1px solid #6a9bd0;color: #f0f0f5;}
-body.dark .searchinput::placeholder{ color: rgba(255, 255, 255, 0.478); color: #a6a6c1;}
-body.dark .my-navbar .nav-holder .upload-list-lg{ color: #f0f0f5; transition: all 0.3s ease-in;}  
-body.dark .my-navbar .nav-holder .upload-list-lg:hover{ color: #c686ff; transform: scale(1.1);}  
-
-body.dark .ucontainer{ background-color: #0d0d2b;}
-body.dark .uname,body.dark .uorders,body.dark .ulogout{ background-color: #0d0d2b; color: white; font: 800;}
-body.dark .ulogout{ color: red; }
-
-body.dark .navbar-toggler{
-    background-color: #6a9bd0;
-    border-radius: 5px;
-    border: none;
+body.dark {
+    --home-bg: #0f172a;
+    --home-surface: #1e293b;
+    --home-text: #f1f5f9;
+    --home-text-secondary: #94a3b8;
+    --home-border: #334155;
+    background-color: #0f172a;
+    color: #f1f5f9;
 }
 
-body.dark .profileicon{
-    filter: invert(100%);
-}
-body.dark .menuheader{
-  background-color:#121212; 
-}
-body.dark .menucontainer{
-  background-color: #1a1a1a; 
-}
-/* body.dark .custom-sidebar {
-    background-color: #121212;
-    color: #f0f0f5;
-  }
-  
-body.dark .custom-sidebar .offcanvas-header {
-    background-color: #1a1a1a;
-    color: #f0f0f5;
-  }
-  
-body.dark .custom-sidebar .nav-link {
-    color: #f0f0f5;
-    font-size: 1rem;
-    padding: 10px 15px;
-  }
-  
-body.dark .custom-sidebar .nav-link:hover {
-    background-color: #6a9bd0;
-    color: white;
-  }
-  
-body.dark .custom-sidebar .dropdown-menu {
-    background-color: #222222;
-}
-  
-body.dark .custom-sidebar .dropdown-item {
-    color: #f0f0f5;
-}
-  
-body.dark .custom-sidebar .dropdown-item:hover {
-    background-color: #6a9bd0;
-    color: white;
-} */
-
-body.dark .card-container{
-    background-color:  #1a1a1a !important;
-    color: white;
-}
-body.dark .product-category-title{
-  color: white !important;
-}
-body.dark .product-price{
-  color: white !important;
-}
-body.dark .product-card-title {
-    border-radius: 20px;
-    color: #0e0ef5
-    
-  }
-  
-body.dark  .card-text {
-    color: #f0f0f5;
-  }
-body.dark  .product-desc {
-    color: #f0f0f5 !important;
-  }
-  
-body.dark .card-button {
-    background-color: #67a0dd;
-    color: #f0f0f5;
-    font-weight: 500;
-  }
-body.dark .card-button:hover {
-    background-color: #32779c; 
-    color: #ffffff;
-  }
-body.dark .offer{
-    background-color:#2b2d42;
-  }
-  body.dark .offercontainer {
-    color: #e0e0e0; /* Soft light grey */
-  }
-  
-  body.dark .offercontainer h3 {
-    color: #ffd369; 
-  }
-  
-  body.dark .offercontainer p {
-    color: #f0f0f5; 
-  }
-  
-  body.dark .offercontainer #price {
-    color: #ff6f61; 
-  }
-  
-  body.dark .offercontainer #star {
-    color: #4e4e4e; /* Muted dark grey */
-  }
-  
-  body.dark .offercontainer input {
-    background-color: #3a3f70; 
-    color: #f0f0f5; 
-  }
-  
-  body.dark .offercontainer input:hover {
-    background-color: #5568a2; 
-  }
- body.dark .offerimg{
-    filter: invert(100%) brightness(80%);
-  }
-
-body.dark .newsletter{
-    background-color: #1f2235;
+/* Navbar overrides */
+body.dark .my-brand {
+    color: #4ade80;
 }
 
-body.dark .newsletter .emailbox{
-    background-color: #1a1a3e;
-    border: 1px solid #6a9bd0;
-    color: #f0f0f5;
+body.dark .my-brand:hover {
+    color: #22c55e;
 }
 
-body.dark .newsletter .emailbox::placeholder{
-    color: #a6a6c1;
+body.dark .nav-cart-icon {
+    color: #e2e8f0;
 }
 
-body.dark .newsletter .emailbtn{
-    background-color: #ff6f61;
-    border: 1px solid #6a9bd0;
-    color: white;
-}
-body.dark .emailbtn:hover{
-    background-color:#e94560;
-    box-shadow: 0 0 15px rgba(233, 69, 96, 0.5);
-  }
-
-  body.dark  footer a{
-    color: white;
-  }
-  body.dark  footer a:hover{
-    color: #6a9bd0;
-    font-weight: 300;
-  }
-
-  body.dark .offer-banner {
-  background-color: #2b2d42;
-  box-shadow: 0 0 15px rgba(255, 211, 105, 0.2);
-  border: 1px solid #6a9bd02d ;
+body.dark .nav-toggle-icon {
+    color: #e2e8f0;
 }
 
-body.dark .offer-banner .offer-text span {
-  color: #f0f0f5;
+body.dark .category-links {
+    color: #cbd5e1;
 }
 
-body.dark .signupcontainer {
-  background-color: #1a1a2e;
-  box-shadow: 0 10px 25px rgba(255, 255, 255, 0.1);
+body.dark .category-links:hover {
+    color: #4ade80;
 }
 
-body.dark .signupcontainer input {
-  background-color: #2b2d42;
-  color: #ffffff;
-  border: 0.5px solid #888;
+body.dark .searchinput {
+    background-color: #1e293b;
+    border-color: #475569;
+    color: #f1f5f9;
 }
 
-body.dark .signheader .signuptitle {
-  color: #ffd369;
+body.dark .searchinput:focus {
+    border-color: #4ade80;
+    box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.15);
 }
 
-body.dark .signheader .close {
-  color: #00ffae;
+body.dark .searchinput::placeholder {
+    color: #64748b;
 }
 
-body.dark .close:hover {
-  color: #ff4b5c;
+body.dark .upload-list-lg {
+    color: #4ade80 !important;
 }
 
-body.dark .signupbtn {
-  background-color: #3a3f70;
-  color: #ffffff;
+/* Announcement Bar */
+body.dark .home-announcement-bar {
+    background: linear-gradient(90deg, #065f46, #047857, #065f46);
 }
 
-body.dark .signupbtn:hover {
-  background-color: #2ecc71;
+/* Features Bar */
+body.dark .home-features {
+    background: #1e293b;
+    border-bottom-color: #334155;
+}
+
+body.dark .home-feature-item {
+    border-right-color: #334155;
+}
+
+body.dark .home-feature-item:hover {
+    background: rgba(74, 222, 128, 0.05);
+}
+
+body.dark .home-feature-icon {
+    background: linear-gradient(135deg, rgba(74, 222, 128, 0.15) 0%, rgba(74, 222, 128, 0.08) 100%);
+    color: #4ade80;
+}
+
+body.dark .home-feature-title {
+    color: #f1f5f9;
+}
+
+body.dark .home-feature-desc {
+    color: #94a3b8;
+}
+
+/* Categories Section */
+body.dark .home-categories-section {
+    background: #0f172a;
+}
+
+body.dark .home-section-title {
+    color: #f1f5f9;
+}
+
+body.dark .home-section-subtitle {
+    color: #94a3b8;
+}
+
+body.dark .home-cat-scroll-btn {
+    border-color: #475569;
+    background: #1e293b;
+    color: #e2e8f0;
+}
+
+body.dark .home-cat-scroll-btn:hover {
+    background: #4ade80;
+    border-color: #4ade80;
+    color: #0f172a;
+}
+
+body.dark .home-category-img-wrap {
+    background: linear-gradient(#1e293b, #1e293b) padding-box,
+                linear-gradient(135deg, #4ade80, #f97316) border-box;
+}
+
+body.dark .home-category-name {
+    color: #e2e8f0;
+}
+
+/* Promo Cards */
+body.dark .home-promo-card {
+    background: #1e293b;
+    border-color: #334155;
+}
+
+body.dark .home-promo-card:hover {
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+}
+
+body.dark .home-promo-badge {
+    background: rgba(220, 38, 38, 0.15);
+    color: #f87171;
+}
+
+body.dark .home-promo-badge-green {
+    background: rgba(74, 222, 128, 0.1);
+    color: #4ade80;
+}
+
+body.dark .home-promo-card-title {
+    color: #f1f5f9;
+}
+
+body.dark .home-promo-card-text {
+    color: #94a3b8;
+}
+
+body.dark .home-promo-coupon {
+    background: #0f172a;
+    border-color: #475569;
+    color: #e2e8f0;
+}
+
+body.dark .home-promo-discount {
+    background: rgba(220, 38, 38, 0.15);
+    color: #f87171;
+}
+
+body.dark .home-promo-discount-green {
+    background: rgba(74, 222, 128, 0.1);
+    color: #4ade80;
+}
+
+/* Deal Section */
+body.dark .home-deal-section {
+    background: linear-gradient(135deg, #422006 0%, #78350f 50%, #92400e 100%);
+}
+
+body.dark .home-deal-tag {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(4px);
+    color: #fde68a;
+}
+
+body.dark .home-deal-title {
+    color: #fef3c7;
+}
+
+body.dark .home-deal-desc {
+    color: #fde68a;
+}
+
+body.dark .home-deal-price-old {
+    color: #78716c;
+}
+
+body.dark .home-deal-terms {
+    color: #78716c;
+}
+
+body.dark .home-deal-btn {
+    background: #fbbf24;
+    color: #422006;
+    box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
+}
+
+body.dark .home-deal-btn:hover {
+    background: #f59e0b;
+    box-shadow: 0 6px 20px rgba(251, 191, 36, 0.4);
+    color: #422006;
+}
+
+body.dark .home-deal-image {
+    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.4)) brightness(0.9);
+}
+
+/* Upload / One Click Section */
+body.dark .home-upload-section {
+    background: #0f172a;
+}
+
+body.dark .home-upload-tag {
+    background: rgba(74, 222, 128, 0.1);
+    color: #4ade80;
+}
+
+body.dark .home-upload-title {
+    color: #f1f5f9;
+}
+
+body.dark .home-upload-desc {
+    color: #94a3b8;
+}
+
+body.dark .home-upload-step {
+    color: #e2e8f0;
+}
+
+body.dark .home-upload-step-num {
+    background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+    color: #0f172a;
+}
+
+body.dark .home-upload-btn {
+    background: #4ade80;
+    color: #0f172a;
+    box-shadow: 0 4px 15px rgba(74, 222, 128, 0.3);
+}
+
+body.dark .home-upload-btn:hover {
+    background: #22c55e;
+    box-shadow: 0 6px 20px rgba(74, 222, 128, 0.4);
+    color: #0f172a;
+}
+
+body.dark .home-upload-visual {
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+}
+
+/* Newsletter */
+body.dark .home-newsletter-section {
+    background: linear-gradient(135deg, #0f2d1e 0%, #14412a 50%, #1a5c3a 100%);
+}
+
+body.dark .home-newsletter-title {
+    color: #f1f5f9;
+}
+
+body.dark .home-newsletter-desc {
+    color: #94a3b8;
+}
+
+body.dark .home-newsletter-input {
+    background: #1e293b;
+    border-color: #475569;
+    color: #f1f5f9;
+}
+
+body.dark .home-newsletter-input:focus {
+    border-color: #4ade80;
+    box-shadow: 0 0 0 4px rgba(74, 222, 128, 0.15);
+}
+
+body.dark .home-newsletter-input::placeholder {
+    color: #64748b;
+}
+
+body.dark .home-newsletter-btn {
+    background: #4ade80;
+    color: #0f172a;
+}
+
+body.dark .home-newsletter-btn:hover {
+    background: #22c55e;
+}
+
+body.dark .home-newsletter-note {
+    color: #64748b;
+}
+
+body.dark .home-newsletter-img {
+    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3));
+}
+
+/* Footer */
+body.dark .home-footer {
+    background: #020617;
+}
+
+body.dark .home-footer-inner {
+    border-bottom-color: #1e293b;
+}
+
+body.dark .home-footer-brand-name {
+    color: #f1f5f9;
+}
+
+body.dark .home-footer-tagline {
+    color: #64748b;
+}
+
+body.dark .home-footer-col-title {
+    color: #e2e8f0;
+}
+
+body.dark .home-footer-col a {
+    color: #64748b;
+}
+
+body.dark .home-footer-col a:hover {
+    color: #4ade80;
+}
+
+body.dark .home-footer-bottom p {
+    color: #475569;
+}
+
+/* Offer Popup */
+body.dark .home-offer-popup {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+}
+
+body.dark .home-offer-popup-badge {
+    color: #fbbf24;
+    background: rgba(251, 191, 36, 0.1);
+}
+
+body.dark .home-offer-popup-desc {
+    color: #94a3b8;
+}
+
+body.dark .home-offer-popup-desc strong {
+    color: #fbbf24;
+}
+
+body.dark .home-offer-popup-btn {
+    background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+    color: #0f172a;
+}
+
+/* Promo card button in dark */
+body.dark .home-promo-card-btn {
+    background: #f97316;
+    color: #fff;
+}
+
+body.dark .home-promo-card-btn:hover {
+    background: #ea580c;
+}
+
+body.dark .home-promo-card-btn-green {
+    background: #4ade80;
+    color: #0f172a;
+}
+
+body.dark .home-promo-card-btn-green:hover {
+    background: #22c55e;
+    color: #0f172a;
+}
+
+/* Hero CTA in dark */
+body.dark .home-hero-cta {
+    background: #4ade80;
+    color: #0f172a;
+    box-shadow: 0 4px 15px rgba(74, 222, 128, 0.4);
+}
+
+body.dark .home-hero-cta:hover {
+    background: #22c55e;
+    box-shadow: 0 6px 20px rgba(74, 222, 128, 0.5);
+    color: #0f172a;
 }

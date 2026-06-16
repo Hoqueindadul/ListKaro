@@ -1,813 +1,569 @@
-@media (min-width: 481px) and (max-width: 768px) {
-  body {
- padding: 0;
- margin: 0; }
-
-  .carocontainer {
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
-      margin: 0;
-      padding: 0;
-      left: 0;
-  }
-
-  .slide-wrapper {
-      margin: 0 auto;
-      max-width: 500px;
-      width: 100%;
-      padding: 0;
-  }
-
-  .slider {
- height: 300px;
- border-radius: 0.25rem; }
-
-  .slider-nav {
- left: 50%; 
- margin-top: 10rem; }
-
-  .slider-nav a {
- height: 0.5rem;
- width: 0.5rem; }
-
-  .card-container {
-      border: 1px solid #ccc;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      background-color: #fff;
-      transition: transform 0.3s ease;
-      height: 400px;
-      width: 100%;
-      max-width: 500px;
-      margin-top: 20px;
-  }
-
-  .card-image {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-  }
-
-  .card-body {
- padding: 12px; }
-
-  .card-title {
-      font-size: 1.5rem;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: #333;
-  }
-
-  .card-text {
-      font-size: 0.9rem;
-      color: #666;
-      margin-bottom: 0;
-  }
-
-  .card-button {
-      display: inline-block;
-      padding: 8px 18px;
-      background-color: #007bff;
-      color: white;
-      font-weight: 500;
-      text-decoration: none;
-      border-radius: 6px;
-      transition: background-color 0.2s ease;
-  }
-
-  .card-button:hover {
- background-color: #0056b3; }
-
-  .categories {
-      margin: 0px 20px;
-      padding: 20px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-  }
-
-  .circontainer p {
-      margin-top: 20px;
-      font-weight: bold;
-      font-size: 18px;
-      max-width: 120px;
-  }
-
-  .offer {
-      background-color: orange;
-      height: auto;
-      border-radius: 10px;
-      text-align: start;
-      display: flex;
-      justify-content: space-around;
-      flex-direction: column;
-      margin: 20px;
-      padding: 20px;
-  }
-
-  .offercontainer {
-      font-weight: bold;
-      color: whitesmoke;
-      margin: 0;
-  }
-
-  .offercontainer h3 {
- font-size: 28px;
- font-weight: bold; }
-
-  .offercontainer p {
-      font-size: 14px;
-      font-weight: bold;
-      color: white;
-  }
-
-  .offercontainer #price {
-      font-size: 22px;
-      font-weight: bold;
-      color: yellow;
-  }
-
-  .newsletter {
-      margin: 20px;
-      padding: 20px;
-      border-radius: 10px;
-      font-weight: bold;
-      background-color: white;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      flex-direction: column;
-      gap: 30px;
-  }
-
-  .newsletter h3 {
-      font-size: 30px;
-      font-weight: bold;
-      margin-bottom: 15px;
-  }
-
-  .newsletter p {
- font-size: 12px; }
-
-  .newsletter .emailbox {
-      width: 300px;
-      max-width: 350px;
-      font-size: 16px;
-      border-radius: 10px;
-      padding: 10px;
-      margin-right: 10px;
-      margin-bottom: 20px;
-  }
-
-  .newsletter .emailbtn {
-      font-size: 16px;
-      padding: 10px;
-      border-radius: 10px;
-      background-color: #ffa600d9;
-      border: none;
-      color: white;
-      font-weight: bold;
-      width: 100px;
-      transition: transform 0.3s ease;
-  }
-
-  .emailbtn:hover {
- background-color: #ffa500;
- transform: scale(0.9); }
-
-  .newsletter img {
-      border-radius: 20px;
-      width: 100%;
-      height: auto;
-  }
-
-  footer {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-      padding: 10px;
-      margin: 10px;
-  }
-
-  footer .products,
-  footer .aboutus,
-  footer .consumers,
-  footer .programs {
- display: flex;
- flex-direction: column; }
-
-  footer p {
- font-size: 16px;
- font-weight: bold; }
-
-  footer a {
-      text-decoration: none;
-      color: black;
-      margin-bottom: 5px;
-      font-size: 14px;
-  }
-
-  .nav-holder .my-brand {
- text-decoration: none;
- color: #ffa600b0; }
-
-  .offerPopupContainer {
-      background: linear-gradient(#2144c3, #8797e0);
-      height: 200px;
-      width: 300px;
-      bottom: 30px;
-      right: 30px;
-      border-radius: 10px;
-      opacity: 0;
-      animation: fadeIn 1s forwards;
-      padding: 5px;
-      box-shadow: 0 0 10px rgba(4, 21, 255, 0.821);
-  }
-
-  @keyframes fadeIn {
-      from {
-          opacity: 0;
-          transform: translateY(20px);
-      }
-
-      to {
-          opacity: 1;
-          transform: translateY(0px);
-      }
-  }
-
-  .offerPopupContent {
- font-size: 14px;
- padding: 10px; }
-
-  .offerPopupContent h3 {
- font-size: 22px; }
-
-  .offerPopupContent .ccbtn {
-      background-color: #c3ff00;
-      color: rgb(67, 67, 67);
-      border-radius: 50px;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.547);
-  }
-
-  /* User Container Nav */
-  .ucontainer {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: flex-start;
-      padding: 8px 0;
-      margin: 0;
-      min-width: 200px;
-      max-height: 300px;
-      overflow-y: auto;
-      gap: 0;
-  }
-
-  .uname,
-  .uorders,
-  .ulogout {
-      padding: 8px 16px;
-      width: 100%;
-      text-align: left;
-      color: white;
-      font-weight: 600;
-      background-color: #007bff2b;
-      box-shadow: 0 0 20px #0b35dd76;
-      border: 1px solid #007bff0e;
-  }
-
-  .ulogout {
- color: red; }
-
-  .menucontainer {
- width: 100%;
- padding: 10px;
- border-radius: 0px; }
-
-  .menucontainer input[type="search"] {
-      font-size: 14px;
-      padding: 8px;
-      margin-bottom: 10px;
-  }
-
-  .upload-list,
-  .upload-list a {
- font-size: 14px;
- padding: 8px; }
-
-  .menucontainer .pl-6 {
- padding-left: 10px; }
-
-  .menucontainer .space-y-2 > * + * {
- margin-top: 8px; }
-
-  .menucontainer .pl-6 {
-      display: flex;
-      flex-direction: column;
-      margin-left: 100px;
-  }
-  .signupcontainer {
-    margin: 0;
-    padding: 20px;
-    height: 500px;
-    width: 570px;
-    background-color: #f1ecec;
-  }
-  .signupbtn{ margin: 0 auto; }
-  .ahac{ margin-top: 20px; font-size: 18px; }
-}
-
+/* ============================================
+   RESPONSIVE — TABLET (769px – 1024px)
+   ============================================ */
 @media (max-width: 1024px) {
-  body{
- padding: 0;
- margin: 0; }
-  .carocontainer {
-    align-items: center;
-    gap: 1rem;
-    margin: 0;
-    padding: 10px;
-  }
-
-  .slide-wrapper {
- padding: 0; }
-    
-  .slider {
-    height: 360px;
-    max-width: 450px;
-    border-radius: 12px;
-  }
-
-  .slider-nav { left: 25%;  margin-top: 21rem; 
- }
-
-  .slider-nav a { height: 0.5rem;
-    width: 0.5rem; }
-
-  .card-container {
-      border: 1px solid #ccc;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      background-color: #fff;
-      transition: transform 0.3s ease;
-      height: 360px;
-      max-width: 250px;
+    .home-hero {
+        height: 420px;
     }
-    
-  .card-image {
-      width: 100%;
-      height: 160px;
-      object-fit: cover;
-  }
-    
-  .card-body {
- padding: 6px; }
-    
-  .card-title {
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: #333;
-  } 
-  .card-text {
-      font-size: 0.75rem;
-      color: #666;
-      margin-bottom: 0; 
-  }
-  .card-text strong{display: none;}
-  .card-button {
-      display: inline-block;
-      padding: 6px 16px;
-      background-color: #007bff;
-      color: white;
-      font-weight: 500;
-      text-decoration: none;
-      border-radius: 6px;
-      transition: background-color 0.2s ease;
-  }
-    
-  .card-button:hover {
- background-color: #0056b3; }
-  .categories{
-      margin: 0px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-  }
 
-  .circontainer p{
-      margin-top: 20px;
-      font-weight: bold;
-      font-size: 18px;
-      max-width: 120px;
-  }
-  .offercontainer{
-      font-weight: bold;
-      color: whitesmoke;
-      margin: 0;
-  }
-  .offercontainer h3{
- font-size: 30px;
- font-weight: bold; }
-
-  .offercontainer #price{
-      font-size: 20px;
-      font-weight:bold;
-      color: yellow;
-  }
-  .offercontainer #star{
-      color: rgba(0, 0, 0, 0.358);
-  }
-  .offercontainer input{
-      width: 120px;
-      border-radius: 10px;
-      border: none;
-      padding: 8px;
-      background-color: rgba(0, 0, 255, 0.8);
-      color: white;
-      font-weight: bold;
-      transition: transform 0.3s ease;
-  }
-  .offercontainer input:hover{
-      background-color: blue;
-      transform: scale(0.9);
-  }
-  .newsletter img{
-      border-radius: 20px;
-      width: 400px;
-      height: 430px;
-  }
-  .offerPopupContainer {
-  background: linear-gradient(#2144c3,  #8797e0);
-  height: 380px;
-  width: 480px;
-  border-radius: 10px;
-  opacity: 0;
-  animation: fadeIn 1s forwards;
-  padding:20px;
-  box-shadow: 0 0 10px rgba(4, 21, 255, 0.821);
+    .home-hero-slide-content {
+        padding: 40px 48px;
     }
-  @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px);}
-  to{opacity: 1; transform: translateY(0px);}
-  }
-  .offerPopupContent{ font-size: 24px; padding: 10px; }
-  .offerPopupContent h3{ font-size: 50px; width: 300px; }
-  .offerPopupContent .ccbtn{
-  background-color: #c3ff00;
-  color: rgb(67, 67, 67);
-  border-radius: 50px;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.547);
-  margin-top: 20px;
-  width: 300px;
+
+    .home-hero-title {
+        font-size: 38px;
+    }
+
+    .home-hero-subtitle {
+        font-size: 16px;
+    }
+
+    .home-features-inner {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .home-feature-item {
+        border-right: none;
+        border-bottom: 1px solid var(--home-border);
+    }
+
+    .home-feature-item:nth-child(odd) {
+        border-right: 1px solid var(--home-border);
+    }
+
+    .home-feature-item:nth-last-child(-n+2) {
+        border-bottom: none;
+    }
+
+    .home-promo-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .home-promo-card {
+        max-width: 100%;
+    }
+
+    .home-deal-inner {
+        gap: 40px;
+    }
+
+    .home-deal-image {
+        width: 220px;
+    }
+
+    .home-deal-title {
+        font-size: 28px;
+    }
+
+    .home-upload-inner {
+        gap: 40px;
+    }
+
+    .home-upload-visual {
+        width: 360px;
+        height: 280px;
+    }
+
+    .home-upload-title {
+        font-size: 30px;
+    }
+
+    .home-newsletter-inner {
+        gap: 40px;
+    }
+
+    .home-newsletter-title {
+        font-size: 28px;
+    }
+
+    .home-footer-inner {
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+    }
+
+    .home-footer-brand {
+        grid-column: 1 / -1;
+    }
 }
 
-/* User Container Nav  */
-  .ucontainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  padding: 8px 0; 
-  margin: 0;
-  min-width: 180px;
-  min-height: 100px;
-  max-height: 300px;
-  overflow-y: auto;
-  gap: 0; 
+/* ============================================
+   RESPONSIVE — SMALL TABLET / LARGE PHONE (481px – 768px)
+   ============================================ */
+@media (max-width: 768px) {
+    .home-hero {
+        height: 380px;
     }
 
-  .uname, .uorders, .ulogout {
-  padding: 8px 16px;
-  width: 100%; 
-  text-align: left;
-  color: white;
-  font-weight: 600;
-  background-color: #007bff2b;
-  box-shadow: 0 0 20px #0b35dd76 ;
-  border: 1px solid #007bff0e;
-  }
-  .ulogout{ color: red; }
-  .menucontainer {
-    width: 100%;
-    padding: 10px;
-    border-radius: 0px;
-  }
+    .home-hero-slide-content {
+        padding: 30px 32px;
+        max-width: 100%;
+    }
 
-  .menucontainer input[type="search"] {
-    font-size: 14px;
-    padding: 8px;
-    margin-bottom: 10px;
-  }
+    .home-hero-title {
+        font-size: 32px;
+    }
 
-  .upload-list, .upload-list a { font-size: 14px; padding: 8px; }
+    .home-hero-subtitle {
+        font-size: 15px;
+        margin-bottom: 20px;
+    }
 
-  .menucontainer .pl-6 { padding-left: 10px; }
+    .home-hero-cta {
+        padding: 12px 24px;
+        font-size: 14px;
+    }
 
-  .menucontainer .space-y-2 > * + * { margin-top: 8px; }
-  .menucontainer .pl-6{
-    display: flex;
-    flex-direction: column;
-    margin-left: 100px;
-  }
-  .signupcontainer {
-    margin: 0;
-    padding: 20px;
-    height: 500px;
-    width: 350px;
-    background-color: #f1ecec;
-  }
-  .signupbtn{ margin: 0 auto; }
-  .ahac{ margin-top: 20px; font-size: 18px; }
+    .home-hero-nav {
+        width: 40px;
+        height: 40px;
+    }
+
+    .home-hero-nav-prev { left: 12px; }
+    .home-hero-nav-next { right: 12px; }
+
+    .home-features-inner {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .home-feature-item {
+        padding: 18px 20px;
+        gap: 10px;
+    }
+
+    .home-feature-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+    }
+
+    .home-categories-section {
+        padding: 40px 20px 32px;
+    }
+
+    .home-section-title {
+        font-size: 26px;
+    }
+
+    .home-category-img-wrap {
+        width: 85px;
+        height: 85px;
+    }
+
+    .home-category-name {
+        font-size: 12px;
+    }
+
+    .home-promo-section {
+        padding: 0 20px 40px;
+    }
+
+    .home-promo-card {
+        flex-direction: column;
+    }
+
+    .home-promo-card-img-wrap {
+        width: 100%;
+        min-height: 200px;
+        max-height: 220px;
+    }
+
+    .home-promo-card-content {
+        padding: 20px;
+    }
+
+    .home-promo-card-title {
+        font-size: 20px;
+    }
+
+    .home-deal-section {
+        padding: 40px 20px;
+    }
+
+    .home-deal-inner {
+        flex-direction: column;
+        text-align: center;
+        gap: 30px;
+    }
+
+    .home-deal-image {
+        width: 180px;
+    }
+
+    .home-deal-title {
+        font-size: 26px;
+    }
+
+    .home-deal-price-row {
+        justify-content: center;
+    }
+
+    .home-deal-btn {
+        margin: 0 auto;
+    }
+
+    .home-upload-section {
+        padding: 50px 20px;
+    }
+
+    .home-upload-inner {
+        flex-direction: column-reverse;
+        gap: 30px;
+    }
+
+    .home-upload-visual {
+        width: 100%;
+        height: 240px;
+    }
+
+    .home-upload-title {
+        font-size: 28px;
+    }
+
+    .home-upload-steps {
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .home-newsletter-section {
+        padding: 50px 20px;
+    }
+
+    .home-newsletter-inner {
+        flex-direction: column;
+        text-align: center;
+        gap: 30px;
+    }
+
+    .home-newsletter-form {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .home-newsletter-input {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .home-newsletter-btn {
+        width: 100%;
+        max-width: 320px;
+    }
+
+    .home-newsletter-visual {
+        width: 260px;
+    }
+
+    .home-footer-inner {
+        grid-template-columns: 1fr 1fr;
+        gap: 28px;
+    }
+
+    .home-footer-brand {
+        grid-column: 1 / -1;
+    }
 }
 
-/* SmartPhone */
+/* ============================================
+   RESPONSIVE — PHONE (≤ 480px)
+   ============================================ */
 @media (max-width: 480px) {
-  body{
- padding: 0;
- margin: 0; }
-  .carocontainer {
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    margin: 0;
-    padding: 0;
-    left: 0;
-  }
-  .slide-wrapper {
-      margin: 0 auto;
-      max-width: 330px;
-      width: 100%;
-      padding: 0;
-  }
-  .slider { height: 250px; border-radius: 0.25rem;
-  }
-  .slider-nav { left: 50%;  margin-top: 16rem; 
- }
-  .slider-nav a { height: 0.5rem; width: 0.5rem; }
-  .card-container {
-      border: 1px solid #ccc;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      background-color: #fff;
-      transition: transform 0.3s ease;
-      height: 400px;
-      max-width: 330px;
-      margin-top: 20px;
-  }
-  .card-image {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-  }
-  .card-body {
- padding: 8px; }
-  .card-title {
-      font-size: 1.3rem;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: #333;
-  }
-  .card-body strong{
- margin: 0; }
-  .card-text {
-      font-size: 0.75rem;
-      color: #666;
-      margin-bottom: 0; 
-  }
-  .card-button {
-      display: inline-block;
-      padding: 6px 16px;
-      background-color: #007bff;
-      color: white;
-      font-weight: 500;
-      text-decoration: none;
-      border-radius: 6px;
-      transition: background-color 0.2s ease;
-  } 
-  .card-button:hover {
- background-color: #0056b3; }
-  .categories{
-      margin: 0px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-  }
-  .circontainer p{
-      margin-top: 20px;
-      font-weight: bold;
-      font-size: 18px;
-      max-width: 120px;
-  }
-  .offer{
-      background-color: orange;
-      height: auto;
-      border-radius: 10px;
-      text-align: start;
-      display: flex;
-      justify-content: space-around;
-      flex-direction: column;
-      margin:20px;
-      padding: 20px;
-  }
-  .offercontainer{
-      font-weight: bold;
-      color: whitesmoke;
-      margin: 0;
-  }
-  .offercontainer h3{
- font-size: 30px;
- font-weight: bold; }
-  .offercontainer p{
-      font-size: 14px;
-      font-weight: bold;
-      color: white;
-  }
-  .offercontainer #price{
-      font-size: 20px;
-      font-weight:bold;
-      color: yellow;
-  }
-  .offercontainer #star{
- color: rgba(0, 0, 0, 0.358); }
-  .offercontainer input{
-      width: 120px;
-      border-radius: 10px;
-      border: none;
-      padding: 10px;
-      background-color: rgba(0, 0, 255, 0.8);
-      color: white;
-      font-weight: bold;
-      transition: transform 0.3s ease;
-  }
-  .offercontainer input:hover{
- background-color: blue;
- transform: scale(0.9); }
-  .newsletter{
-      margin:20px;
-      padding: 20px;
-      border-radius: 10px;
-      font-weight: bold;
-      background-color: white;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      flex-direction: column;
-      gap: 30px;
+    .home-announcement-bar {
+        font-size: 12px;
+        padding: 6px 0;
+    }
 
-  }
-  .newsletter h3{
-      font-size: 30px;
-      font-weight: bold;
-      margin-bottom: 15px;
-  }
-  .newsletter p{
- font-size:12px; }
-  .newsletter .emailbox{
-      width: 300px;
-      max-width: 350px;
-      font-size: 16px;
-      border-radius: 10px;
-      padding: 10px;
-      margin-right: 10px;
-      margin-bottom: 20px;
-    
-  }
-  .newsletter .emailbtn{
-      font-size: 16px;
-      padding: 10px;
-      border-radius: 10px;
-      background-color:#ffa600d9;
-      border: none;
-      color: white;
-      font-weight: bold;
-      width: 100px;
-      transition: transform 0.3s ease;
-  }
-  .emailbtn:hover{
-      background-color:#ffa500;
-      transform: scale(0.9);
-  }
-  .newsletter img{
-      border-radius: 20px;
-      width: 100%;
-      height: 430px;
-  }
-  footer {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 30px;
-      padding: 10px;
-      margin: 10px;
-  }
-    
-  footer .products,
-  footer .aboutus,
-  footer .consumers,
-  footer .programs {
- display: flex;
- flex-direction: column; }
-  footer p {
- font-size: 16px;
- font-weight: bold; }
-  footer a {
-      text-decoration: none;
-      color: black;
-      margin-bottom: 5px;
-      font-size: 14px;
-  }
-  .nav-holder .my-brand{ text-decoration: none; color:white; }  
-  .offerPopupContainer {
-  background: linear-gradient(#2144c3,  #8797e0);
-  height: 180px;
-  width: 260px;
-  bottom: 30px;
-  right: 30px;
-  border-radius: 10px;
-  opacity: 0;
-  animation: fadeIn 1s forwards;
-  padding:5px;
-  box-shadow: 0 0 10px rgba(4, 21, 255, 0.821);
-  }
-  @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px);}
-  to{opacity: 1; transform: translateY(0px);}
-  }
-  .offerPopupContent{ font-size: 14px; padding: 10px; }
-  .offerPopupContent h3{ font-size: 22px; }
-  .offerPopupContent .ccbtn{
-    background-color: #c3ff00;
-    color: rgb(67, 67, 67);
-    border-radius: 50px;
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.547);
-    margin-top: 20px;
-    width: 230px;
-  }
-/* User Container Nav  */
-  .ucontainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  padding: 8px 0; 
-  margin: 0;
-  min-width: 180px;
-  min-height: 100px;
-  max-height: 300px;
-  overflow-y: auto;
-  gap: 0; 
-  }
-  .uname, .uorders, .ulogout {
-  padding: 8px 16px;
-  width: 100%; 
-  text-align: left;
-  color: white;
-  font-weight: 600;
-  background-color: #007bff2b;
-  box-shadow: 0 0 20px #0b35dd76 ;
-  border: 1px solid #007bff0e;
-  }
-  .ulogout{ color: red; }
+    .home-hero {
+        height: 340px;
+    }
 
+    .home-hero-slide-content {
+        padding: 24px 20px;
+    }
 
-  .menucontainer {
-    width: 100%;
-    padding: 10px;
-    border-radius: 0px;
-  }
+    .home-hero-title {
+        font-size: 26px;
+        margin-bottom: 10px;
+    }
 
-  .menucontainer input[type="search"] {
-    font-size: 14px;
-    padding: 8px;
-    margin-bottom: 10px;
-  }
+    .home-hero-subtitle {
+        font-size: 13px;
+        margin-bottom: 16px;
+    }
 
-  .upload-list, .upload-list a { font-size: 14px; padding: 8px; }
+    .home-hero-cta {
+        padding: 10px 22px;
+        font-size: 13px;
+    }
 
-  .menucontainer .pl-6 { padding-left: 10px; }
+    .home-hero-nav {
+        width: 36px;
+        height: 36px;
+    }
 
-  .menucontainer .space-y-2 > * + * { margin-top: 8px; }
-  .menucontainer .pl-6{
-    display: flex;
-    flex-direction: column;
-    margin-left: 100px;
-  }
-  .signupcontainer {
-    margin: 0;
-    padding: 20px;
-    height: 500px;
-    width: 350px;
-    background-color: #f1ecec;
-  }
-  .signupbtn{ margin: 0 auto; }
-  .ahac{ margin-top: 20px; font-size: 18px; }
+    .home-hero-nav-prev { left: 8px; }
+    .home-hero-nav-next { right: 8px; }
+
+    .home-hero-dots {
+        bottom: 16px;
+    }
+
+    .home-hero-dot {
+        width: 8px;
+        height: 8px;
+    }
+
+    .home-hero-dot.active {
+        width: 22px;
+    }
+
+    .home-features-inner {
+        grid-template-columns: 1fr;
+    }
+
+    .home-feature-item {
+        border-right: none !important;
+        border-bottom: 1px solid var(--home-border);
+        padding: 16px 20px;
+    }
+
+    .home-feature-item:last-child {
+        border-bottom: none;
+    }
+
+    .home-categories-section {
+        padding: 32px 16px 28px;
+    }
+
+    .home-section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .home-section-title {
+        font-size: 22px;
+    }
+
+    .home-section-subtitle {
+        font-size: 13px;
+    }
+
+    .home-categories-scroll {
+        gap: 16px;
+    }
+
+    .home-category-img-wrap {
+        width: 75px;
+        height: 75px;
+    }
+
+    .home-category-name {
+        font-size: 11px;
+        max-width: 75px;
+    }
+
+    .home-promo-section {
+        padding: 0 16px 32px;
+    }
+
+    .home-promo-card-content {
+        padding: 18px;
+    }
+
+    .home-promo-card-title {
+        font-size: 18px;
+    }
+
+    .home-promo-card-text {
+        font-size: 13px;
+    }
+
+    .home-promo-coupon {
+        flex-direction: column;
+        gap: 6px;
+        align-items: flex-start;
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+
+    .home-deal-section {
+        padding: 32px 16px;
+    }
+
+    .home-deal-image {
+        width: 150px;
+    }
+
+    .home-deal-badge-circle {
+        width: 56px;
+        height: 56px;
+    }
+
+    .home-deal-badge-off {
+        font-size: 16px;
+    }
+
+    .home-deal-badge-text {
+        font-size: 10px;
+    }
+
+    .home-deal-title {
+        font-size: 22px;
+    }
+
+    .home-deal-desc {
+        font-size: 14px;
+    }
+
+    .home-deal-price-old {
+        font-size: 18px;
+    }
+
+    .home-deal-price-new {
+        font-size: 28px;
+    }
+
+    .home-deal-btn {
+        padding: 12px 26px;
+        font-size: 14px;
+    }
+
+    .home-upload-section {
+        padding: 40px 16px;
+    }
+
+    .home-upload-visual {
+        height: 200px;
+        border-radius: 12px;
+    }
+
+    .home-upload-title {
+        font-size: 24px;
+    }
+
+    .home-upload-desc {
+        font-size: 14px;
+    }
+
+    .home-upload-steps {
+        gap: 12px;
+    }
+
+    .home-upload-step {
+        font-size: 13px;
+    }
+
+    .home-upload-step-num {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+    }
+
+    .home-upload-btn {
+        padding: 12px 26px;
+        font-size: 14px;
+    }
+
+    .home-newsletter-section {
+        padding: 40px 16px;
+    }
+
+    .home-newsletter-title {
+        font-size: 24px;
+    }
+
+    .home-newsletter-desc {
+        font-size: 14px;
+    }
+
+    .home-newsletter-input {
+        padding: 12px 16px;
+        font-size: 14px;
+    }
+
+    .home-newsletter-btn {
+        padding: 12px 24px;
+        font-size: 14px;
+    }
+
+    .home-newsletter-visual {
+        width: 200px;
+    }
+
+    .home-footer {
+        padding: 40px 16px 0;
+    }
+
+    .home-footer-inner {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .home-footer-brand {
+        grid-column: auto;
+    }
+
+    .home-footer-col-title {
+        font-size: 13px;
+    }
+
+    .home-footer-col a {
+        font-size: 13px;
+    }
+
+    /* Offer Popup mobile */
+    .home-offer-popup {
+        padding: 28px;
+        max-width: 340px;
+    }
+
+    .home-offer-popup-title {
+        font-size: 24px;
+    }
+
+    .home-offer-popup-desc {
+        font-size: 14px;
+    }
 }
 
+/* ============================================
+   RESPONSIVE — VERY SMALL PHONE (≤ 360px)
+   ============================================ */
+@media (max-width: 360px) {
+    .home-hero {
+        height: 300px;
+    }
 
+    .home-hero-title {
+        font-size: 22px;
+    }
 
+    .home-hero-subtitle {
+        font-size: 12px;
+    }
 
-  
+    .home-hero-nav {
+        display: none;
+    }
+
+    .home-section-title {
+        font-size: 20px;
+    }
+
+    .home-category-img-wrap {
+        width: 65px;
+        height: 65px;
+    }
+
+    .home-deal-title {
+        font-size: 20px;
+    }
+
+    .home-upload-title {
+        font-size: 22px;
+    }
+
+    .home-newsletter-title {
+        font-size: 22px;
+    }
+}
