@@ -88,8 +88,8 @@ export const getUserCart = async (req, res) => {
     const cart = await Cart.findOne({ userId: req.userId }).populate("products.productId");
 
     if (!cart || !cart.products || cart.products.length === 0) {
-      return res.status(404).json({
-        success: false,
+      return res.status(200).json({
+        success: true,
         message: "Cart is empty",
         data: [],
       });
@@ -100,8 +100,8 @@ export const getUserCart = async (req, res) => {
 
     // If no valid products after filtering
     if (filteredProducts.length === 0) {
-      return res.status(404).json({
-        success: false,
+      return res.status(200).json({
+        success: true,
         message: "No valid products found in cart",
         data: [],
       });

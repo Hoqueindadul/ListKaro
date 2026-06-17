@@ -2,7 +2,7 @@ import { User } from "../models/user.model.js";
 import bcryptjs from "bcryptjs";
 import crypto from "crypto"
 import { generateTokenAndSetCookie } from "../utils/generateTokenAndSetCookie.js";
-import sendSMS from "../nodemailer/sendSMSToPhone.js";
+//import sendSMS from "../nodemailer/sendSMSToPhone.js";
 // Signup Controller
 export const signup = async (req, res) => {
     try {
@@ -54,9 +54,9 @@ export const signup = async (req, res) => {
         console.log("signup token", token);
 
         // Send verification email
-        const smsBody = `Your ListKaro verification code is: ${varificationToken}. Valid for 10 minutes.`;
-        const phoneNumber = `+91${phone}`;
-        await sendSMS(phoneNumber, smsBody);
+        // const smsBody = `Your ListKaro verification code is: ${varificationToken}. Valid for 10 minutes.`;
+        // const phoneNumber = `+91${phone}`;
+        // await sendSMS(phoneNumber, smsBody);
 
         res.status(201).json({
             success: true,

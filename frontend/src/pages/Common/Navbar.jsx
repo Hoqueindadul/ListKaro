@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuthStore } from "../../store/authStore";
 import { useCartStore } from "../../store/authStore";
+
 import {
   ShoppingCart,
   Menu,
@@ -25,9 +26,10 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 
+// Normalized category paths to lowercase to eliminate conditional route mismatches
 const CATEGORIES = [
   {
-    name: "All Products",
+    name: "Products",
     link: "/products",
     icon: LayoutGrid,
     color: "text-emerald-500",
@@ -38,14 +40,24 @@ const CATEGORIES = [
     icon: Milk,
     color: "text-blue-500",
   },
-  { name: "Fruits", link: "/Fruits", icon: Apple, color: "text-red-500" },
+  {
+    name: "Fruits",
+    link: "/fruits",
+    icon: Apple,
+    color: "text-red-500",
+  },
   {
     name: "Vegetables",
     link: "/vegetables",
     icon: Leaf,
     color: "text-green-600",
   },
-  { name: "Snacks", link: "/snacks", icon: Cookie, color: "text-orange-500" },
+  {
+    name: "Snacks",
+    link: "/snacks",
+    icon: Cookie,
+    color: "text-orange-500",
+  },
   {
     name: "Beverages",
     link: "/beverages",
@@ -74,14 +86,13 @@ export default function Navbar() {
   const headerRef = useRef(null);
   const [headerHeight, setHeaderHeight] = useState(0);
 
-  // AUTO-FIX: Measures the header layout height dynamically whenever location changes!
+  // Measures layout headers securely to stabilize dynamic viewport blocks
   useEffect(() => {
     const measure = () => {
       if (headerRef.current) {
         setHeaderHeight(headerRef.current.offsetHeight);
       }
     };
-    // Delayed measurement ensures the DOM fully painted after a route load pass
     const timer = setTimeout(measure, 30);
 
     window.addEventListener("resize", measure);
@@ -89,7 +100,7 @@ export default function Navbar() {
       clearTimeout(timer);
       window.removeEventListener("resize", measure);
     };
-  }, [location.pathname, showPromo, isScrolled]); // Added location.pathname to trigger recalculation on route navigation!
+  }, [location.pathname, showPromo, isScrolled]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -214,12 +225,12 @@ export default function Navbar() {
                 </div>
               </Link>
             </div>
+
             {/* Desktop Center Expanded Search Bar */}
             <form
               onSubmit={handleSearch}
               className="hidden md:flex flex-1 max-w-4xl relative items-center h-12 bg-[#0b1426] rounded-xl border border-gray-800 focus-within:border-emerald-500 transition-all shadow-sm"
             >
-              {/* Category selector */}
               <div className="relative h-full" ref={catDropdownRef}>
                 <button
                   type="button"
@@ -234,7 +245,7 @@ export default function Navbar() {
                   />
                 </button>
                 {showCatDropdown && (
-                  <div className="absolute top-[calc(100%+8px)] left-0 min-w-[200px]  dark:bg-[#0b1426] rounded-xl shadow-xl border border-gray-100 dark:border-gray-800 py-1.5 z-50">
+                  <div className="absolute top-[calc(100%+8px)] left-0 min-w-[200px] dark:bg-[#0b1426] rounded-xl shadow-xl border border-gray-100 dark:border-gray-800 py-1.5 z-50">
                     {CATEGORIES.map((cat, idx) => {
                       const Icon = cat.icon;
                       return (
@@ -268,9 +279,9 @@ export default function Navbar() {
                 <Search size={18} />
               </button>
             </form>
+
             {/* Right side utilities actions */}
             <div className="flex items-center gap-3 shrink-0">
-              {/* Theme Toggle */}
               <button
                 onClick={toggleDarkMode}
                 className="hidden md:flex w-11 h-11 items-center justify-center rounded-xl border border-gray-200/60 dark:border-gray-800/80 dark:bg-[#070d19] hover:dark:bg-[#070d19]/80 text-gray-700 dark:text-amber-400 shadow-[0_4px_12px_rgba(245,158,11,0.15)] dark:shadow-[0_0_15px_rgba(245,158,11,0.25)] transition-all duration-200"
@@ -279,27 +290,13 @@ export default function Navbar() {
                 {lightMode ? <Moon size={18} /> : <Sun size={18} />}
               </button>
 
-              {/* Wishlist */}
               <Link
                 to="/wishlist"
-                className="
-    hidden md:flex
-    w-11 h-11
-    items-center justify-center
-    rounded-xl
-    border border-gray-200/60
-    dark:border-gray-800/80
-    dark:bg-[#070d19]
-    hover:dark:bg-[#070d19]/80
-    text-gray-700 dark:text-gray-300
-    shadow-[0_4px_12px_rgba(244,63,94,0.15)]
-    transition-all duration-200
-  "
+                className="hidden md:flex w-11 h-11 items-center justify-center rounded-xl border border-gray-200/60 dark:border-gray-800/80 dark:bg-[#070d19] hover:dark:bg-[#070d19]/80 text-gray-700 dark:text-gray-300 shadow-[0_4px_12px_rgba(244,63,94,0.15)] transition-all duration-200"
               >
                 <Heart size={18} />
               </Link>
 
-              {/* Cart */}
               <Link
                 to="/shopping-cart"
                 className="flex items-center gap-2 h-11 px-3 rounded-xl border border-gray-200/60 dark:border-gray-800/80 dark:bg-[#070d19] hover:dark:bg-[#070d19]/80 text-gray-700 dark:text-gray-300 shadow-[0_4px_12px_rgba(234,179,8,0.15)] transition-all duration-200"
@@ -318,7 +315,7 @@ export default function Navbar() {
                 </span>
               </Link>
 
-              {/* Profile dropdown */}
+              {/* Profile Menu */}
               <div className="relative" ref={userDropdownRef}>
                 <button
                   onClick={() => setShowUserDropdown(!showUserDropdown)}
@@ -359,7 +356,7 @@ export default function Navbar() {
                             <Settings size={15} /> Account Settings
                           </Link>
                           <Link
-                            to="/order"
+                            to="/orderlisting"
                             className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
                             onClick={() => setShowUserDropdown(false)}
                           >
@@ -390,24 +387,31 @@ export default function Navbar() {
                   </div>
                 )}
               </div>
-            </div>{" "}
+            </div>
           </div>
         </nav>
 
-        {/* Bottom Horizontal Categories Row (Desktop view) */}
+        {/* Dynamic Static Categorization Row for Desktop views */}
         <div className="hidden md:block border-b border-gray-800/50 py-2 bg-[#070d19] transition-all duration-300">
           <div className="max-w-4xl mx-auto border border-gray-800/80 rounded-xl bg-[#0b1426] p-1.5 flex items-center justify-around shadow-sm">
             {CATEGORIES.map((cat, idx) => {
               const Icon = cat.icon;
-              // Cleaned active routing checks to prevent UI jumps on alternative paths
+
+              // FIXED MISMAtCH: We verify downcased routes to block navigation layouts breaking or jumping
+              const currentPathClean = location.pathname.toLowerCase();
+              const catLinkClean = cat.link.toLowerCase();
+
               const active =
-                location.pathname === cat.link ||
-                (idx === 0 && location.pathname === "/products");
+                currentPathClean === catLinkClean ||
+                (idx === 0 &&
+                  (currentPathClean === "/products" ||
+                    currentPathClean.startsWith("/product/")));
+
               return (
                 <Link
                   key={idx}
                   to={cat.link}
-                  className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold transition-all relative ${
+                  className={`flex items-center gap-2 px-2 py-2.5 rounded-lg text-sm font-bold transition-all relative ${
                     active
                       ? "text-emerald-600 dark:text-emerald-400 bg-emerald-500/5 dark:bg-emerald-500/10"
                       : "text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white"
@@ -424,7 +428,7 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Responsive Drawer Sidebar Layout for Mobile Navigation */}
+        {/* Mobile Responsive Drawer Menu Bar */}
         {showSidebar && (
           <>
             <div
@@ -433,7 +437,6 @@ export default function Navbar() {
             ></div>
 
             <div className="fixed inset-y-0 left-0 w-[85vw] max-w-[300px] bg-[#111827] dark:bg-[#090d16] border-r border-gray-800 shadow-2xl z-[9999] flex flex-col transition-transform duration-200">
-              {/* Mobile User Header */}
               <div className="p-5 sm:p-6 bg-gradient-to-b from-[#00b074] to-[#111827] dark:from-[#044e34] dark:to-[#090d16] text-white relative overflow-hidden shrink-0 border-b border-gray-800">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-400 rounded-full mix-blend-screen filter blur-[40px] opacity-25"></div>
 
@@ -494,7 +497,6 @@ export default function Navbar() {
                 </div>
               </div>
 
-              {/* Mobile Menu Links */}
               <div className="flex-1 overflow-y-auto py-6 px-4 space-y-6 bg-[#111827] dark:bg-[#090d16]">
                 <form onSubmit={handleSearch}>
                   <div className="relative">
@@ -576,7 +578,7 @@ export default function Navbar() {
                 </div>
               </div>
 
-              {/* Mobile Footer Area */}
+              {/* Mobile Drawer Bottom Action Bar */}
               <div className="p-4 border-t border-gray-800 bg-[#0e1420] shrink-0 space-y-3">
                 <div className="flex items-center justify-between bg-gray-800/50 p-1 rounded-xl border border-gray-700/40">
                   <button
@@ -613,7 +615,7 @@ export default function Navbar() {
         )}
       </header>
 
-      {/* FIXED SPACER BLOCK: This pushes layout down based on real-time header height changes */}
+      {/* Spacer panel block */}
       <div
         style={{ height: headerHeight }}
         aria-hidden="true"
