@@ -68,8 +68,11 @@ function AppContent() {
 
   useAutoLogout(token, handleAutoLogout, 2 * 24 * 60 * 60 * 1000);
 
-  const hideNavbarRoutes = ["/adminpanel"];
-  const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
+  // Added '/login' and '/signup' to the array to hide navbar on those pages
+  const hideNavbarRoutes = ["/adminpanel", "/login", "/signup"];
+  const shouldHideNavbar = hideNavbarRoutes.includes(
+    location.pathname.toLowerCase(),
+  );
 
   return (
     <>

@@ -274,7 +274,15 @@ export default function ProductDetails() {
                 >
                   <Minus size={14} />
                 </button>
-                <span className="font-bold text-sm px-4">{quantity}</span>
+
+                {/* Combined Quantity and Unit text */}
+                <div className="flex items-center gap-1 font-bold text-sm px-4 text-white">
+                  <span>{quantity * (product.quantity?.value || 1)}</span>
+                  <span className="text-slate-400 text-xs font-medium">
+                    {product.quantity?.unit || "units"}
+                  </span>
+                </div>
+
                 <button
                   onClick={() =>
                     setQuantity((q) =>
@@ -289,8 +297,10 @@ export default function ProductDetails() {
                   <Plus size={14} />
                 </button>
               </div>
+
               <span className="text-[10px] text-slate-500 mt-2 block text-center">
-                Purchase Limit: Max {Math.min(product.stock || 5, 5)} units
+                Purchase Limit: Max {Math.min(product.stock || 5, 5)}{" "}
+                {product.quantity?.unit || "units"}
               </span>
             </div>
 

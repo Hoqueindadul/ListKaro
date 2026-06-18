@@ -23,6 +23,7 @@ import {
   Leaf,
   Cookie,
   CupSoda,
+  PlusCircle,
 } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -47,8 +48,8 @@ const CATEGORIES = [
     color: "text-red-500",
   },
   {
-    name: "Vegetables",
-    link: "/vegetables",
+    name: "Vegetable",
+    link: "/vegetable",
     icon: Leaf,
     color: "text-green-600",
   },
@@ -102,6 +103,7 @@ export default function Navbar() {
     };
   }, [location.pathname, showPromo, isScrolled]);
 
+  // Scroll Handler
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -110,6 +112,7 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Dark Mode Toggle Handler
   const toggleDarkMode = () => {
     const newMode = !lightMode;
     setLightMode(newMode);
@@ -117,6 +120,7 @@ export default function Navbar() {
     localStorage.setItem("theme", newMode ? "light" : "dark");
   };
 
+  // Load theme from localStorage
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme === "dark") {
@@ -128,6 +132,7 @@ export default function Navbar() {
     }
   }, []);
 
+  // Logout Handler
   const handleLogout = async () => {
     try {
       await logout();
@@ -139,7 +144,7 @@ export default function Navbar() {
       toast.error("Failed to logout");
     }
   };
-
+  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -159,6 +164,7 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Search Handler
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
@@ -307,7 +313,7 @@ export default function Navbar() {
                     className="text-gray-700 dark:text-gray-300"
                   />
                   <span className="absolute -top-2.5 -right-2.5 bg-red-500 text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full">
-                    {cartCount > 0 ? cartCount : 3}
+                    {cartCount > 0 ? cartCount : 0}
                   </span>
                 </div>
                 <span className="font-bold text-gray-800 dark:text-white text-xs mt-0.5">
@@ -347,6 +353,16 @@ export default function Navbar() {
                             {user?.email}
                           </p>
                         </div>
+                        <div className="p-1.5 space-y-0.5 border-b border-gray-100 dark:border-gray-800">
+                          {/* Product Upload Action (Logged In State) */}
+                          <Link
+                            to="/uploadlist" // Update this path to match your router setup
+                            className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-cyan-600 dark:text-cyan-400 font-semibold hover:bg-cyan-50/50 dark:hover:bg-cyan-950/20 transition-colors"
+                            onClick={() => setShowUserDropdown(false)}
+                          >
+                            <PlusCircle size={15} /> Upload Product
+                          </Link>
+                        </div>
                         <div className="p-1.5 space-y-0.5">
                           <Link
                             to="/profile"
@@ -375,13 +391,24 @@ export default function Navbar() {
                         <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
                           Access account & orders
                         </p>
-                        <Link
-                          to="/login"
-                          className="block w-full py-2 bg-[#00b074] hover:bg-emerald-600 text-white rounded-lg text-xs font-bold shadow-[0_4px_12px_rgba(0,176,116,0.2)] transition-all"
-                          onClick={() => setShowUserDropdown(false)}
-                        >
-                          Sign In
-                        </Link>
+                        <div className="space-y-2">
+                          <Link
+                            to="/login"
+                            className="block w-full py-2 bg-[#00b074] hover:bg-emerald-600 text-white rounded-lg text-xs font-bold shadow-[0_4px_12px_rgba(0,176,116,0.2)] transition-all"
+                            onClick={() => setShowUserDropdown(false)}
+                          >
+                            Sign In
+                          </Link>
+
+                          {/* Product Upload Action (Logged Out State) */}
+                          <Link
+                            to="/uploadlist" // Update this path to match your router setup
+                            className="flex items-center justify-center gap-1.5 w-full py-2 border border-dashed border-gray-300 dark:border-gray-700 hover:border-cyan-500 text-gray-700 dark:text-gray-300 hover:text-cyan-500 dark:hover:text-cyan-400 rounded-lg text-xs font-semibold transition-all"
+                            onClick={() => setShowUserDropdown(false)}
+                          >
+                            <PlusCircle size={14} /> Upload Product
+                          </Link>
+                        </div>
                       </div>
                     )}
                   </div>
@@ -396,21 +423,28 @@ export default function Navbar() {
           <div className="max-w-4xl mx-auto border border-gray-800/80 rounded-xl bg-[#0b1426] p-1.5 flex items-center justify-around shadow-sm">
             {CATEGORIES.map((cat, idx) => {
               const Icon = cat.icon;
+              const location = useLocation();
 
-              // FIXED MISMAtCH: We verify downcased routes to block navigation layouts breaking or jumping
-              const currentPathClean = location.pathname.toLowerCase();
-              const catLinkClean = cat.link.toLowerCase();
+              // Parse the current URL search params to see which category is active
+              const searchParams = new URLSearchParams(location.search);
+              const activeCategory = searchParams.get("category");
 
-              const active =
-                currentPathClean === catLinkClean ||
-                (idx === 0 &&
-                  (currentPathClean === "/products" ||
-                    currentPathClean.startsWith("/product/")));
+              // An item is active if its query param matches, or if it's the "All" tab (idx === 0) and no filter is active
+              const active = activeCategory
+                ? activeCategory.toLowerCase() === cat.name.toLowerCase()
+                : idx === 0;
+
+              // Construct dynamic link destination: e.g., /products?category=rice
+              // Assuming idx === 0 is your "All Products" button
+              const targetLink =
+                idx === 0
+                  ? "/products"
+                  : `/products?category=${encodeURIComponent(cat.name.toLowerCase())}`;
 
               return (
                 <Link
                   key={idx}
-                  to={cat.link}
+                  to={targetLink}
                   className={`flex items-center gap-2 px-2 py-2.5 rounded-lg text-sm font-bold transition-all relative ${
                     active
                       ? "text-emerald-600 dark:text-emerald-400 bg-emerald-500/5 dark:bg-emerald-500/10"
