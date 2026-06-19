@@ -4,7 +4,6 @@ import axios from "axios";
 import { DEPLOYMENT_URL, LOCAL_URL } from "../../deploy-backend-url";
 
 import { useAuthStore } from "../../store/authStore";
-import "./ProductDetailDarkMode.css";
 import toast from "react-hot-toast";
 import {
   Star,
@@ -36,7 +35,7 @@ export default function ProductDetails() {
   const fetchProduct = async () => {
     try {
       const res = await axios.get(
-        `${LOCAL_URL}/api/products/singleProduct/${id}`,
+        `${DEPLOYMENT_URL}/api/products/singleProduct/${id}`,
         { withCredentials: true },
       );
       setProduct(res.data.data);
@@ -59,7 +58,7 @@ export default function ProductDetails() {
     try {
       setAdding(true);
       const res = await axios.post(
-        `${LOCAL_URL}/api/cart/add-to-cart`,
+        `${DEPLOYMENT_URL}/api/cart/add-to-cart`,
         { productId: product._id, quantity },
         { withCredentials: true },
       );
@@ -107,7 +106,7 @@ export default function ProductDetails() {
       const activeToken = authStoreToken || localStorage.getItem("token");
 
       await axios.post(
-        `${LOCAL_URL}/api/products/submitReview/${product._id}`,
+        `${DEPLOYMENT_URL}/api/products/submitReview/${product._id}`,
         { rating, comment },
         {
           withCredentials: true,
