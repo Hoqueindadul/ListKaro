@@ -69,7 +69,13 @@ function AppContent() {
   useAutoLogout(token, handleAutoLogout, 2 * 24 * 60 * 60 * 1000);
 
   // Added '/login' and '/signup' to the array to hide navbar on those pages
-  const hideNavbarRoutes = ["/adminpanel", "/login", "/signup"];
+  const hideNavbarRoutes = [
+    "/adminpanel",
+    "/login",
+    "/signup",
+    "/forgot-password",
+    "/emailverification",
+  ];
   const shouldHideNavbar = hideNavbarRoutes.includes(
     location.pathname.toLowerCase(),
   );
@@ -88,7 +94,7 @@ function AppContent() {
             <Route path="/completepayment" element={<PaymentForm />} />
             <Route path="/faq" element={<FAQ />} />
             <Route
-              path="/emailVerification"
+              path="/emailverification"
               element={<EmailVerificationPage />}
             />
             <Route path="/login" element={<LoginPage />} />
