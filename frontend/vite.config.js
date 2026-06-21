@@ -8,7 +8,7 @@ export default defineConfig({
     react()
   ],
   server: {
-    host: "0.0.0.0",
+    host: "listkaro.up.railway.app",
     port: process.env.PORT || 5173,
   },
 })
