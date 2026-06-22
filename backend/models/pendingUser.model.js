@@ -48,4 +48,4 @@ const userSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-export const User = mongoose.model("User", userSchema);
+export const PendingUser = mongoose.model("PendingUser", userSchema);

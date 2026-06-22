@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
 import {
   Star,
   StarHalf,
@@ -8,13 +7,17 @@ import {
   SlidersHorizontal,
   PackageX,
 } from "lucide-react";
-import { DEPLOYMENT_URL } from "../../deploy-backend-url";
+import { useProductStore } from "../../store/authStore";
 
 const ProductListing = () => {
-  const [products, setProducts] = useState({});
+  // Pull flat array 'products' and status variables from Zustand
+  const { products, loading, fetchProducts } = useProductStore();
+
+  // Local state to group products by categories dynamically
+  const [groupedProducts, setGroupedProducts] = useState({});
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [isLoading, setIsLoading] = useState(true);
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -30,47 +33,47 @@ const ProductListing = () => {
     }
   }, [location.search]);
 
+  // Fetch products from store when component mounts
   useEffect(() => {
-    setIsLoading(true);
-    axios
-      .get(`${DEPLOYMENT_URL}/api/products/getAllProducts`, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        const allProducts = res.data.data || [];
-        const grouped = {};
-        const cats = new Set(["All"]);
+    fetchProducts();
+  }, [fetchProducts]);
 
-        allProducts.forEach((product) => {
-          const category = product.category || "Others";
-          cats.add(category);
+  // Group flat products array into structured categories whenever it updates
+  useEffect(() => {
+    if (!products || !Array.isArray(products) || products.length === 0) {
+      setGroupedProducts({});
+      setCategories(["All"]);
+      return;
+    }
 
-          if (!grouped[category]) {
-            grouped[category] = [];
-          }
-          grouped[category].push(product);
-        });
+    const grouped = {};
+    const cats = new Set(["All"]);
 
-        setProducts(grouped);
-        setCategories(Array.from(cats));
+    products.forEach((product) => {
+      const category = product.category || "Others";
+      cats.add(category);
 
-        const searchParams = new URLSearchParams(window.location.search);
-        const initialCat = searchParams.get("category");
-        if (initialCat) {
-          const matchedCat = Array.from(cats).find(
-            (c) => c.toLowerCase() === initialCat.toLowerCase(),
-          );
-          if (matchedCat) setSelectedCategory(matchedCat);
-        }
-      })
-      .catch((err) => {
-        console.error("Error fetching products:", err);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, []);
+      if (!grouped[category]) {
+        grouped[category] = [];
+      }
+      grouped[category].push(product);
+    });
 
+    setGroupedProducts(grouped);
+    setCategories(Array.from(cats));
+
+    // Fix query param sync on initial deep link load
+    const searchParams = new URLSearchParams(location.search);
+    const initialCat = searchParams.get("category");
+    if (initialCat) {
+      const matchedCat = Array.from(cats).find(
+        (c) => c.toLowerCase() === initialCat.toLowerCase(),
+      );
+      if (matchedCat) setSelectedCategory(matchedCat);
+    }
+  }, [products, location.search]);
+
+  // handle category change
   const handleCategoryChange = (cat) => {
     setSelectedCategory(cat);
     if (cat === "All") {
@@ -80,13 +83,14 @@ const ProductListing = () => {
     }
   };
 
+  // handle buy now
   const handleBuyNow = (product) => {
     navigate("/checkout", { state: { product } });
   };
 
   // Helper logic to check if current filter criteria yields any results
   const getFilteredCategoriesCount = () => {
-    return Object.entries(products).filter(([category, items]) => {
+    return Object.entries(groupedProducts).filter(([category, items]) => {
       if (
         selectedCategory.toLowerCase() !== "all" &&
         selectedCategory.toLowerCase() !== category.toLowerCase()
@@ -97,6 +101,7 @@ const ProductListing = () => {
     }).length;
   };
 
+  // render stars
   const renderStars = (rating = 0) => {
     const stars = [];
     const fullStars = Math.floor(rating);
@@ -173,7 +178,7 @@ const ProductListing = () => {
       </div>
 
       {/* Loading State */}
-      {isLoading && (
+      {loading && (
         <div className="flex justify-center items-center py-20 gap-3">
           <div className="w-6 h-6 border-2 border-cyan-500 dark:border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
           <span className="text-gray-500 dark:text-gray-400 text-sm font-medium animate-pulse">
@@ -183,8 +188,8 @@ const ProductListing = () => {
       )}
 
       {/* --- NO PRODUCTS FOUND FALLBACK STATE --- */}
-      {!isLoading &&
-        (Object.keys(products).length === 0 ||
+      {!loading &&
+        (Object.keys(groupedProducts).length === 0 ||
           getFilteredCategoriesCount() === 0) && (
           <div className="flex flex-col items-center justify-center text-center py-16 px-4 bg-gray-50/50 dark:bg-[#0b1426]/30 border border-gray-200/50 dark:border-gray-800/50 rounded-2xl max-w-xl mx-auto my-8 shadow-sm">
             <div className="p-4 bg-cyan-500/10 dark:bg-cyan-400/10 text-cyan-500 dark:text-cyan-400 rounded-full mb-4">
@@ -212,8 +217,8 @@ const ProductListing = () => {
         )}
 
       {/* Product Grid Render */}
-      {!isLoading &&
-        Object.entries(products).map(([category, items]) => {
+      {!loading &&
+        Object.entries(groupedProducts).map(([category, items]) => {
           if (
             selectedCategory.toLowerCase() !== "all" &&
             selectedCategory.toLowerCase() !== category.toLowerCase()

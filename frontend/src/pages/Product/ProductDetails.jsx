@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-import { DEPLOYMENT_URL, LOCAL_URL } from "../../deploy-backend-url";
 
-import { useAuthStore } from "../../store/authStore";
+// All imports point to your single state file location
+import {
+  useCartStore,
+  useProductStore,
+  useAuthStore,
+} from "../../store/authStore";
+import { currentConfig } from "../../config"; // Matches your store's import path
+
 import toast from "react-hot-toast";
 import {
   Star,
@@ -20,8 +26,17 @@ import {
 export default function ProductDetails() {
   const { id } = useParams();
   const location = useLocation();
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  // 1. Pull perfectly matching keys from your shared global store slices
+  const {
+    singleProduct: product,
+    loading,
+    fetchSingleProduct,
+  } = useProductStore();
+  const { addToCart } = useCartStore();
+  const { isAuthenticated, token: authStoreToken } = useAuthStore();
+
   const [quantity, setQuantity] = useState(1);
   const [adding, setAdding] = useState(false);
   const [rating, setRating] = useState(0);
@@ -29,21 +44,8 @@ export default function ProductDetails() {
   const [comment, setComment] = useState("");
   const [submittingReview, setSubmittingReview] = useState(false);
 
-  const { isAuthenticated, token: authStoreToken } = useAuthStore();
-  const navigate = useNavigate();
-
   const fetchProduct = async () => {
-    try {
-      const res = await axios.get(
-        `${DEPLOYMENT_URL}/api/products/singleProduct/${id}`,
-        { withCredentials: true },
-      );
-      setProduct(res.data.data);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching product:", error);
-      setLoading(false);
-    }
+    await fetchSingleProduct(id);
   };
 
   useEffect(() => {
@@ -54,20 +56,18 @@ export default function ProductDetails() {
     setQuantity(1);
   }, [product]);
 
+  // 2. Add to Cart direct store routing
   const handleAddToCart = async () => {
+    if (!isAuthenticated) {
+      toast.error("Please login to add items to your cart!");
+      return navigate("/login", { state: { from: location } });
+    }
+
     try {
       setAdding(true);
-      const res = await axios.post(
-        `${DEPLOYMENT_URL}/api/cart/add-to-cart`,
-        { productId: product._id, quantity },
-        { withCredentials: true },
-      );
-
-      if (res.data.success) {
-        toast.success("Product added to cart!");
-      } else {
-        toast.error(res.data.message || "Failed to add product to cart");
-      }
+      // Calls your global store method seamlessly
+      await addToCart(product._id, quantity);
+      toast.success("Product added to cart!");
     } catch (error) {
       console.error("Error adding to cart:", error);
       toast.error("Something went wrong. Please try again.");
@@ -91,6 +91,7 @@ export default function ProductDetails() {
     }
   };
 
+  // 3. Review Submissions via your established API_URL structure
   const handleSubmitReview = async () => {
     if (!isAuthenticated) {
       toast.error("Please login to post a review.");
@@ -105,8 +106,9 @@ export default function ProductDetails() {
       setSubmittingReview(true);
       const activeToken = authStoreToken || localStorage.getItem("token");
 
+      // Uses currentConfig.API_URL exactly like your Zustand configuration
       await axios.post(
-        `${DEPLOYMENT_URL}/api/products/submitReview/${product._id}`,
+        `${currentConfig.API_URL}/products/submitReview/${product._id}`,
         { rating, comment },
         {
           withCredentials: true,
@@ -118,13 +120,10 @@ export default function ProductDetails() {
       toast.success("Thank you for giving review 👍!");
       setRating(0);
       setComment("");
-      fetchProduct();
+      fetchProduct(); // Sync interface changes back down
     } catch (error) {
-      console.error(
-        "Error submitting review:",
-        error.response?.data || error.message,
-      );
-      toast.error(error.response?.data?.message || error.message);
+      console.error("Error submitting review:", error);
+      toast.error(error.response?.data?.message || "Failed to submit review.");
     } finally {
       setSubmittingReview(false);
     }
@@ -154,7 +153,7 @@ export default function ProductDetails() {
   const isInStock = product.quantity?.value > 0;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8 md:py-12 text-white bg-[#0b1426]">
+    <div className="max-w-7xl mx-auto px-4 py-8 md:py-12 text-white">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 mb-16">
         {/* Image Section */}
         <div className="lg:col-span-5">
@@ -237,7 +236,7 @@ export default function ProductDetails() {
           </div>
         </div>
 
-        {/* Modern Checkout Card with Colored Shadows */}
+        {/* Checkout Card Layout */}
         <div className="lg:col-span-3">
           <div
             className="rounded-2xl p-6 flex flex-col sticky top-6 border border-slate-800"
@@ -274,7 +273,6 @@ export default function ProductDetails() {
                   <Minus size={14} />
                 </button>
 
-                {/* Combined Quantity and Unit text */}
                 <div className="flex items-center gap-1 font-bold text-sm px-4 text-white">
                   <span>{quantity * (product.quantity?.value || 1)}</span>
                   <span className="text-slate-400 text-xs font-medium">
@@ -303,7 +301,6 @@ export default function ProductDetails() {
               </span>
             </div>
 
-            {/* --- NEW BUTTON ROW GRID WITH COLORED SHADOWS --- */}
             <div className="space-y-4 mt-auto">
               <button
                 onClick={handleBuyProduct}
@@ -366,7 +363,7 @@ export default function ProductDetails() {
         </div>
       </div>
 
-      {/* Reviews Section */}
+      {/* Reviews Render */}
       <div className="border-t border-slate-800 pt-12">
         <h2 className="text-xl md:text-2xl font-bold tracking-tight mb-6 flex items-center gap-2">
           <MessageSquare size={20} className="text-info" />
@@ -415,7 +412,7 @@ export default function ProductDetails() {
             )}
           </div>
 
-          {/* Review Form Component */}
+          {/* Form Input Framework */}
           <div
             className="p-6 rounded-xl border border-slate-800"
             style={{ backgroundColor: "#1a1f2c" }}
@@ -453,7 +450,6 @@ export default function ProductDetails() {
               className="w-full bg-slate-900 border border-slate-800 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-info transition mb-4 resize-none"
             ></textarea>
 
-            {/* --- HIGH CONTRAST REVIEW BUTTON WITH GLOW --- */}
             <button
               onClick={handleSubmitReview}
               disabled={submittingReview}
