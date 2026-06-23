@@ -39,11 +39,11 @@ const OrderPage = () => {
     totalAmount = state.product.price * state.quantity;
   }
 
-  // Address array converted to state so dynamically added addresses render immediately
   const [addresses, setAddresses] = useState([]);
   const [selectedAddressId, setSelectedAddressId] = useState(null);
   const [showNewAddressForm, setShowNewAddressForm] = useState(false);
   const [editingAddressId, setEditingAddressId] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
 
   const [paymentMode, setPaymentMode] = useState("cashOnDelivery");
   const [formData, setFormData] = useState({
@@ -54,8 +54,7 @@ const OrderPage = () => {
     phone: "",
   });
 
-  const [submitting, setSubmitting] = useState(false);
-
+  // Address array converted to state so dynamically added addresses render immediately
   const handleSelectAddress = (addr) => {
     setSelectedAddressId(addr.id);
     setShowNewAddressForm(false); // Hide empty form when selecting existing address
@@ -70,6 +69,7 @@ const OrderPage = () => {
     toast.success("Address profile applied!");
   };
 
+  // Add brand new card address logic
   const handleAddNewAddressOption = () => {
     setSelectedAddressId("new");
     setEditingAddressId(null);
@@ -77,6 +77,7 @@ const OrderPage = () => {
     setFormData({ name: "", address: "", zip: "", email: "", phone: "" });
   };
 
+  // Update existing address mode logic
   const handleEditAddress = (e, addr) => {
     e.stopPropagation(); // Stop parent click selection trigger
     setSelectedAddressId("new");
@@ -91,6 +92,7 @@ const OrderPage = () => {
     });
   };
 
+  // Delete address logic
   const handleDeleteAddress = (e, addressId) => {
     e.stopPropagation(); // Stop parent click selection trigger
     setAddresses(addresses.filter((addr) => addr.id !== addressId));
@@ -101,6 +103,7 @@ const OrderPage = () => {
     toast.success("Address removed successfully!");
   };
 
+  // Handle form field changes
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -148,6 +151,7 @@ const OrderPage = () => {
     setShowNewAddressForm(false);
   };
 
+  // Handle place order submit
   const handlePlaceOrderSubmit = async () => {
     if (!selectedAddressId || selectedAddressId === "new") {
       toast.error("Please select a saved address profile first!");
@@ -156,10 +160,21 @@ const OrderPage = () => {
 
     setSubmitting(true);
 
-    const formattedCartItems = cartItems.map((item) => ({
-      product: item._id,
-      quantity: item.quantity,
-    }));
+    const formattedCartItems = cartItems.map((item) => {
+      const prodId = item.productId?._id || item.productId || item._id;
+      return {
+        _id: prodId,
+        product: prodId,
+        name: item.productId?.name || item.name,
+        price: item.productId?.price || item.price,
+        image: item.productId?.image || item.image,
+        category: item.productId?.category || item.category,
+        stock: item.productId?.stock || item.stock,
+        description: item.productId?.description || item.description,
+        source: item.productId?.source || item.source || "manual",
+        quantity: item.quantity,
+      };
+    });
 
     const orderData = {
       customerDetails: formData,
@@ -240,7 +255,7 @@ const OrderPage = () => {
         navigate("/completepayment", {
           state: {
             customerDetails: formData,
-            cartItems,
+            cartItems: formattedCartItems,
             totalAmount,
             razorpayOrder,
             product: isSingleProductOrder ? state.product : null,
@@ -272,7 +287,6 @@ const OrderPage = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* LEFT: Shipping Form & Address Selector Matrix */}
         <div className="lg:col-span-7 space-y-6">
-          {/* --- STEP 1: SELECT EXISTING ADDRESS OR CHOOSE NEW --- */}
           <div className="dark:bg-[#0b1426] border border-gray-200/60 dark:border-gray-800/60 rounded-3xl p-6 shadow-sm">
             <div className="flex items-center gap-2 mb-4">
               <MapPin size={18} className="text-cyan-500 dark:text-cyan-400" />
@@ -349,7 +363,7 @@ const OrderPage = () => {
             </div>
           </div>
 
-          {/* --- STEP 2: DYNAMIC INPUT FORM FIELDS AREA (Conditional Rendering) --- */}
+          {/* DYNAMIC INPUT FORM FIELDS AREA (Conditional Rendering) */}
           {showNewAddressForm && (
             <div className="dark:bg-[#0b1426] border border-gray-200/60 dark:border-gray-800/60 rounded-3xl p-6 shadow-sm">
               <div className="flex items-center gap-2 mb-6">

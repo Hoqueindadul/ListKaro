@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { LOCAL_URL, DEPLOYMENT_URL } from '../../deploy-backend-url';
-import toast from 'react-hot-toast';
-import { REACT_APP_RAZORPAY_KEY_ID } from '../../rozorPay';
-import axios from 'axios';
+import { LOCAL_URL, DEPLOYMENT_URL } from "../../deploy-backend-url";
+import toast from "react-hot-toast";
+import { REACT_APP_RAZORPAY_KEY_ID } from "../../rozorPay";
+import axios from "axios";
 
 // Ensure Razorpay checkout script is in index.html:
 // <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
@@ -11,33 +11,37 @@ import axios from 'axios';
 const PaymentForm = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
-console.log(state)
+  console.log(state);
   const paymentMode = state?.paymentMode || "cashOnDelivery"; // get payment mode from previous page
   const productId = state?.product?._id; // single product ID
   const quantity = state?.quantity || 1;
   const customerDetails = state?.customerDetails || {};
   const totalAmount = state?.totalAmount || 0;
   const razorpayOrder = state?.razorpayOrder; // only for online
-  
+  const isSingleProductOrder = !!state?.product;
+  const cartItems = state?.cartItems; // array for normal cart checkouts
 
   useEffect(() => {
-    if (!productId ) {
+    if (isSingleProductOrder && !productId) {
       toast.error("Missing productId");
       navigate("/order");
       return;
     }
-    if (!customerDetails ) {
+    if (!isSingleProductOrder && (!cartItems || cartItems.length === 0)) {
+      toast.error("Missing cartItems");
+      navigate("/order");
+      return;
+    }
+    if (!customerDetails) {
       toast.error("Missing customer details");
       navigate("/order");
       return;
     }
-    if (!totalAmount ) {
+    if (!totalAmount) {
       toast.error("Missing total amount");
       navigate("/order");
       return;
     }
-    
-    
 
     if (paymentMode === "online") {
       if (!razorpayOrder) {
@@ -54,20 +58,23 @@ console.log(state)
 
   const sendConfirmationEmail = async () => {
     try {
-      const response = await fetch(`${DEPLOYMENT_URL}/api/sendconfirmationemail`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          to: customerDetails.email,
-          name: customerDetails.name,
-          items: [{ productId, quantity }], // basic info
-          total: totalAmount,
-          address: customerDetails.address,
-          zip: customerDetails.zip,
-          email: customerDetails.email,
-          phone: customerDetails.phone,
-        }),
-      });
+      const response = await fetch(
+        `${DEPLOYMENT_URL}/api/sendconfirmationemail`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            to: customerDetails.email,
+            name: customerDetails.name,
+            items: isSingleProductOrder ? [{ productId, quantity }] : cartItems, // Use either single product info or the list of products
+            total: totalAmount,
+            address: customerDetails.address,
+            zip: customerDetails.zip,
+            email: customerDetails.email,
+            phone: customerDetails.phone,
+          }),
+        },
+      );
 
       if (response.ok) {
         toast.success("Confirmation email sent successfully!");
@@ -96,32 +103,47 @@ console.log(state)
           const orderData = {
             customerDetails,
             paymentMode: "online",
-            product: productId,
-            quantity,
             totalAmount,
             razorpayOrderId: razorpayOrder.id,
             razorpayPaymentId: response.razorpay_payment_id,
             razorpaySignature: response.razorpay_signature,
           };
 
-          const res = await axios.post(
-            `${LOCAL_URL}/api/single-product-order`,
-            orderData,
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
+          if (isSingleProductOrder) {
+            orderData.product = productId;
+            orderData.quantity = quantity;
+          } else {
+            orderData.cartItems = cartItems;
+          }
+
+          const endpoint = isSingleProductOrder
+            ? `${LOCAL_URL}/api/single-product-order`
+            : `${LOCAL_URL}/api/online-payment`;
+
+          const res = await axios.post(endpoint, orderData, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          });
 
           if (res.status === 200 || res.status === 201) {
             toast.success("Payment successful and order saved!");
             localStorage.removeItem("orderData");
             await sendConfirmationEmail();
-            navigate("/orderplaced", { state: { customerDetails, productId, quantity, totalAmount } });
+            navigate("/orderplaced", {
+              state: {
+                customerDetails,
+                productId,
+                cartItems,
+                quantity,
+                totalAmount,
+              },
+            });
           } else {
-            toast.error("Failed to save order: " + (res.data?.message || 'Unknown error'));
+            toast.error(
+              "Failed to save order: " + (res.data?.message || "Unknown error"),
+            );
           }
         } catch (error) {
           console.error("Error saving order:", error);
@@ -149,12 +171,21 @@ console.log(state)
       const orderData = {
         customerDetails,
         paymentMode: "cashOnDelivery",
-        product: productId,
-        quantity,
         totalAmount,
       };
 
-      const res = await axios.post(`${DEPLOYMENT_URL}/api/single-product-order`, orderData, {
+      if (isSingleProductOrder) {
+        orderData.product = productId;
+        orderData.quantity = quantity;
+      } else {
+        orderData.cartItems = cartItems;
+      }
+
+      const endpoint = isSingleProductOrder
+        ? `${DEPLOYMENT_URL}/api/single-product-order`
+        : `${DEPLOYMENT_URL}/api/order`;
+
+      const res = await axios.post(endpoint, orderData, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -165,9 +196,19 @@ console.log(state)
         toast.success("Order placed successfully! Please pay on delivery.");
         localStorage.removeItem("orderData");
         await sendConfirmationEmail();
-        navigate("/orderplaced", { state: { customerDetails, productId, quantity, totalAmount } });
+        navigate("/orderplaced", {
+          state: {
+            customerDetails,
+            productId,
+            cartItems,
+            quantity,
+            totalAmount,
+          },
+        });
       } else {
-        toast.error("Failed to place order: " + (res.data?.message || 'Unknown error'));
+        toast.error(
+          "Failed to place order: " + (res.data?.message || "Unknown error"),
+        );
       }
     } catch (error) {
       console.error("Error placing COD order:", error);
@@ -191,7 +232,11 @@ console.log(state)
     >
       <div className="spinner-border" role="status" />
       <p>Please Wait...</p>
-      <h3>{paymentMode === "online" ? "Redirecting to Razorpay Gateway" : "Placing your order..."}</h3>
+      <h3>
+        {paymentMode === "online"
+          ? "Redirecting to Razorpay Gateway"
+          : "Placing your order..."}
+      </h3>
     </div>
   );
 };

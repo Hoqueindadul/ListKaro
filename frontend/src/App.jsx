@@ -77,6 +77,7 @@ function AppContent() {
     "/forgot-password",
     "/emailverification",
     "/reset-password/:token",
+    "/orderplaced",
   ];
   const shouldHideNavbar = hideNavbarRoutes.some((route) =>
     matchPath({ path: route, exact: true }, location.pathname.toLowerCase()),

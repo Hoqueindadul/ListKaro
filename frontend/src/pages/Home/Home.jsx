@@ -152,7 +152,7 @@ function Home() {
           onClick={closeOfferPopup}
         >
           <div
-            className="bg-white dark:bg-slate-800 rounded-3xl p-8 max-w-md w-full relative shadow-2xl border border-slate-100 dark:border-slate-700 text-center"
+            className=" dark:bg-slate-800 rounded-3xl p-8 max-w-md w-full relative shadow-2xl border border-slate-100 dark:border-slate-700 text-center"
             onClick={(e) => e.stopPropagation()}
           >
             <button
