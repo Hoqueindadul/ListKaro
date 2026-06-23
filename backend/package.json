@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "nodemon app.js",
-    "app": "nodemon app.js"
+    "app": "nodemon app.js",
+    "test": "vitest run"
   },
   "keywords": [],
   "author": "",
@@ -31,5 +32,10 @@
     "razorpay": "^2.9.6",
     "twilio": "^5.12.1",
     "validator": "^13.15.0"
+  },
+  "devDependencies": {
+    "mongodb-memory-server": "^11.2.0",
+    "supertest": "^7.2.2",
+    "vitest": "^4.1.9"
   }
 }

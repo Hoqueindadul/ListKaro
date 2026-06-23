@@ -6,6 +6,8 @@ import { generateTokenAndSetCookie } from "../utils/generateTokenAndSetCookie.js
 import {
   sendVarificationEmail,
   sendWelcomeEmail,
+  sendPasswordResetEmail,
+  sendResetSuccessEmail,
 } from "../nodemailer/email.js";
 // Signup Controller
 export const signup = async (req, res) => {

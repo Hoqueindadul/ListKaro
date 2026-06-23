@@ -5,6 +5,7 @@ import {
   Route,
   useLocation,
   useNavigate,
+  matchPath,
 } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import "./App.css";
@@ -75,9 +76,10 @@ function AppContent() {
     "/signup",
     "/forgot-password",
     "/emailverification",
+    "/reset-password/:token",
   ];
-  const shouldHideNavbar = hideNavbarRoutes.includes(
-    location.pathname.toLowerCase(),
+  const shouldHideNavbar = hideNavbarRoutes.some((route) =>
+    matchPath({ path: route, exact: true }, location.pathname.toLowerCase()),
   );
 
   return (
