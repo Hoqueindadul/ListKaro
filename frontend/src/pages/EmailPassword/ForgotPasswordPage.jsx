@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuthStore } from "../../store/authStore";
 import { ArrowLeft, Loader, Mail, ShieldCheck } from "lucide-react";
 import Input from "../../components/Input";
@@ -19,7 +19,7 @@ const ForgotPasswordPage = () => {
 
   return (
     <div className="min-h-screen w-full flex bg-[#031525] text-gray-100 selection:bg-[#17f0db]/20 selection:text-[#17f0db] font-sans antialiased">
-      {/* ================= LEFT SIDE: INFORMATION PANEL ================= */}
+      {/* INFORMATION PANEL*/}
       <div className="hidden md:flex md:w-[45%] lg:w-[40%] flex-col justify-between p-12 bg-[#020e1a] border-r border-[#082036]/50">
         {/* Top Navigation Back Link */}
         <div>
@@ -51,9 +51,8 @@ const ForgotPasswordPage = () => {
         </div>
       </div>
 
-      {/* ================= RIGHT SIDE: TEXTURED FORM LAYER ================= */}
+      {/* TEXTURED FORM AREA */}
       <div className="flex-1 flex items-center justify-center px-6 lg:px-12 bg-[#031525]">
-        {/* Rounded Realistic Card Structure mimicking ListKaro dashboard module */}
         <div className="w-full max-w-[460px] bg-[#051c30] rounded-2xl border border-white/[0.02] shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col justify-between min-h-[480px]">
           {/* Main Content Body */}
           <div className="p-8 my-auto">
@@ -112,19 +111,15 @@ const ForgotPasswordPage = () => {
                   </div>
                 </div>
 
-                {/* Flat Action Button Panel with subtle outer borders */}
+                {/* Submit button */}
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className={`w-full py-3.5 font-bold text-sm rounded-lg tracking-wide transition-all duration-200 shadow-md ${
-                    isLoading
-                      ? "bg-[#06243d] text-gray-500 cursor-not-allowed border border-[#0f2b44]"
-                      : "bg-[#020e1a] text-gray-100 border border-[#0f2b44] hover:border-[#17f0db]/50 hover:shadow-[0_0_20px_rgba(23,240,219,0.08)] active:scale-[0.99]"
-                  }`}
+                  className="w-full h-11 mt-6 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white rounded-xl text-xs font-bold transition-all duration-300 transform active:scale-[0.98] shadow-[0_4px_20px_rgba(6,182,212,0.25)] flex items-center justify-center disabled:opacity-50 disabled:pointer-events-none cursor-pointer"
                 >
                   {isLoading ? (
                     <div className="flex items-center justify-center gap-2">
-                      <Loader className="h-4 w-4 animate-spin text-[#17f0db]" />
+                      <Loader className="w-5 h-5 animate-spin" />
                       <span>Sending link...</span>
                     </div>
                   ) : (

@@ -11,6 +11,7 @@ export default function EmailVerificationPage() {
   const navigate = useNavigate();
   const { error, isLoading, verifyEmail } = useAuthStore();
 
+  // Handle email verification
   const handleVerification = async (verificationCode) => {
     try {
       await verifyEmail(verificationCode);
@@ -22,6 +23,7 @@ export default function EmailVerificationPage() {
     }
   };
 
+  // Handle input change
   const handleChange = (index, value) => {
     const newCode = [...code];
 
@@ -45,6 +47,7 @@ export default function EmailVerificationPage() {
     }
   };
 
+  // Handle key down
   const handleKeyDown = (index, e) => {
     if (e.key === "Backspace") {
       if (!code[index] && index > 0) {
@@ -60,6 +63,7 @@ export default function EmailVerificationPage() {
     }
   };
 
+  //
   const handleSubmit = (e) => {
     e.preventDefault();
     const verificationCode = code.join("");
@@ -68,6 +72,7 @@ export default function EmailVerificationPage() {
     }
   };
 
+  // Handle effect
   useEffect(() => {
     const verificationCode = code.join("");
     if (verificationCode.length === 6) {
@@ -79,7 +84,7 @@ export default function EmailVerificationPage() {
 
   return (
     <div className="min-h-screen w-full flex bg-[#031525] text-gray-100 selection:bg-[#17f0db]/20 selection:text-[#17f0db] font-sans antialiased">
-      {/* ================= LEFT SIDE: INFORMATION PANEL ================= */}
+      {/* LEFT SIDE: INFORMATION PANEL*/}
       <div className="hidden md:flex md:w-[45%] lg:w-[40%] flex-col justify-between p-12 bg-[#020e1a] border-r border-[#082036]/50">
         {/* Top Navigation Back Link */}
         <div>
@@ -114,7 +119,7 @@ export default function EmailVerificationPage() {
         </div>
       </div>
 
-      {/* ================= RIGHT SIDE: TEXTURED FORM LAYER ================= */}
+      {/* RIGHT SIDE: TEXTURED FORM LAYER */}
       <div className="flex-1 flex items-center justify-center px-6 lg:px-12 bg-[#031525]">
         {/* Rounded Realistic Card Structure mimicking ListKaro dashboard module */}
         <div className="w-full max-w-[460px] bg-[#051c30] rounded-2xl border border-white/[0.02] shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col justify-between min-h-[480px]">

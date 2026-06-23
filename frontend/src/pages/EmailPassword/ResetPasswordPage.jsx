@@ -13,6 +13,7 @@ const ResetPasswordPage = () => {
   const { token } = useParams();
   const navigate = useNavigate();
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -37,7 +38,7 @@ const ResetPasswordPage = () => {
 
   return (
     <div className="min-h-screen w-full flex bg-[#031525] text-gray-100 selection:bg-[#17f0db]/20 selection:text-[#17f0db] font-sans antialiased">
-      {/* ================= LEFT SIDE: INFORMATION PANEL ================= */}
+      {/* INFORMATION PANEL */}
       <div className="hidden md:flex md:w-[45%] lg:w-[40%] flex-col justify-between p-12 bg-[#020e1a] border-r border-[#082036]/50">
         {/* Top Navigation Back Link */}
         <div>
@@ -72,7 +73,7 @@ const ResetPasswordPage = () => {
         </div>
       </div>
 
-      {/* ================= RIGHT SIDE: TEXTURED FORM LAYER ================= */}
+      {/* TEXTURED FORM AREA */}
       <div className="flex-1 flex items-center justify-center px-6 lg:px-12 bg-[#031525]">
         {/* Rounded Realistic Card Structure mimicking ListKaro dashboard module */}
         <div className="w-full max-w-[460px] bg-[#051c30] rounded-2xl border border-white/[0.02] shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col justify-between min-h-[520px]">
@@ -160,41 +161,19 @@ const ResetPasswordPage = () => {
                 </div>
               </div>
 
-              {/* Flat Action Button Panel with outer boundaries */}
+              {/* Send Reset Link Button */}
               <button
                 type="submit"
                 disabled={isLoading}
-                className={`w-full py-3.5 font-bold text-sm rounded-lg tracking-wide transition-all duration-200 shadow-md ${
-                  isLoading
-                    ? "bg-[#06243d] text-gray-500 cursor-not-allowed border border-[#0f2b44]"
-                    : "bg-[#020e1a] text-gray-100 border border-[#0f2b44] hover:border-[#17f0db]/50 hover:shadow-[0_0_20px_rgba(23,240,219,0.08)] active:scale-[0.99]"
-                }`}
+                className="w-full h-11 mt-6 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white rounded-xl text-xs font-bold transition-all duration-300 transform active:scale-[0.98] shadow-[0_4px_20px_rgba(6,182,212,0.25)] flex items-center justify-center disabled:opacity-50 disabled:pointer-events-none cursor-pointer"
               >
                 {isLoading ? (
                   <div className="flex items-center justify-center gap-2">
-                    <svg
-                      className="animate-spin h-4 w-4 text-[#17f0db]"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      />
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      />
-                    </svg>
-                    <span>Resetting...</span>
+                    <Loader className="w-5 h-5 animate-spin" />
+                    <span>Sending link...</span>
                   </div>
                 ) : (
-                  "Set New Password"
+                  "Send Reset Link"
                 )}
               </button>
             </form>
