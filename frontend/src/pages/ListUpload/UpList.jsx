@@ -1,11 +1,9 @@
 import { useState } from "react";
-import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { useBulkUploadStore } from "../../store/authStore";
 import { useAuthStore } from "../../store/authStore";
-import { LOCAL_URL } from "../../deploy-backend-url";
-import { DEPLOYMENT_URL } from "../../deploy-backend-url";
+// Import your product or bulk upload stores here correctly
+import { useProductStore, useBulkUploadStore } from "../../store/authStore";
 import {
   UploadCloud,
   Trash2,
@@ -15,16 +13,20 @@ import {
 } from "lucide-react";
 
 function UpList() {
-  const [ocrText, setOcrText] = useState([]);
   const [productInputs, setProductInputs] = useState([
     { name: "", quantity: "" },
   ]);
+
+  // Connect cleanly to your stores
+  const { uploadList, loading: isOcrLoading } = useBulkUploadStore();
+  const bulkUploadProducts = useBulkUploadStore(
+    (state) => state.bulkUploadProducts,
+  );
+
   const [selectedImage, setSelectedImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState("");
-  const [loading, setLoading] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
-  const [ocrResult, setOcrResult] = useState(null);
 
   const navigate = useNavigate();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -34,7 +36,6 @@ function UpList() {
     if (file) {
       setSelectedImage(file);
       setPreviewUrl(URL.createObjectURL(file));
-      setOcrResult(null);
       setErrorMsg("");
     }
   };
@@ -59,37 +60,24 @@ function UpList() {
     }
 
     const formData = new FormData();
+    // Double-check if your backend expects 'image' or something else
     formData.append("image", selectedImage);
 
-    setLoading(true);
     setErrorMsg("");
-    setOcrResult(null);
 
     try {
-      const response = await axios.post(
-        `${LOCAL_URL}/api/upload-ocr`,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-          withCredentials: true,
-        },
-      );
+      // Utilizing your new uploadList store action directly!
+      const data = await uploadList(formData);
 
-      if (response.data?.lines) {
-        const extractedItems = extractItems(response.data.lines);
-        setProductInputs(extractedItems); // Populate inputs directly for easier editing
+      if (data?.lines) {
+        const extractedItems = extractItems(data.lines);
+        setProductInputs(extractedItems);
         toast.success(
-          response.data.message ||
-            "File uploaded and list extracted successfully!",
+          data.message || "File uploaded and list extracted successfully!",
         );
       } else {
-        toast.error(response.data.message || "Failed to extract list items!");
+        toast.error(data?.message || "Failed to extract list items!");
       }
-
-      setOcrResult(response.data);
     } catch (error) {
       console.error("Upload failed:", error);
       if (error.response && error.response.status === 401) {
@@ -99,8 +87,6 @@ function UpList() {
         setErrorMsg("Upload failed. Please try again.");
         toast.error("Upload failed. Please try again.");
       }
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -154,20 +140,19 @@ function UpList() {
     setFormLoading(true);
 
     try {
-      const response = await useBulkUploadStore
-        .getState()
-        .bulkUploadProducts(productInputs);
+      // Cleaner hook-based state invocation
+      const response = await bulkUploadProducts(productInputs);
 
       if (response) {
         const { addedItems, notFoundItems } = response;
 
-        if (addedItems.length > 0) {
+        if (addedItems?.length > 0) {
           toast.success(
             `Uploaded ${addedItems.length} product(s) successfully.`,
           );
         }
 
-        if (notFoundItems.length > 0) {
+        if (notFoundItems?.length > 0) {
           const unfoundNames = notFoundItems
             .map((item) => `"${item.name}"`)
             .join(", ");
@@ -195,7 +180,7 @@ function UpList() {
           <span className="text-[#00b074]">or Fill the Form</span>
         </h2>
         <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-          Quickly purchase your items using an image snapshot ( .jpg, .png) or
+          Quickly purchase your items using an image snapshot (.jpg, .png) or
           map fields manually below.
         </p>
         <div className="w-20 h-1 bg-gradient-to-r from-emerald-500 to-teal-500 mt-4 rounded-full" />
@@ -235,7 +220,7 @@ function UpList() {
             </label>
 
             {selectedImage && (
-              <div className="mt-5 p-3 rounded-xl bg-gray-100/60  border border-gray-200/50 dark:border-white/5 flex flex-col gap-2">
+              <div className="mt-5 p-3 rounded-xl bg-gray-100/60 border border-gray-200/50 dark:border-white/5 flex flex-col gap-2">
                 <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 px-1">
                   <span className="font-bold truncate max-w-[200px]">
                     {selectedImage.name}
@@ -262,9 +247,9 @@ function UpList() {
           <button
             onClick={upload}
             className="mt-6 w-full h-11 bg-[#00b074] text-white rounded-xl text-sm font-bold shadow-[0_4px_12px_rgba(0,176,116,0.15)] dark:shadow-[0_0_15px_rgba(0,176,116,0.2)] disabled:opacity-50 transition-all flex items-center justify-center gap-2"
-            disabled={loading}
+            disabled={isOcrLoading}
           >
-            {loading ? (
+            {isOcrLoading ? (
               <>
                 <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 Processing File...
@@ -277,11 +262,11 @@ function UpList() {
 
         {/* Mid Divider */}
         <div className="lg:col-span-1 h-full flex lg:flex-col items-center justify-center text-center py-2 lg:py-0">
-          <div className="w-full h-[1px] lg:w-[1px] lg:h-32  " />
-          <span className="px-3 py-1  text-xs font-black text-gray-400 dark:text-gray-500 rounded-full my-2">
+          <div className="w-full h-[1px] lg:w-[1px] lg:h-32" />
+          <span className="px-3 py-1 text-xs font-black text-gray-400 dark:text-gray-500 rounded-full my-2">
             OR
           </span>
-          <div className="w-full h-[1px] lg:w-[1px] lg:h-32  " />
+          <div className="w-full h-[1px] lg:w-[1px] lg:h-32" />
         </div>
 
         {/* Manual Item Form Panel Card */}
@@ -303,23 +288,7 @@ function UpList() {
                 >
                   <input
                     type="text"
-                    className="
-    flex-[2]
-    h-11
-    bg-transparent
-    border border-gray-200/80
-    dark:border-white/10
-    rounded-xl
-    px-4
-    text-sm
-    font-semibold
-    text-gray-800
-    dark:text-white
-    placeholder:text-gray-400
-    focus:outline-none
-    focus:border-emerald-500
-    transition-colors
-  "
+                    className="flex-[2] h-11 bg-transparent border border-gray-200/80 dark:border-white/10 rounded-xl px-4 text-sm font-semibold text-gray-800 dark:text-white placeholder:text-gray-400 focus:outline-none focus:border-emerald-500 transition-colors"
                     placeholder="Product Name (e.g. Eggs, Milk)"
                     value={product.name}
                     onChange={(e) =>
@@ -329,35 +298,19 @@ function UpList() {
                   />
                   <input
                     type="text"
-                    className="
-    flex-1
-    h-11
-    bg-transparent
-    border border-gray-200/80
-    dark:border-white/10
-    rounded-xl
-    px-4
-    text-sm
-    font-semibold
-    text-gray-800
-    dark:text-white
-    placeholder:text-gray-400
-    focus:outline-none
-    focus:border-emerald-500
-    transition-colors
-  "
+                    className="flex-1 h-11 bg-transparent border border-gray-200/80 dark:border-white/10 rounded-xl px-4 text-sm font-semibold text-gray-800 dark:text-white placeholder:text-gray-400 focus:outline-none focus:border-emerald-500 transition-colors"
                     placeholder="Qty (e.g. 2kg, 1l)"
                     value={product.quantity}
                     onChange={(e) =>
                       handleChange(index, "quantity", e.target.value)
                     }
                     required
-                  />{" "}
+                  />
                   <button
                     type="button"
                     onClick={() => removeProductField(index)}
                     disabled={productInputs.length === 1}
-                    className="w-11 h-11 flex items-center justify-center rounded-xl border border-gray-200 dark:border-white/10  dark:bg-[#070d19] hover:bg-red-500/10 text-gray-400 hover:text-red-500 disabled:opacity-40 transition-colors shrink-0 shadow-sm"
+                    className="w-11 h-11 flex items-center justify-center rounded-xl border border-gray-200 dark:border-white/10 dark:bg-[#070d19] hover:bg-red-500/10 text-gray-400 hover:text-red-500 disabled:opacity-40 transition-colors shrink-0 shadow-sm"
                   >
                     <Trash2 size={16} />
                   </button>

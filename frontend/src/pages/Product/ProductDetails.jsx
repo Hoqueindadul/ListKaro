@@ -81,7 +81,7 @@ export default function ProductDetails() {
       toast.error("Please login!");
       navigate("/login", { state: { from: location } });
     } else {
-      navigate("/order", {
+      navigate("/order-summary", {
         state: {
           product,
           quantity,

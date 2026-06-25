@@ -401,4 +401,26 @@ export const useBulkUploadStore = create((set) => ({
       set({ error: message, loading: false });
     }
   },
+  uploadList: async (formData) => {
+    set({ loading: true, error: null });
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.post(`${API_URL}/upload-ocr`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
+
+      set({ loading: false });
+      return response.data; // Returns the API response to the component
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message || "Failed to upload list";
+      set({ error: errorMessage, loading: false });
+      console.error("Error uploading list:", error);
+      throw error; // Re-throw so the component can handle local UI changes if needed
+    }
+  },
 }));

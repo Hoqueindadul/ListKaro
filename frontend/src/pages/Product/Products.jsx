@@ -85,7 +85,7 @@ const ProductListing = () => {
 
   // handle buy now
   const handleBuyNow = (product) => {
-    navigate("/checkout", { state: { product } });
+    navigate(`/product/${product._id}`);
   };
 
   // Helper logic to check if current filter criteria yields any results
@@ -315,10 +315,9 @@ const ProductListing = () => {
                             )}
                           </div>
                         </div>
-
                         <button
                           onClick={() => handleBuyNow(product)}
-                          className="flex items-center gap-1.5 bg-cyan-500 hover:bg-cyan-600 text-white dark:bg-cyan-400 dark:hover:bg-cyan-500 dark:text-black px-3.5 py-2 rounded-full text-xs font-bold transition-all duration-200 shadow-sm"
+                          className="flex items-center cursor-pointer gap-1.5 bg-cyan-500 hover:bg-cyan-600 text-white dark:bg-cyan-400 dark:hover:bg-cyan-500 dark:text-black px-3.5 py-2 rounded-full text-xs font-bold transition-all duration-200 shadow-sm"
                         >
                           <ShoppingBag size={13} />
                           Buy Now

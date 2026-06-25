@@ -54,7 +54,7 @@ const ShoppingCart = () => {
       toast.success("Shop products then go to further process!");
       navigate("/products");
     } else {
-      navigate("/order", {
+      navigate("/order-summary", {
         state: {
           cartItems,
           totalAmount: total,

@@ -20,7 +20,7 @@ const Home = React.lazy(() => import("./pages/Home/Home"));
 const UpList = React.lazy(() => import("./pages/ListUpload/UpList"));
 const Profile = React.lazy(() => import("./pages/Common/Profile"));
 const About = React.lazy(() => import("./pages/AboutUs/About"));
-const PaymentForm = React.lazy(() => import("./pages/Payment/PaymentForm"));
+
 const FAQ = React.lazy(() => import("./pages/FAQ/FAQ"));
 const EmailVerificationPage = React.lazy(
   () => import("./pages/EmailPassword/EmailVerificationPage"),
@@ -35,7 +35,7 @@ const ResetPasswordPage = React.lazy(
 );
 const Dashboard = React.lazy(() => import("./adminpanel/Dashboard"));
 const ShoppingCart = React.lazy(() => import("./pages/Cart/ShoppingCart"));
-const OrderPage = React.lazy(() => import("./pages/Order/OrderPage"));
+const OrderSummary = React.lazy(() => import("./pages/Order/OrderSummary"));
 const Placed = React.lazy(() => import("./pages/Order/Placed"));
 const OrderListing = React.lazy(() => import("./pages/Order/OrdersListing"));
 const TrackShipment = React.lazy(() => import("./pages/Order/TrackShipment"));
@@ -94,7 +94,6 @@ function AppContent() {
             <Route path="/uploadlist" element={<UpList />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/about" element={<About />} />
-            <Route path="/completepayment" element={<PaymentForm />} />
             <Route path="/faq" element={<FAQ />} />
             <Route
               path="/emailverification"
@@ -111,7 +110,7 @@ function AppContent() {
             <Route path="/shopping-cart" element={<ShoppingCart />} />
             <Route path="/products" element={<Products />} />
             <Route path="/product/:id" element={<ProductDetails />} />
-            <Route path="/order" element={<OrderPage />} />
+            <Route path="/order-summary" element={<OrderSummary />} />
             <Route path="/orderplaced" element={<Placed />} />
             <Route path="/orderlisting" element={<OrderListing />} />
             <Route path="/track-shipment" element={<TrackShipment />} />

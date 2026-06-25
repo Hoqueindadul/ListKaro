@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { currentConfig } from "../../config";
+const API_URL = currentConfig.API_URL;
+import axios from "axios";
 import {
   Package,
   Search,
-  SlidersHorizontal,
   ArrowUpRight,
   Clock,
   Truck,
   CheckCircle2,
   XCircle,
-  ChevronRight,
   Calendar,
   CreditCard,
 } from "lucide-react";
@@ -17,79 +18,57 @@ import {
 export default function OrderListing() {
   const [activeFilter, setActiveFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [ordersDatabase, setOrdersDatabase] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Real-world mock order matrix database structural data
-  const ordersDatabase = [
-    {
-      id: "ZOR-2026-8902",
-      date: "June 14, 2026",
-      totalAmount: "₹14,250",
-      paymentMethod: "UPI (Razorpay)",
-      status: "processing", // processing | shipped | delivered | cancelled
-      estimatedDelivery: "June 19, 2026",
-      items: [
-        {
-          name: "Zorvex Mechanical Gaming Keyboard v2",
-          quantity: 1,
-          price: "₹12,499",
-          image:
-            "https://images.unsplash.com/photo-1595225476474-87563907a212?w=120&auto=format&fit=crop&q=60",
-        },
-        {
-          name: "Minimalist Anti-Fray Desk Mat (XL)",
-          quantity: 1,
-          price: "₹1,751",
-          image:
-            "https://images.unsplash.com/photo-1632292224971-0d45778b3af8?w=120&auto=format&fit=crop&q=60",
-        },
-      ],
-    },
-    {
-      id: "ZOR-2026-7731",
-      date: "May 28, 2026",
-      totalAmount: "₹4,890",
-      paymentMethod: "Cash on Delivery",
-      status: "shipped",
-      estimatedDelivery: "June 18, 2026",
-      items: [
-        {
-          name: "Ergonomic Memory Foam Wrist Rest",
-          quantity: 2,
-          price: "₹2,445",
-          image:
-            "https://images.unsplash.com/photo-1585909693684-01c36294553e?w=120&auto=format&fit=crop&q=60",
-        },
-      ],
-    },
-    {
-      id: "ZOR-2026-6120",
-      date: "April 12, 2026",
-      totalAmount: "₹29,999",
-      paymentMethod: "Credit Card",
-      status: "delivered",
-      estimatedDelivery: "April 16, 2026",
-      items: [
-        {
-          name: 'NovaAdmin 34" Curved UltraWide Display',
-          quantity: 1,
-          price: "₹29,999",
-          image:
-            "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=120&auto=format&fit=crop&q=60",
-        },
-      ],
-    },
-  ];
+  // Dynamic API Fetch Pipeline
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        setIsLoading(true);
+
+        const response = await axios.get(`${API_URL}/get-all-orders`, {
+          withCredentials: true,
+        });
+        console.log("response", response);
+
+        // Safe extraction matching your exact backend key structure ("orders")
+        if (response.data && Array.isArray(response.data.orders)) {
+          setOrdersDatabase(response.data.orders);
+        } else {
+          setOrdersDatabase([]);
+        }
+      } catch (error) {
+        console.error("Error hydrating orders dashboard stream:", error);
+        setOrdersDatabase([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, []);
 
   // Map backend raw states into beautiful frontend styles
   const statusConfig = {
-    processing: {
-      label: "Processing",
+    pending: {
+      label: "Pending",
       color: "text-amber-500 bg-amber-500/10 border-amber-500/20",
       icon: <Clock size={12} />,
     },
-    shipped: {
-      label: "Shipped out",
+    confirmed: {
+      label: "Confirmed",
       color: "text-blue-500 bg-blue-500/10 border-blue-500/20",
+      icon: <CheckCircle2 size={12} />,
+    },
+    preparing: {
+      label: "Preparing",
+      color: "text-indigo-500 bg-indigo-500/10 border-indigo-500/20",
+      icon: <Clock size={12} />,
+    },
+    outForDelivery: {
+      label: "Out for Delivery",
+      color: "text-purple-500 bg-purple-500/10 border-purple-500/20",
       icon: <Truck size={12} />,
     },
     delivered: {
@@ -104,19 +83,40 @@ export default function OrderListing() {
     },
   };
 
-  // Filter & Search computation matrix pipeline logic
-  const filteredOrders = ordersDatabase.filter((order) => {
-    const matchesTab = activeFilter === "all" || order.status === activeFilter;
-    const matchesSearch =
-      order.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      order.items.some((item) =>
-        item.name.toLowerCase().includes(searchQuery.toLowerCase()),
-      );
-    return matchesTab && matchesSearch;
-  });
+  // Safe Filter & Search computation matrix pipeline logic
+  const filteredOrders = Array.isArray(ordersDatabase)
+    ? ordersDatabase.filter((order) => {
+        // Handle filter categories dynamically
+        const backendStatus = order.status || "pending";
+        let resolvedTab = backendStatus;
+
+        // Group active intermediate pipeline states into "processing" tab if desired
+        if (
+          backendStatus === "confirmed" ||
+          backendStatus === "preparing" ||
+          backendStatus === "outForDelivery"
+        ) {
+          resolvedTab = "processing";
+        }
+
+        const matchesTab =
+          activeFilter === "all" ||
+          resolvedTab === activeFilter ||
+          backendStatus === activeFilter;
+
+        const matchesSearch =
+          (order._id &&
+            order._id.toLowerCase().includes(searchQuery.toLowerCase())) ||
+          (order.orderItems &&
+            order.orderItems.some((item) =>
+              item.name.toLowerCase().includes(searchQuery.toLowerCase()),
+            ));
+        return matchesTab && matchesSearch;
+      })
+    : [];
 
   return (
-    <div className="min-h-screen  dark:bg-[#070d19] text-gray-900 dark:text-white transition-colors duration-200 py-10 px-4">
+    <div className="min-h-screen dark:bg-[#070d19] text-gray-900 dark:text-white transition-colors duration-200 py-10 px-4">
       <div className="max-w-5xl mx-auto space-y-6">
         {/* ================= PAGE DASHBOARD HEADER ================= */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-200 dark:border-gray-800 pb-6">
@@ -140,7 +140,7 @@ export default function OrderListing() {
               placeholder="Search ID or Product..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-2  dark:bg-[#0b1426] border border-gray-200 dark:border-gray-800 text-xs rounded-xl focus:outline-none focus:border-cyan-500 dark:focus:border-cyan-400 transition-all"
+              className="w-full pl-9 pr-4 py-2 dark:bg-[#0b1426] border border-gray-200 dark:border-gray-800 text-xs rounded-xl focus:outline-none focus:border-cyan-500 dark:focus:border-cyan-400 transition-all"
             />
             <Search
               size={14}
@@ -151,7 +151,7 @@ export default function OrderListing() {
 
         {/* ================= TAB CONTROL SLIDERS MATRIX ================= */}
         <div className="flex items-center gap-1.5 overflow-x-auto pb-2 scrollbar-none border-b border-gray-100 dark:border-gray-800/40">
-          {["all", "processing", "shipped", "delivered", "cancelled"].map(
+          {["all", "pending", "processing", "delivered", "cancelled"].map(
             (filterKey) => (
               <button
                 key={filterKey}
@@ -170,10 +170,17 @@ export default function OrderListing() {
 
         {/* ================= CARD RENDER ENGINE REPEATER ================= */}
         <div className="space-y-5">
-          {filteredOrders.length > 0 ? (
+          {isLoading ? (
+            /* Simple native skeleton/loader handling async database state */
+            <div className="text-center py-16 dark:bg-[#0b1426] border border-dashed border-gray-200 dark:border-gray-800 rounded-3xl">
+              <p className="text-xs text-gray-400 animate-pulse">
+                Hydrating order telemetry records from secure server...
+              </p>
+            </div>
+          ) : filteredOrders.length > 0 ? (
             filteredOrders.map((order) => (
               <div
-                key={order.id}
+                key={order._id}
                 className=" dark:bg-[#0b1426] border border-gray-200/60 dark:border-gray-800/60 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-200"
               >
                 {/* Meta-Header Strip block */}
@@ -182,8 +189,8 @@ export default function OrderListing() {
                     <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">
                       Order Reference
                     </p>
-                    <span className="text-xs font-black tracking-wide text-gray-900 dark:text-gray-100">
-                      {order.id}
+                    <span className="text-xs font-black tracking-wide text-gray-900 dark:text-gray-100 block truncate max-w-[140px]">
+                      {order._id}
                     </span>
                   </div>
                   <div>
@@ -192,7 +199,16 @@ export default function OrderListing() {
                     </p>
                     <span className="text-xs font-bold text-gray-600 dark:text-gray-300 flex items-center gap-1">
                       <Calendar size={12} className="text-gray-400" />
-                      {order.date}
+                      {order.createdAt
+                        ? new Date(order.createdAt).toLocaleDateString(
+                            "en-IN",
+                            {
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            },
+                          )
+                        : "N/A"}
                     </span>
                   </div>
                   <div>
@@ -200,47 +216,63 @@ export default function OrderListing() {
                       Total Valuation
                     </p>
                     <span className="text-sm font-black text-gray-900 dark:text-white">
-                      {order.totalAmount}
+                      ₹{order.totalAmount}
                     </span>
                   </div>
                   <div className="sm:text-right flex sm:justify-end">
                     <span
-                      className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border text-[10px] font-extrabold uppercase tracking-wider ${statusConfig[order.status].color}`}
+                      className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border text-[10px] font-extrabold uppercase tracking-wider ${
+                        statusConfig[order.shipmentStatus]?.color ||
+                        "text-gray-500"
+                      }`}
                     >
-                      {statusConfig[order.status].icon}
-                      {statusConfig[order.status].label}
+                      {statusConfig[order.shipmentStatus]?.icon}
+                      {statusConfig[order.shipmentStatus]?.label ||
+                        order.shipmentStatus}
                     </span>
                   </div>
                 </div>
 
                 {/* Main Content Body: Nested Products Loop */}
                 <div className="p-6 divide-y divide-gray-100 dark:divide-gray-800/50">
-                  {order.items.map((item, idx) => (
-                    <div
-                      key={idx}
-                      className={`flex items-center gap-4 ${idx === 0 ? "pb-4" : "py-4"}`}
-                    >
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="w-16 h-16 rounded-xl object-cover bg-gray-100 dark:bg-gray-900/40 border border-gray-200/40 dark:border-gray-800/40 shrink-0"
-                      />
-                      <div className="flex-1 min-w-0">
-                        <h4 className="text-sm font-bold text-gray-900 dark:text-gray-100 truncate mb-0.5 capitalize">
-                          {item.name}
-                        </h4>
-                        <p className="text-xs text-gray-400">
-                          Qty: {item.quantity} <span className="mx-1.5">•</span>{" "}
-                          Price: {item.price}
-                        </p>
+                  {order.orderItems &&
+                    order.orderItems.map((item, idx) => (
+                      <div
+                        key={idx}
+                        className={`flex items-center gap-4 ${idx === 0 ? "pb-4" : "py-4"}`}
+                      >
+                        <img
+                          src={
+                            item.image?.[0]?.url ||
+                            "https://images.unsplash.com/photo-1595225476474-87563907a212?w=120"
+                          }
+                          alt={item.name}
+                          className="w-16 h-16 rounded-xl object-cover bg-gray-100 dark:bg-gray-900/40 border border-gray-200/40 dark:border-gray-800/40 shrink-0"
+                        />
+                        <div className="flex-1 min-w-0">
+                          {/* Interactive Clickable Product Title Link */}
+                          <Link
+                            to="/track-shipment"
+                            state={{ orderId: order._id }}
+                            className="inline-block group max-w-full"
+                          >
+                            <h4 className="text-sm font-bold text-gray-900 dark:text-gray-100 truncate mb-0.5 capitalize group-hover:text-cyan-500 dark:group-hover:text-cyan-400 transition-colors">
+                              {item.name}
+                            </h4>
+                          </Link>
+                          <p className="text-xs text-gray-400">
+                            Qty: {item.quantity}{" "}
+                            <span className="mx-1.5">•</span> Price: ₹
+                            {item.price}
+                          </p>
+                        </div>
+                        <div className="text-right hidden sm:block">
+                          <span className="text-sm font-black text-gray-900 dark:text-white">
+                            ₹{item.price}
+                          </span>
+                        </div>
                       </div>
-                      <div className="text-right hidden sm:block">
-                        <span className="text-sm font-black text-gray-900 dark:text-white">
-                          {item.price}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
 
                 {/* Platform Summary Footer Action Deck Container */}
@@ -249,8 +281,10 @@ export default function OrderListing() {
                     <CreditCard size={14} className="text-gray-400" />
                     <span>
                       Paid via{" "}
-                      <strong className="text-gray-600 dark:text-gray-300 font-bold">
-                        {order.paymentMethod}
+                      <strong className="text-gray-600 dark:text-gray-300 font-bold uppercase">
+                        {order.paymentMode === "cashOnDelivery"
+                          ? "COD"
+                          : "Online"}
                       </strong>
                     </span>
                     {order.status !== "delivered" &&
@@ -259,24 +293,24 @@ export default function OrderListing() {
                           <span className="text-gray-300 dark:text-gray-700">
                             |
                           </span>
-                          <span className="text-amber-500/90 font-medium">
-                            Est. Arrival: {order.estimatedDelivery}
+                          <span className="text-amber-500/90 font-medium capitalize">
+                            Payment: {order.paymentStatus}
                           </span>
                         </>
                       )}
                   </div>
 
-                  {/* Operational Controls with Custom Tight Colorful Glow Shadow Button */}
+                  {/* Operational Controls Matrix */}
                   <div className="flex items-center gap-2.5 self-end sm:self-auto">
                     {/* View Invoice Redirection Route */}
-                    <Link to="/invoice" state={{ orderId: order.id }}>
+                    <Link to="/invoice" state={{ orderId: order._id }}>
                       <button className="px-4 py-2 rounded-xl font-bold border border-gray-200 dark:border-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
                         View Invoice
                       </button>
                     </Link>
 
                     {/* Track Shipment Redirection Route */}
-                    <Link to="/track-shipment" state={{ orderId: order.id }}>
+                    <Link to="/track-shipment" state={{ orderId: order._id }}>
                       <button className="flex items-center gap-1.5 bg-cyan-600 hover:bg-cyan-500 text-white font-extrabold py-2 px-4 rounded-xl transition-all duration-300 transform active:scale-[0.99] shadow-[0_0_12px_3px_rgba(59,130,246,0.18),_0_0_16px_1px_rgba(245,158,11,0.2),_0_0_20px_2px_rgba(249,115,22,0.12)] hover:shadow-[0_0_16px_4px_rgba(59,130,246,0.3),_0_0_22px_2px_rgba(245,158,11,0.35),_0_0_26px_3px_rgba(249,115,22,0.25)] hover:scale-[1.01]">
                         Track Shipment
                         <ArrowUpRight size={14} />
@@ -287,7 +321,7 @@ export default function OrderListing() {
               </div>
             ))
           ) : (
-            // Fallback Empty State Display Section
+            /* Fallback Empty State Display Section */
             <div className="text-center py-16 dark:bg-[#0b1426] border border-dashed border-gray-200 dark:border-gray-800 rounded-3xl">
               <Package
                 size={40}
