@@ -12,8 +12,9 @@ import userRoute from "./routers/user.route.js";
 import newsletterRoute from "./routers/newsletter_route.js";
 import paymentRoute from "./routers/payment_route.js";
 import cartRoute from "./routers/cart.route.js";
-import orderRoute from "./routers/order.route.js"
+import orderRoute from "./routers/order.route.js";
 import orderEmail from "./nodemailer/orderEmail.js";
+import addressRoute from "./routers/address.route.js";
 import errorHandleMiddleware from "./middleware/error.js";
 
 dotenv.config();
@@ -25,8 +26,8 @@ const __dirname = path.resolve();
 
 // Allowed origins for CORS
 const allowedOrigins = [
-  process.env.CLIENT_URL,              // http://localhost:5173
-  process.env.DEPLOYMENT_CLIENT_URL    // https://list-karo.vercel.app
+  process.env.CLIENT_URL, // http://localhost:5173
+  process.env.DEPLOYMENT_CLIENT_URL, // https://list-karo.vercel.app
 ].filter(Boolean); // remove undefined/null
 
 // console.log("🚀 Allowed origins:", allowedOrigins);
@@ -52,7 +53,7 @@ app.use(
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
-  })
+  }),
 );
 
 // Handle preflight requests (OPTION) — very important for CORS
@@ -63,6 +64,7 @@ connectDB(MONGO_URI);
 
 // Middleware
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // API Routes
@@ -75,6 +77,7 @@ app.use("/api", newsletterRoute);
 app.use("/api", paymentRoute);
 app.use("/api", orderRoute);
 app.use("/api", orderEmail);
+app.use("/api", addressRoute);
 
 // Error handler (always last route middleware)
 app.use(errorHandleMiddleware);

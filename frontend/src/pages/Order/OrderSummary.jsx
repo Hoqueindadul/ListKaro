@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -25,11 +25,9 @@ const OrderSummary = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
 
-  // ── Normalize items into a single cartItems array ──────────────────────────
-  // Whether it's a "Buy Now" single product or a cart, we always work with an array.
-  const cartItems = React.useMemo(() => {
+  // cart items from state
+  const cartItems = useMemo(() => {
     if (state?.product && state?.quantity) {
-      // Single product: wrap in array
       return [
         {
           _id: state.product._id,
@@ -42,40 +40,69 @@ const OrderSummary = () => {
         },
       ];
     }
-    // Cart: already an array
     return state?.cartItems || [];
   }, [state]);
 
-  const totalAmount = React.useMemo(() => {
+  const totalAmount = useMemo(() => {
     return cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   }, [cartItems]);
 
-  // ── Local state ────────────────────────────────────────────────────────────
+  // Local state
   const [addresses, setAddresses] = useState([]);
   const [selectedAddressId, setSelectedAddressId] = useState(null);
   const [showNewAddressForm, setShowNewAddressForm] = useState(false);
   const [editingAddressId, setEditingAddressId] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [paymentMode, setPaymentMode] = useState("cashOnDelivery");
+
+  // Normalized field structures matching Backend requirements
   const [formData, setFormData] = useState({
-    name: "",
-    address: "",
-    zip: "",
+    fullName: "",
+    deliveryAddress: "",
+    pin: "",
     email: "",
-    phone: "",
+    phoneNumber: "",
   });
 
-  // ── Address handlers ───────────────────────────────────────────────────────
+  // Global Config for Cookie Authentication
+  const axiosConfig = {
+    withCredentials: true,
+  };
+
+  // Fetch all addresses
+  useEffect(() => {
+    const fetchAddresses = async () => {
+      try {
+        const response = await axios.get(
+          `${API_URL}/get-all-address`,
+          axiosConfig,
+        );
+        if (response.data?.addresses) {
+          setAddresses(response.data.addresses);
+        }
+      } catch (error) {
+        console.error("Error fetching addresses:", error);
+        if (error.response?.status !== 404) {
+          toast.error(
+            error.response?.data?.message || "Failed to fetch addresses",
+          );
+        }
+      }
+    };
+    fetchAddresses();
+  }, []);
+
+  // Address handlers updated to use backend's MongoDB "_id"
   const handleSelectAddress = (addr) => {
-    setSelectedAddressId(addr.id);
+    setSelectedAddressId(addr._id);
     setShowNewAddressForm(false);
     setEditingAddressId(null);
     setFormData({
-      name: addr.name,
-      address: addr.address,
-      zip: addr.zip,
+      fullName: addr.fullName,
+      deliveryAddress: addr.deliveryAddress,
+      pin: addr.pin,
       email: addr.email,
-      phone: addr.phone,
+      phoneNumber: addr.phoneNumber,
     });
     toast.success("Address selected!");
   };
@@ -84,113 +111,162 @@ const OrderSummary = () => {
     setSelectedAddressId("new");
     setEditingAddressId(null);
     setShowNewAddressForm(true);
-    setFormData({ name: "", address: "", zip: "", email: "", phone: "" });
+    setFormData({
+      fullName: "",
+      deliveryAddress: "",
+      pin: "",
+      email: "",
+      phoneNumber: "",
+    });
   };
 
   const handleEditAddress = (e, addr) => {
     e.stopPropagation();
     setSelectedAddressId("new");
-    setEditingAddressId(addr.id);
+    setEditingAddressId(addr._id);
     setShowNewAddressForm(true);
     setFormData({
-      name: addr.name,
-      address: addr.address,
-      zip: addr.zip,
+      fullName: addr.fullName,
+      deliveryAddress: addr.deliveryAddress,
+      pin: addr.pin,
       email: addr.email,
-      phone: addr.phone,
+      phoneNumber: addr.phoneNumber,
     });
   };
 
-  const handleDeleteAddress = (e, addressId) => {
+  const handleDeleteAddress = async (e, addressId) => {
     e.stopPropagation();
-    setAddresses(addresses.filter((addr) => addr.id !== addressId));
-    if (selectedAddressId === addressId) {
-      setSelectedAddressId(null);
-      setFormData({ name: "", address: "", zip: "", email: "", phone: "" });
+    try {
+      await axios.delete(`${API_URL}/delete-address/${addressId}`, axiosConfig);
+
+      setAddresses(addresses.filter((addr) => addr._id !== addressId));
+      if (selectedAddressId === addressId) {
+        setSelectedAddressId(null);
+        setFormData({
+          fullName: "",
+          deliveryAddress: "",
+          pin: "",
+          email: "",
+          phoneNumber: "",
+        });
+      }
+      toast.success("Address deleted successfully!");
+    } catch (error) {
+      console.error("Delete address error:", error);
+      toast.error(error.response?.data?.message || "Failed to delete address.");
     }
-    toast.success("Address removed!");
   };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSaveAddress = (e) => {
+  const handleSaveAddress = async (e) => {
     e.preventDefault();
     if (
-      !formData.name ||
-      !formData.address ||
-      !formData.zip ||
-      !formData.phone ||
+      !formData.fullName ||
+      !formData.deliveryAddress ||
+      !formData.pin ||
+      !formData.phoneNumber ||
       !formData.email
     ) {
       toast.error("Please fill all address fields.");
       return;
     }
 
-    if (editingAddressId) {
-      setAddresses(
-        addresses.map((addr) =>
-          addr.id === editingAddressId ? { ...addr, ...formData } : addr,
-        ),
-      );
-      setSelectedAddressId(editingAddressId);
-      setEditingAddressId(null);
-      toast.success("Address updated!");
-    } else {
-      const newAddr = { id: Date.now(), ...formData };
-      setAddresses([...addresses, newAddr]);
-      setSelectedAddressId(newAddr.id);
-      toast.success("Address saved!");
+    if (!/^\d{6}$/.test(String(formData.pin))) {
+      return toast.error("Invalid PIN code. Must be 6 digits.");
     }
-    setShowNewAddressForm(false);
+    if (!/^\d{10}$/.test(String(formData.phoneNumber))) {
+      return toast.error("Invalid phone number. Must be 10 digits.");
+    }
+
+    try {
+      if (editingAddressId) {
+        const response = await axios.put(
+          `${API_URL}/update-address/${editingAddressId}`,
+          formData,
+          axiosConfig,
+        );
+
+        // Defensive check: validation of proper payload data architecture
+        const updatedAddress = response.data?.address || response.data;
+        if (!updatedAddress || (!updatedAddress._id && !updatedAddress.id)) {
+          throw new Error(
+            "Invalid response format from database rewrite updates.",
+          );
+        }
+
+        setAddresses(
+          addresses.map((addr) =>
+            addr._id === editingAddressId ? updatedAddress : addr,
+          ),
+        );
+        setSelectedAddressId(updatedAddress._id || updatedAddress.id);
+        setEditingAddressId(null);
+        toast.success("Address updated successfully!");
+        setShowNewAddressForm(false);
+      } else {
+        console.log("api is calling...........");
+        const response = await axios.post(
+          `${API_URL}/save-address`,
+          formData,
+          axiosConfig,
+        );
+        console.log(response);
+        // Fallback checks to see if backend sends database object under data root or data.address
+        const newAddress =
+          response.data?.address || response.data?.newAddress || response.data;
+
+        if (!newAddress || (!newAddress._id && !newAddress.id)) {
+          throw new Error(
+            "Server confirmed action but missing database verification structural ID.",
+          );
+        }
+
+        setAddresses([...addresses, newAddress]);
+        setSelectedAddressId(newAddress._id || newAddress.id);
+        toast.success("Address saved successfully in DB!");
+        setShowNewAddressForm(false);
+      }
+    } catch (error) {
+      console.error("Submit address validation failure:", error);
+      toast.error(
+        error.response?.data?.message ||
+          error.message ||
+          "Failed to save address.",
+      );
+    }
   };
 
-  // ── Core: save order to DB after payment ──────────────────────────────────
-  /**
-   * Calls POST /order with a unified payload.
-   * cartItems is always an array — no single-product special case on backend.
-   *
-   * @param {object} extraPaymentData - razorpay IDs for online payment, empty for COD
-   */
   const saveOrderToDatabase = async (extraPaymentData = {}) => {
-    const token = localStorage.getItem("token");
-
     const mappedItems = cartItems.map((item) => ({
       _id: String(item._id || item.productId || ""),
       quantity: Number(item.quantity) || 1,
     }));
 
-    // Debug: log exactly what we're sending so we can spot issues
-    console.log("[Order] cartItems raw:", cartItems);
-    console.log("[Order] mappedItems:", mappedItems);
-    console.log("[Order] totalAmount:", totalAmount);
-
     const payload = {
-      customerDetails: formData,
+      customerDetails: {
+        name: formData.fullName,
+        address: formData.deliveryAddress,
+        zip: formData.pin,
+        email: formData.email,
+        phone: formData.phoneNumber,
+      },
       cartItems: mappedItems,
       totalAmount,
       paymentMode,
       ...extraPaymentData,
     };
 
-    const response = await axios.post(`${API_URL}/order`, payload, {
-      withCredentials: true,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    return response;
+    return await axios.post(`${API_URL}/order`, payload, axiosConfig);
   };
 
-  // ── COD: place order directly ─────────────────────────────────────────────
   const handleCODOrder = async () => {
     setSubmitting(true);
     try {
       const response = await saveOrderToDatabase();
-      if (response.status === 201) {
+      if (response.status === 201 || response.status === 200) {
         toast.success("Order placed! Pay on delivery.");
         navigate("/orderplaced", {
           state: { customerDetails: formData, cartItems, totalAmount },
@@ -208,23 +284,18 @@ const OrderSummary = () => {
     }
   };
 
-  // ── Online: create Razorpay order then open modal ─────────────────────────
   const handleOnlinePayment = async () => {
     setSubmitting(true);
     try {
-      const token = localStorage.getItem("token");
-
-      // Step 1: Create a Razorpay order on our backend
       const paymentResponse = await axios.post(
         `${API_URL}/payment`,
         { price: totalAmount },
-        { headers: { Authorization: `Bearer ${token}` } },
+        axiosConfig,
       );
 
       const razorpayOrder = paymentResponse.data;
       setSubmitting(false);
 
-      // Step 2: Open Razorpay modal
       const options = {
         key: REACT_APP_RAZORPAY_KEY_ID,
         amount: razorpayOrder.amount,
@@ -232,9 +303,7 @@ const OrderSummary = () => {
         name: "ListKaro",
         order_id: razorpayOrder.id,
         description: "Order Payment",
-
         handler: async function (rzpResponse) {
-          // Step 3: On payment success → save order to DB
           try {
             const res = await saveOrderToDatabase({
               razorpayOrderId: razorpayOrder.id,
@@ -242,7 +311,7 @@ const OrderSummary = () => {
               razorpaySignature: rzpResponse.razorpay_signature,
             });
 
-            if (res.status === 201) {
+            if (res.status === 201 || res.status === 200) {
               toast.success("Payment successful! Order placed.");
               navigate("/orderplaced", {
                 state: { customerDetails: formData, cartItems, totalAmount },
@@ -255,13 +324,12 @@ const OrderSummary = () => {
             toast.error("Payment done but order save failed. Contact support.");
           }
         },
-
         prefill: {
-          name: formData.name || "",
+          name: formData.fullName || "",
           email: formData.email || "",
-          contact: formData.phone || "",
+          contact: formData.phoneNumber || "",
         },
-        notes: { address: formData.address || "" },
+        notes: { address: formData.deliveryAddress || "" },
         theme: { color: "#00b074" },
       };
 
@@ -277,7 +345,6 @@ const OrderSummary = () => {
     }
   };
 
-  // ── Main submit handler ────────────────────────────────────────────────────
   const handlePlaceOrder = () => {
     if (!selectedAddressId || selectedAddressId === "new") {
       toast.error("Please save and select a delivery address first!");
@@ -295,10 +362,8 @@ const OrderSummary = () => {
     }
   };
 
-  // ── Render ─────────────────────────────────────────────────────────────────
   return (
-    <div className="max-w-[1440px] mx-auto px-4 py-8 dark:bg-[#070d19] text-gray-900 dark:text-white transition-colors duration-200 min-h-screen">
-      {/* Page Header */}
+    <div className="max-w-[1440px] mx-auto px-4 py-8 dark:bg-[#070d19] text-gray-900 dark:text-white min-h-screen">
       <div className="flex items-center gap-3 mb-8 border-b border-gray-100 dark:border-gray-800 pb-5">
         <Truck className="text-cyan-500 dark:text-cyan-400" size={28} />
         <h2 className="text-2xl font-black tracking-tight m-0">
@@ -306,7 +371,6 @@ const OrderSummary = () => {
         </h2>
       </div>
 
-      {/* Split Grid Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* LEFT: Address Selector */}
         <div className="lg:col-span-7 space-y-6">
@@ -321,10 +385,10 @@ const OrderSummary = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
               {addresses.map((addr) => (
                 <div
-                  key={addr.id}
+                  key={addr._id || addr.id}
                   onClick={() => handleSelectAddress(addr)}
                   className={`p-4 rounded-2xl border transition-all duration-200 cursor-pointer flex flex-col justify-between group relative ${
-                    selectedAddressId === addr.id
+                    selectedAddressId === (addr._id || addr.id)
                       ? "bg-cyan-50/30 dark:bg-cyan-950/10 border-cyan-500 dark:border-cyan-400 shadow-sm"
                       : "border-gray-200 dark:border-gray-800/80 hover:border-gray-300 dark:hover:border-gray-700"
                   }`}
@@ -332,43 +396,42 @@ const OrderSummary = () => {
                   <div>
                     <div className="flex items-center justify-between mb-1 pr-14">
                       <span className="font-bold text-sm text-gray-900 dark:text-white truncate">
-                        {addr.name}
+                        {addr.fullName}
                       </span>
-                      {selectedAddressId === addr.id && (
+                      {selectedAddressId === (addr._id || addr.id) && (
                         <span className="w-2 h-2 rounded-full bg-cyan-500 dark:bg-cyan-400 animate-pulse" />
                       )}
                     </div>
                     <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2 mb-2">
-                      {addr.address}
+                      {addr.deliveryAddress}
                     </p>
                   </div>
 
-                  <div className="absolute top-3 right-3 flex items-center gap-1.5 opacity-80 sm:opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+                  <div className="absolute top-3 right-3 flex items-center gap-1.5 opacity-80 sm:opacity-0 group-hover:opacity-100 transition-opacity">
                     <button
                       type="button"
                       onClick={(e) => handleEditAddress(e, addr)}
-                      className="p-1.5 rounded-lg border border-gray-200 dark:border-gray-800 text-gray-400 hover:text-cyan-500 hover:border-cyan-500/30 dark:hover:text-cyan-400 transition-colors"
-                      title="Edit"
+                      className="p-1.5 rounded-lg border border-gray-200 dark:border-gray-800 text-gray-400 hover:text-cyan-500 hover:border-cyan-500/30 dark:hover:text-cyan-400"
                     >
                       <Pencil size={12} />
                     </button>
                     <button
                       type="button"
-                      onClick={(e) => handleDeleteAddress(e, addr.id)}
-                      className="p-1.5 rounded-lg border border-gray-200 dark:border-gray-800 text-gray-400 hover:text-rose-500 hover:border-rose-500/30 dark:hover:text-rose-400 transition-colors"
-                      title="Delete"
+                      onClick={(e) =>
+                        handleDeleteAddress(e, addr._id || addr.id)
+                      }
+                      className="p-1.5 rounded-lg border border-gray-200 dark:border-gray-800 text-gray-400 hover:text-rose-500 hover:border-rose-500/30 dark:hover:text-rose-400"
                     >
                       <Trash2 size={12} />
                     </button>
                   </div>
 
                   <span className="text-[10px] text-gray-400 font-medium tracking-wide">
-                    ZIP: {addr.zip}
+                    PIN: {addr.pin}
                   </span>
                 </div>
               ))}
 
-              {/* Add New Address Card */}
               <div
                 onClick={handleAddNewAddressOption}
                 className={`p-4 rounded-2xl border border-dashed transition-all duration-200 cursor-pointer flex flex-col items-center justify-center min-h-[100px] ${
@@ -385,7 +448,6 @@ const OrderSummary = () => {
             </div>
           </div>
 
-          {/* Address Form (conditional) */}
           {showNewAddressForm && (
             <div className="dark:bg-[#0b1426] border border-gray-200/60 dark:border-gray-800/60 rounded-3xl p-6 shadow-sm">
               <div className="flex items-center gap-2 mb-6">
@@ -398,7 +460,6 @@ const OrderSummary = () => {
               </div>
 
               <form onSubmit={handleSaveAddress} className="space-y-4">
-                {/* Name */}
                 <div>
                   <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1.5 uppercase tracking-wider">
                     Full Name
@@ -406,12 +467,12 @@ const OrderSummary = () => {
                   <div className="relative">
                     <input
                       type="text"
-                      name="name"
+                      name="fullName"
                       placeholder="Receiver's name"
                       required
                       onChange={handleChange}
-                      value={formData.name}
-                      className="w-full pl-10 pr-4 py-2.5 bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-800 focus:outline-none focus:border-cyan-500 dark:focus:border-cyan-400 transition-colors"
+                      value={formData.fullName}
+                      className="w-full pl-10 pr-4 py-2.5 bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-800 focus:outline-none focus:border-cyan-500 text-white"
                     />
                     <User
                       size={16}
@@ -420,7 +481,6 @@ const OrderSummary = () => {
                   </div>
                 </div>
 
-                {/* Address + ZIP */}
                 <div>
                   <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1.5 uppercase tracking-wider">
                     Delivery Address
@@ -429,12 +489,12 @@ const OrderSummary = () => {
                     <div className="relative sm:col-span-2">
                       <input
                         type="text"
-                        name="address"
+                        name="deliveryAddress"
                         placeholder="Full street address"
                         required
                         onChange={handleChange}
-                        value={formData.address}
-                        className="w-full pl-10 pr-4 py-2.5 bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-800 text-sm focus:outline-none focus:border-cyan-500 dark:focus:border-cyan-400 transition-colors"
+                        value={formData.deliveryAddress}
+                        className="w-full pl-10 pr-4 py-2.5 bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-800 text-sm focus:outline-none focus:border-cyan-500 text-white"
                       />
                       <MapPin
                         size={16}
@@ -443,17 +503,16 @@ const OrderSummary = () => {
                     </div>
                     <input
                       type="text"
-                      name="zip"
+                      name="pin"
                       placeholder="PIN Code"
                       required
                       onChange={handleChange}
-                      value={formData.zip}
-                      className="pl-4 pr-4 py-2.5 bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-800 text-sm focus:outline-none focus:border-cyan-500 dark:focus:border-cyan-400 transition-colors"
+                      value={formData.pin}
+                      className="pl-4 pr-4 py-2.5 bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-800 text-sm focus:outline-none focus:border-cyan-500 text-white"
                     />
                   </div>
                 </div>
 
-                {/* Email + Phone */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1.5 uppercase tracking-wider">
@@ -467,7 +526,7 @@ const OrderSummary = () => {
                         required
                         onChange={handleChange}
                         value={formData.email}
-                        className="w-full pl-10 pr-4 py-2.5 bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-800 text-sm focus:outline-none focus:border-cyan-500 dark:focus:border-cyan-400 transition-colors"
+                        className="w-full pl-10 pr-4 py-2.5 bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-800 text-sm focus:outline-none focus:border-cyan-500 text-white"
                       />
                       <Mail
                         size={16}
@@ -482,12 +541,12 @@ const OrderSummary = () => {
                     <div className="relative">
                       <input
                         type="tel"
-                        name="phone"
+                        name="phoneNumber"
                         placeholder="10-digit mobile number"
                         required
                         onChange={handleChange}
-                        value={formData.phone}
-                        className="w-full pl-10 pr-4 py-2.5 bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-800 text-sm focus:outline-none focus:border-cyan-500 dark:focus:border-cyan-400 transition-colors"
+                        value={formData.phoneNumber}
+                        className="w-full pl-10 pr-4 py-2.5 bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-800 text-sm focus:outline-none focus:border-cyan-500 text-white"
                       />
                       <Phone
                         size={16}
@@ -500,7 +559,7 @@ const OrderSummary = () => {
                 <div className="pt-2">
                   <button
                     type="submit"
-                    className="w-full flex items-center justify-center gap-2 bg-cyan-600 hover:bg-cyan-500 text-white font-extrabold text-sm py-2.5 px-4 rounded-xl shadow-md transition-all duration-200"
+                    className="w-full flex items-center justify-center gap-2 bg-cyan-600 hover:bg-cyan-500 text-white font-extrabold text-sm py-2.5 px-4 rounded-xl shadow-md transition-all"
                   >
                     <Plus size={16} />
                     {editingAddressId ? "Update Address" : "Save Address"}
@@ -511,7 +570,7 @@ const OrderSummary = () => {
           )}
         </div>
 
-        {/* RIGHT: Order Invoice + Place Order */}
+        {/* RIGHT: Order Summary List */}
         <div className="lg:col-span-5 dark:bg-[#0b1426] border border-gray-200/60 dark:border-gray-800/60 rounded-3xl p-6 shadow-sm lg:sticky lg:top-6 flex flex-col justify-between">
           <div>
             <div className="flex items-center gap-2 mb-5">
@@ -524,8 +583,7 @@ const OrderSummary = () => {
               </h3>
             </div>
 
-            {/* Items list */}
-            <div className="max-h-[280px] overflow-y-auto pr-1 space-y-3 border-b border-gray-200 dark:border-gray-800/80 pb-4 mb-4 scrollbar-thin scrollbar-thumb-gray-800">
+            <div className="max-h-[280px] overflow-y-auto pr-1 space-y-3 border-b border-gray-200 dark:border-gray-800/80 pb-4 mb-4">
               {cartItems.map((item, idx) => (
                 <div
                   key={item._id || idx}
@@ -543,7 +601,7 @@ const OrderSummary = () => {
                     <span className="font-extrabold text-gray-900 dark:text-white block">
                       ₹{(item.price * item.quantity).toFixed(2)}
                     </span>
-                    <span className="text-[10px] text-gray-400 dark:text-gray-500 block">
+                    <span className="text-[10px] text-gray-400 block">
                       ₹{item.price} each
                     </span>
                   </div>
@@ -551,7 +609,6 @@ const OrderSummary = () => {
               ))}
             </div>
 
-            {/* Payment method */}
             <div className="mb-4">
               <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1.5 uppercase tracking-wider">
                 Payment Method
@@ -560,13 +617,13 @@ const OrderSummary = () => {
                 <select
                   value={paymentMode}
                   onChange={(e) => setPaymentMode(e.target.value)}
-                  className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-gray-200 dark:border-gray-800 text-sm focus:outline-none focus:border-cyan-500 dark:focus:border-cyan-400 transition-colors cursor-pointer appearance-none bg-transparent text-inherit"
+                  className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-gray-200 dark:border-gray-800 text-sm focus:outline-none focus:border-cyan-500 appearance-none bg-transparent text-inherit cursor-pointer dark:text-white"
                 >
                   <option value="cashOnDelivery" className="dark:bg-[#0b1426]">
                     Cash on Delivery (COD)
                   </option>
                   <option value="online" className="dark:bg-[#0b1426]">
-                    Online Payment (UPI / Card / NetBanking)
+                    Online Payment (UPI / Card)
                   </option>
                 </select>
                 <div className="absolute left-3.5 top-3.5 text-gray-400 pointer-events-none">
@@ -580,7 +637,6 @@ const OrderSummary = () => {
               </div>
             </div>
 
-            {/* Total */}
             <div className="flex justify-between items-center px-1 mb-4">
               <p className="font-black text-sm uppercase tracking-wider text-gray-700 dark:text-gray-300 m-0">
                 Total Payable
@@ -591,7 +647,6 @@ const OrderSummary = () => {
             </div>
           </div>
 
-          {/* Place Order Button */}
           <div className="pt-2">
             <button
               type="button"
@@ -599,7 +654,7 @@ const OrderSummary = () => {
               disabled={
                 submitting || !selectedAddressId || selectedAddressId === "new"
               }
-              className="w-full flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white font-extrabold text-sm py-3 px-4 rounded-xl transition-all duration-300 disabled:opacity-40 disabled:pointer-events-none transform active:scale-[0.99] shadow-[0_0_12px_3px_rgba(16,185,129,0.2)] hover:shadow-[0_0_20px_4px_rgba(16,185,129,0.35)] hover:scale-[1.01]"
+              className="w-full flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white font-extrabold text-sm py-3 px-4 rounded-xl transition-all disabled:opacity-40 disabled:pointer-events-none shadow-md"
             >
               {submitting ? (
                 <>

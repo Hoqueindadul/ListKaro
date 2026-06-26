@@ -15,6 +15,7 @@ import {
   Phone,
   HelpCircle,
   XCircle,
+  Copy,
 } from "lucide-react";
 
 export default function TrackShipment() {
@@ -217,6 +218,93 @@ export default function TrackShipment() {
           </div>
         ) : orderData ? (
           <>
+            {/* ================= NEW: PRODUCT ITEMS SUMMARY CARD ================= */}
+            <div className="dark:bg-[#0b1426] border border-gray-200/60 dark:border-gray-800/60 rounded-3xl p-6 shadow-sm">
+              <div className="flex items-center gap-2 mb-4 border-b border-gray-100 dark:border-gray-800/60 pb-4">
+                <Package size={18} className="text-cyan-500" />
+                <h3 className="text-sm font-black uppercase tracking-wider text-gray-400 m-0">
+                  Items in Package
+                </h3>
+              </div>
+
+              <div className="divide-y divide-gray-100 dark:divide-gray-800/60 space-y-4">
+                {/* Checked orderItems first to match your OrderListing schema */}
+                {(orderData.orderItems || orderData.items) &&
+                (orderData.orderItems || orderData.items).length > 0 ? (
+                  (orderData.orderItems || orderData.items).map(
+                    (item, index) => (
+                      <div
+                        key={item._id || index}
+                        className="flex items-center gap-4 pt-4 first:pt-0"
+                      >
+                        {/* Product Image / Fallback Container */}
+                        <div className="w-16 h-16 rounded-2xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center overflow-hidden border border-gray-200 dark:border-gray-700/50 shrink-0">
+                          {item.image?.[0]?.url ||
+                          item.image ||
+                          item.product?.image ? (
+                            <img
+                              src={
+                                item.image?.[0]?.url ||
+                                item.image ||
+                                item.product?.image
+                              }
+                              alt={
+                                item.name ||
+                                item.title ||
+                                item.product?.title ||
+                                "Product"
+                              }
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                e.currentTarget.style.display = "none";
+                                e.currentTarget.parentElement?.classList.add(
+                                  "bg-gray-100",
+                                );
+                              }}
+                            />
+                          ) : (
+                            <ImageIcon size={20} className="text-gray-400" />
+                          )}
+                        </div>
+
+                        {/* Product Text Meta */}
+                        <div className="flex-1 min-w-0">
+                          <h4 className="text-sm font-bold text-gray-900 dark:text-white truncate capitalize">
+                            {/* Safe fallback chain for product title/name */}
+                            {item.name ||
+                              item.title ||
+                              item.product?.title ||
+                              "Unnamed Product"}
+                          </h4>
+                          <p className="text-xs text-gray-400 mt-0.5">
+                            Qty:{" "}
+                            <span className="font-semibold text-gray-700 dark:text-gray-300">
+                              {item.quantity || 1}
+                            </span>
+                          </p>
+                        </div>
+
+                        {/* Price Allocation */}
+                        <div className="text-right">
+                          <span className="text-sm font-black text-gray-900 dark:text-white">
+                            ₹{item.price * (item.quantity || 1) || 0}
+                          </span>
+                          {item.quantity > 1 && (
+                            <p className="text-[10px] text-gray-400">
+                              ₹{item.price} each
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    ),
+                  )
+                ) : (
+                  <p className="text-xs text-gray-400 py-2">
+                    No product layout data bound to this record streams.
+                  </p>
+                )}
+              </div>
+            </div>
             {/* ================= SHIPMENT METRICS HERO OVERVIEW ================= */}
             <div className="dark:bg-[#0b1426] border border-gray-200/60 dark:border-gray-800/60 rounded-3xl p-6 shadow-sm grid grid-cols-1 md:grid-cols-3 gap-6 relative overflow-hidden group">
               <div className="absolute -top-24 -right-24 w-48 h-48 rounded-full bg-cyan-500/10 blur-3xl" />
@@ -225,9 +313,23 @@ export default function TrackShipment() {
                 <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
                   Tracking Reference
                 </p>
-                <h2 className="text-base font-black text-gray-900 dark:text-white truncate max-w-[220px]">
-                  {orderData._id}
-                </h2>
+                <div className="flex items-center gap-1.5 group/id">
+                  <h2 className="text-base font-black text-gray-900 dark:text-white truncate max-w-[180px]">
+                    {orderData._id}
+                  </h2>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(orderData._id);
+                      // Optional: Trigger a simple transient alert feedback profile frame
+                      alert("Reference ID copied to clipboard!");
+                    }}
+                    title="Copy Reference ID"
+                    className="p-1 rounded-md border border-gray-500 cursor-pointer bg-gray-800 hover:text-cyan-500 dark:hover:text-cyan-400 text-gray-400 transition-colors opacity-100 sm:opacity-0 sm:group-hover/id:opacity-100 focus:opacity-100"
+                  >
+                    {/* Reusing your imported Lucide dependencies */}
+                    <Copy size={10} className="rotate-45" />
+                  </button>
+                </div>
                 <p className="text-xs text-gray-400">
                   Payment:{" "}
                   <span className="uppercase font-bold text-cyan-400">
@@ -368,7 +470,7 @@ export default function TrackShipment() {
                   <div className="flex items-center gap-2 text-gray-400 border-b border-gray-100 dark:border-gray-800 pb-3">
                     <MapPin size={16} className="text-cyan-500" />
                     <h4 className="text-xs font-extrabold uppercase tracking-wider m-0">
-                      Destination Address
+                      Delivery Details
                     </h4>
                   </div>
                   <div className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed font-medium space-y-1">

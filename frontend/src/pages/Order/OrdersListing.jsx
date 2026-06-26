@@ -13,6 +13,7 @@ import {
   XCircle,
   Calendar,
   CreditCard,
+  Copy,
 } from "lucide-react";
 
 export default function OrderListing() {
@@ -189,9 +190,21 @@ export default function OrderListing() {
                     <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">
                       Order Reference
                     </p>
-                    <span className="text-xs font-black tracking-wide text-gray-900 dark:text-gray-100 block truncate max-w-[140px]">
-                      {order._id}
-                    </span>
+                    <div className="flex items-center gap-1.5 group/id">
+                      <span className="text-xs font-black tracking-wide text-gray-900 dark:text-gray-100 block truncate max-w-[120px]">
+                        {order._id}
+                      </span>
+                      <button
+                        onClick={() => {
+                          navigator.clipboard.writeText(order._id);
+                          alert("Order Reference ID copied to clipboard!");
+                        }}
+                        title="Copy Order ID"
+                        className="p-1 rounded-md border border-gray-500 bg-gray-800 hover:text-cyan-500 dark:hover:text-cyan-400 text-gray-400 transition-all opacity-100 sm:opacity-0 sm:group-hover/id:opacity-100 focus:opacity-100 active:scale-95 shrink-0"
+                      >
+                        <Copy size={10} />
+                      </button>
+                    </div>
                   </div>
                   <div>
                     <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">
@@ -303,11 +316,25 @@ export default function OrderListing() {
                   {/* Operational Controls Matrix */}
                   <div className="flex items-center gap-2.5 self-end sm:self-auto">
                     {/* View Invoice Redirection Route */}
-                    <Link to="/invoice" state={{ orderId: order._id }}>
-                      <button className="px-4 py-2 rounded-xl font-bold border border-gray-200 dark:border-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-                        View Invoice
-                      </button>
-                    </Link>
+                    {order.shipmentStatus === "delivered" ? (
+                      <Link to="/invoice" state={{ orderId: order._id }}>
+                        <button className="px-4 py-2 rounded-xl font-bold border border-gray-200 dark:border-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                          View Invoice
+                        </button>
+                      </Link>
+                    ) : (
+                      <div
+                        title="Invoices cannot be generated for cancelled orders"
+                        className="cursor-not-allowed"
+                      >
+                        <button
+                          disabled
+                          className="px-4 py-2 rounded-xl font-bold border border-gray-100 dark:border-gray-900/40 text-gray-300 dark:text-gray-600 bg-gray-50/50 dark:bg-gray-800/10 transition-colors opacity-60"
+                        >
+                          View Invoice
+                        </button>
+                      </div>
+                    )}
 
                     {/* Track Shipment Redirection Route */}
                     <Link to="/track-shipment" state={{ orderId: order._id }}>

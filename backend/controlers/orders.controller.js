@@ -1,26 +1,7 @@
 import Order from "../models/order_model.js";
 import Product from "../models/products.model.js";
 
-/**
- * POST /order
- *
- * Single unified endpoint for ALL order types:
- *  - Single product (Buy Now) — sent as a 1-item cartItems array
- *  - Cart order               — sent as a multi-item cartItems array
- *  - COD                      — paymentMode: "cashOnDelivery"
- *  - Online (Razorpay)        — paymentMode: "online" + razorpay IDs
- *
- * Expected body:
- * {
- *   customerDetails: { name, address, zip, email, phone },
- *   cartItems: [{ _id: <productId>, quantity: <number> }, ...],
- *   totalAmount: <number>,
- *   paymentMode: "cashOnDelivery" | "online",
- *   razorpayOrderId?:   string,   // only for online
- *   razorpayPaymentId?: string,   // only for online
- *   razorpaySignature?: string,   // only for online
- * }
- */
+// place order
 export const placeOrder = async (req, res) => {
   try {
     const userId = req.userId;
@@ -37,7 +18,7 @@ export const placeOrder = async (req, res) => {
       razorpaySignature,
     } = req.body;
 
-    // ── 1. Basic validation ────────────────────────────────────────────────
+    // Basic validation
     if (
       !customerDetails ||
       !Array.isArray(cartItems) ||
@@ -62,14 +43,14 @@ export const placeOrder = async (req, res) => {
       return res.status(400).json({ message: "Invalid email address." });
     }
 
-    // ── 2. Validate online payment fields ─────────────────────────────────
+    // Validate online payment fields
     if (paymentMode === "online" && (!razorpayOrderId || !razorpayPaymentId)) {
       return res
         .status(400)
         .json({ message: "Missing Razorpay payment details." });
     }
 
-    // ── 3. Process each cart item: check stock, build snapshot, accumulate total ──
+    // Process each cart item: check stock, build snapshot, accumulate total
     let calculatedTotal = 0;
     const orderItemsArray = [];
 
@@ -122,7 +103,7 @@ export const placeOrder = async (req, res) => {
       await product.save();
     }
 
-    // ── 4. Price validation ───────────────────────────────────────────────
+    // Price validation
     // Use rounding to avoid floating-point precision issues (e.g. 99.99 vs 100.00)
     if (
       Math.round(Number(totalAmount) * 100) !==
@@ -133,7 +114,7 @@ export const placeOrder = async (req, res) => {
       });
     }
 
-    // ── 5. Save order ─────────────────────────────────────────────────────
+    // Save order
     const newOrder = new Order({
       userId,
       customerDetails,
@@ -166,7 +147,47 @@ export const placeOrder = async (req, res) => {
   }
 };
 
-// ── Get all orders (admin) ─────────────────────────────────────────────────
+export const cancleOrder = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const orderId = req.params.orderId;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized access." });
+    }
+
+    const order = await Order.findOne({ _id: orderId, userId: userId });
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found." });
+    }
+
+    if (order.shipmentStatus === "cancelled") {
+      return res.status(400).json({ message: "Order is already cancelled." });
+    }
+
+    if (order.shipmentStatus === "delivered") {
+      return res.status(400).json({ message: "Order is already delivered." });
+    }
+
+    const doNotCancelOrder = ["preparing", "outForDelivery"];
+
+    if (doNotCancelOrder.includes(order.shipmentStatus)) {
+      return res.status(400).json({
+        message:
+          "Order cannot be cancelled as it is already being prepared or out for delivery.",
+      });
+    }
+    order.shipmentStatus = "cancelled";
+    await order.save();
+
+    res.status(200).json({ message: "Order cancelled successfully." });
+  } catch (error) {
+    console.error("Order cancellation error:", error);
+    res.status(500).json({ message: "Failed to cancel order." });
+  }
+};
+// Get all orders (customer)
 export const getAllOrders = async (req, res) => {
   try {
     console.log(req.userId);
@@ -192,6 +213,7 @@ export const getAllOrders = async (req, res) => {
   }
 };
 
+// Get order by ID (customer)
 export const getOrderById = async (req, res) => {
   try {
     const userId = req.userId;
