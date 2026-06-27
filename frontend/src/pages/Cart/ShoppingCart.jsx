@@ -87,7 +87,7 @@ const ShoppingCart = () => {
 
         <Link
           to="/products"
-          className="inline-flex items-center justify-center bg-gradient-to-r from-amber-400 via-cyan-400 to-blue-500 hover:from-amber-500 hover:to-blue-600 text-gray-900 font-extrabold text-xs px-5 py-2.5 rounded-xl transition-all duration-300 no-underline shadow-[0_0_20px_rgba(251,191,36,0.3)] dark:shadow-[0_0_25px_rgba(34,211,238,0.25)] hover:shadow-[0_0_30px_rgba(34,211,238,0.45)] hover:scale-[1.03] active:scale-[0.98]"
+          className="inline-flex items-center justify-center bg-gradient-to-r from-amber-400 via-cyan-400 to-blue-500 hover:from-amber-500 hover:to-blue-600 text-gray-400 font-extrabold text-xs px-5 py-2.5 rounded-xl transition-all duration-300 no-underline shadow-[0_0_20px_rgba(251,191,36,0.3)] dark:shadow-[0_0_25px_rgba(34,211,238,0.25)] hover:shadow-[0_0_30px_rgba(34,211,238,0.45)] hover:scale-[1.03] active:scale-[0.98]"
         >
           ← Back to Products
         </Link>

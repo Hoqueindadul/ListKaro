@@ -6,6 +6,7 @@ import { useCartStore } from "../../store/authStore";
 import {
   ShoppingCart,
   Menu,
+  Info,
   X,
   User,
   Search,
@@ -366,21 +367,28 @@ export default function Navbar() {
                         <div className="p-1.5 space-y-0.5">
                           <Link
                             to="/profile"
-                            className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+                            className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-800 dark:hover:bg-gray-800/50 transition-colors"
                             onClick={() => setShowUserDropdown(false)}
                           >
                             <Settings size={15} /> Account Settings
                           </Link>
                           <Link
                             to="/orderlisting"
-                            className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+                            className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-800 dark:hover:bg-gray-800/50 transition-colors"
                             onClick={() => setShowUserDropdown(false)}
                           >
                             <Package size={15} /> Orders
                           </Link>
+                          <Link
+                            to="/about"
+                            className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-800 dark:hover:bg-gray-800/50 transition-colors"
+                            onClick={() => setShowUserDropdown(false)}
+                          >
+                            <Info size={15} /> About Us
+                          </Link>
                           <button
                             onClick={handleLogout}
-                            className="flex w-full items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-red-600 font-medium hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors"
+                            className="flex w-full items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-red-600 font-medium hover:bg-red-300 dark:hover:bg-red-950/20 transition-colors"
                           >
                             <LogOut size={15} /> Logout
                           </button>

@@ -1,14 +1,24 @@
-import express from 'express';
+import express from "express";
 const router = express.Router();
-import { verifyToken } from '../middleware/verifyToken.js';
-import { checkEmailVerification } from '../middleware/checkIsEmailVerified.js';
-import { signup, login, logout, varifyEmail, forgotPassword, resetPassword, checkAuth } from '../controlers/user.controlers.js';
+import { verifyToken } from "../middleware/verifyToken.js";
+import { checkEmailVerification } from "../middleware/checkIsEmailVerified.js";
+import {
+  signup,
+  login,
+  logout,
+  userProfile,
+  varifyEmail,
+  forgotPassword,
+  resetPassword,
+  checkAuth,
+} from "../controlers/user.controlers.js";
 
 router.get("/check-auth", verifyToken, checkAuth);
 
 router.post("/signup", signup);
 router.post("/login", checkEmailVerification, login);
 router.post("/logout", logout);
+router.get("/user-profile", verifyToken, userProfile);
 
 router.post("/verify-email", varifyEmail);
 router.post("/forgot-password", forgotPassword);
