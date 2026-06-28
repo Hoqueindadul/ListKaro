@@ -8,6 +8,7 @@ import {
   sendWelcomeEmail,
   sendPasswordResetEmail,
   sendResetSuccessEmail,
+  sendPasswordUpdatedEmail,
 } from "../nodemailer/email.js";
 // Signup Controller
 export const signup = async (req, res) => {
@@ -87,6 +88,15 @@ export const login = async (req, res) => {
       return res.status(400).json({
         success: false,
         message: "Invalid credentials",
+      });
+    }
+
+    // check if the user is deleted
+    if (user.isDeleted) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Your account has been deleted. Please contact the administrator.",
       });
     }
 
@@ -268,6 +278,44 @@ export const resetPassword = async (req, res) => {
   }
 };
 
+// Change Password Controller
+export const changePassword = async (req, res) => {
+  try {
+    const { oldPassword, newPassword, confirmPassword } = req.body;
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+    const isPasswordValid = await bcryptjs.compare(oldPassword, user.password);
+    if (!isPasswordValid) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid old password",
+      });
+    }
+    if (newPassword !== confirmPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "New password and confirm password do not match",
+      });
+    }
+    const hashPassword = await bcryptjs.hash(newPassword, 10);
+    user.password = hashPassword;
+    await user.save();
+    await sendPasswordUpdatedEmail(user.email);
+    res.status(200).json({
+      success: true,
+      message: "Password changed successfully",
+    });
+  } catch (error) {
+    console.log("Error in changePassword: ", error);
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
 // Check Auth Controller
 // This controller is used to check if the user is authenticated or not
 export const checkAuth = async (req, res) => {
@@ -313,6 +361,30 @@ export const userProfile = async (req, res) => {
     });
   } catch (error) {
     console.log("Error in userProfile: ", error);
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+// Delete user account
+export const softDeleteUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+    user.isDeleted = true;
+    user.deletedAt = Date.now();
+    await user.save();
+    res.clearCookie("token");
+    res.status(200).json({
+      success: true,
+      message: "User account deleted successfully",
+    });
+  } catch (error) {
+    console.log("Error in softDeleteUser: ", error);
     res.status(400).json({ success: false, message: error.message });
   }
 };

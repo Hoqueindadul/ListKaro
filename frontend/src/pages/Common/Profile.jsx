@@ -8,17 +8,30 @@ import {
   ExternalLink,
   CheckCircle2,
   Clock,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 import axios from "axios";
 import { currentConfig } from "../../config.js";
+import toast from "react-hot-toast";
 
 const API_URL = currentConfig.API_URL;
 
 export default function Profile() {
   const [activeTab, setActiveTab] = useState("profile");
   const [profileData, setProfileData] = useState(null);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
-  // Unified naming to avoid undefined reference crashes
+  const [showCurrent, setShowCurrent] = useState(false);
+  const [showNew, setShowNew] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+
+  // --- FIXED: Added missing states to manage input values ---
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
   const [orderHistory, setOrderHistory] = useState([]);
   const [loadingOrders, setLoadingOrders] = useState(false);
 
@@ -43,7 +56,7 @@ export default function Profile() {
       const fetchOrders = async () => {
         setLoadingOrders(true);
         try {
-          const res = await axios.get(`${API_URL}//get-all-orders`, {
+          const res = await axios.get(`${API_URL}/get-all-orders`, {
             withCredentials: true,
           });
           console.log(res);
@@ -83,6 +96,91 @@ export default function Profile() {
       },
     ),
     tier: profileData.user.role,
+  };
+
+  // handle password update
+  const handlePasswordUpdate = async (e) => {
+    e.preventDefault();
+
+    // Frontend validation check
+    if (newPassword !== confirmPassword) {
+      toast.error("New passwords do not match!");
+      return;
+    }
+
+    const isConfirmed = window.confirm(
+      "Are you sure you want to update your password?",
+    );
+    if (!isConfirmed) return;
+
+    setIsUpdating(true);
+    try {
+      const res = await axios.post(
+        `${API_URL}/auth/change-password`,
+        {
+          oldPassword,
+          newPassword,
+          confirmPassword,
+        },
+        {
+          withCredentials: true,
+        },
+      );
+      console.log(res);
+      if (res.status === 200) {
+        toast.success(res.data.message || "Password changed successfully!");
+        // Clear fields on success
+        setOldPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+      }
+    } catch (error) {
+      console.log(error);
+      const errorMessage =
+        error.response?.data?.message ||
+        "Something went wrong. Please try again.";
+      toast.error(errorMessage);
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  // handle delete user
+  const handleDeleteUser = async (e) => {
+    e.preventDefault();
+    const isConfirmToDelete = window.confirm(
+      "Are you sure you want to delete your account?",
+    );
+    if (!isConfirmToDelete) return;
+
+    try {
+      setIsDeleting(true);
+      const res = await axios.delete(`${API_URL}/auth/delete-user`, {
+        withCredentials: true,
+      });
+      console.log(res);
+      if (res.status === 200) {
+        toast.success(res.data.message || "Account deleted successfully!");
+      }
+      // logout the user
+      await axios.post(
+        `${API_URL}/auth/logout`,
+        {},
+        {
+          withCredentials: true,
+        },
+      );
+      // redirect to login page
+      window.location.href = "/login";
+    } catch (error) {
+      console.log(error);
+      const errorMessage =
+        error.response?.data?.message ||
+        "Something went wrong. Please try again.";
+      toast.error(errorMessage);
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   return (
@@ -272,7 +370,6 @@ export default function Profile() {
                                 key={item._id || idx}
                                 className="flex items-center gap-3 bg-gray-800 p-2 rounded-xl border border-gray-500 dark:border-gray-800/20"
                               >
-                                {/* Item Image Layout */}
                                 <div className="w-12 h-12 rounded-lg bg-gray-100 dark:bg-gray-800 overflow-hidden flex-shrink-0 border border-gray-200/50 dark:border-gray-700/50">
                                   <img
                                     src={
@@ -284,12 +381,11 @@ export default function Profile() {
                                     className="w-full h-full object-cover"
                                     onError={(e) => {
                                       e.target.src =
-                                        "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=100&auto=format&fit=crop&q=60"; // fallback if broken
+                                        "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=100&auto=format&fit=crop&q=60";
                                     }}
                                   />
                                 </div>
 
-                                {/* Item Text Information Layout */}
                                 <div className="flex-1 min-w-0">
                                   <h4 className="text-xs font-bold text-gray-700 dark:text-gray-200 truncate">
                                     {item.name}
@@ -302,7 +398,6 @@ export default function Profile() {
                                   </p>
                                 </div>
 
-                                {/* Pricing & Quantity breakdown Layout */}
                                 <div className="text-right flex-shrink-0">
                                   <p className="text-xs font-black text-gray-900 dark:text-white">
                                     ₹{item.price}
@@ -347,38 +442,84 @@ export default function Profile() {
                     <label className="block text-xs font-bold text-gray-400 mb-1.5 uppercase tracking-wider">
                       Current Password
                     </label>
-                    <input
-                      type="password"
-                      placeholder="••••••••"
-                      className="w-full px-4 py-2.5 dark:bg-gray-800/40 rounded-xl border border-gray-200 dark:border-gray-800 text-sm focus:outline-none focus:border-cyan-500 dark:focus:border-cyan-400 transition-colors"
-                    />
+                    <div className="relative">
+                      {/* --- FIXED: Added value and onChange --- */}
+                      <input
+                        type={showCurrent ? "text" : "password"}
+                        value={oldPassword}
+                        onChange={(e) => setOldPassword(e.target.value)}
+                        placeholder="••••••••"
+                        className="w-full pl-4 pr-11 py-2.5 dark:bg-gray-800/40 rounded-xl border border-gray-200 dark:border-gray-800 text-sm focus:outline-none focus:border-cyan-500 dark:focus:border-cyan-400 transition-colors"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowCurrent(!showCurrent)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
+                      >
+                        {showCurrent ? <EyeOff size={18} /> : <Eye size={18} />}
+                      </button>
+                    </div>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-xs font-bold text-gray-400 mb-1.5 uppercase tracking-wider">
                         New Password
                       </label>
-                      <input
-                        type="password"
-                        placeholder="••••••••"
-                        className="w-full px-4 py-2.5 dark:bg-gray-800/40 rounded-xl border border-gray-200 dark:border-gray-800 text-sm focus:outline-none focus:border-cyan-500 dark:focus:border-cyan-400 transition-colors"
-                      />
+                      <div className="relative">
+                        {/* --- FIXED: Added value and onChange --- */}
+                        <input
+                          type={showNew ? "text" : "password"}
+                          value={newPassword}
+                          onChange={(e) => setNewPassword(e.target.value)}
+                          placeholder="••••••••"
+                          className="w-full pl-4 pr-11 py-2.5 dark:bg-gray-800/40 rounded-xl border border-gray-200 dark:border-gray-800 text-sm focus:outline-none focus:border-cyan-500 dark:focus:border-cyan-400 transition-colors"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowNew(!showNew)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
+                        >
+                          {showNew ? <EyeOff size={18} /> : <Eye size={18} />}
+                        </button>
+                      </div>
                     </div>
                     <div>
                       <label className="block text-xs font-bold text-gray-400 mb-1.5 uppercase tracking-wider">
                         Confirm New Password
                       </label>
-                      <input
-                        type="password"
-                        placeholder="••••••••"
-                        className="w-full px-4 py-2.5 dark:bg-gray-800/40 rounded-xl border border-gray-200 dark:border-gray-800 text-sm focus:outline-none focus:border-cyan-500 dark:focus:border-cyan-400 transition-colors"
-                      />
+                      <div className="relative">
+                        {/* --- FIXED: Added value and onChange --- */}
+                        <input
+                          type={showConfirm ? "text" : "password"}
+                          value={confirmPassword}
+                          onChange={(e) => setConfirmPassword(e.target.value)}
+                          placeholder="••••••••"
+                          className="w-full pl-4 pr-11 py-2.5 dark:bg-gray-800/40 rounded-xl border border-gray-200 dark:border-gray-800 text-sm focus:outline-none focus:border-cyan-500 dark:focus:border-cyan-400 transition-colors"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowConfirm(!showConfirm)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
+                        >
+                          {showConfirm ? (
+                            <EyeOff size={18} />
+                          ) : (
+                            <Eye size={18} />
+                          )}
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
                 <div className="pt-4 border-t border-gray-100 dark:border-gray-800/80 flex justify-end">
-                  <button className="flex items-center gap-2 bg-cyan-600 hover:bg-cyan-500 text-white font-extrabold text-sm py-2.5 px-6 rounded-xl transition-all duration-300 transform active:scale-[0.99] shadow-[0_0_12px_3px_rgba(59,130,246,0.18)]">
-                    Update Security
+                  <button
+                    onClick={handlePasswordUpdate}
+                    disabled={isUpdating}
+                    className={`flex cursor-pointer items-center gap-2 bg-cyan-600 hover:bg-cyan-500 text-white font-extrabold text-sm py-2.5 px-6 rounded-xl transition-all duration-300 transform active:scale-[0.99] shadow-[0_0_12px_3px_rgba(59,130,246,0.18)] ${
+                      isUpdating ? "opacity-70 cursor-not-allowed" : ""
+                    }`}
+                  >
+                    {isUpdating ? "Changing..." : "Change Password"}
                   </button>
                 </div>
               </div>
@@ -398,8 +539,12 @@ export default function Profile() {
                   from the data architecture clusters.
                 </p>
                 <div className="pt-2">
-                  <button className="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white font-extrabold text-sm py-2.5 px-5 rounded-xl transition-all duration-300 transform active:scale-[0.99] shadow-[0_0_12px_3px_rgba(239,68,68,0.15)]">
-                    <Trash2 size={16} /> Delete Profile Permanently
+                  <button
+                    onClick={handleDeleteUser}
+                    disabled={isDeleting}
+                    className={`flex cursor-pointer items-center gap-2 bg-red-500 hover:bg-red-600 text-white font-extrabold text-sm py-2.5 px-5 rounded-xl transition-all duration-300 transform active:scale-[0.99] shadow-[0_0_12px_3px_rgba(239,68,68,0.15)] ${isDeleting ? "opacity-70 cursor-not-allowed" : ""}`}
+                  >
+                    {isDeleting ? "Deleting..." : "Delete Profile Permanently"}
                   </button>
                 </div>
               </div>

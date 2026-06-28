@@ -4,6 +4,7 @@ import {
   WELCOME_TEMPLATE,
   PASSWORD_RESET_REQUEST_TEMPLATE,
   PASSWORD_RESET_SUCCESS_TEMPLATE,
+  PASSWORD_UPDATED_TEMPLATE,
 } from "./emailTemplate.js";
 
 export const sendVarificationEmail = async (email, varificationOTP) => {
@@ -68,5 +69,21 @@ export const sendResetSuccessEmail = async (email) => {
   } catch (error) {
     console.error(error);
     throw new Error(`Error sending password reset successfull email: ${error}`);
+  }
+};
+
+export const sendPasswordUpdatedEmail = async (email) => {
+  try {
+    const response = await mailTranporter.sendMail({
+      from: process.env.SENDER_EMAIL,
+      to: email,
+      subject: "Password updated successfully",
+      html: PASSWORD_UPDATED_TEMPLATE,
+      category: "Password reset",
+    });
+    console.log("Password updated Email sent successfully:", response);
+  } catch (error) {
+    console.error(error);
+    throw new Error(`Error sending password updated email: ${error}`);
   }
 };
