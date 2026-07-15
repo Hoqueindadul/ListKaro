@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "nodemon app.js",
-    "app": "nodemon app.js",
+    "build": "no build step required",
     "test": "vitest run"
   },
   "keywords": [],
