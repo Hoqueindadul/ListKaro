@@ -25,9 +25,9 @@ jobs:
         working-directory: ./backend
         run: npm ci
 
-      - name: Build Project
-        working-directory: ./backend
-        run: npm run build
+      # - name: Build Project
+      #   working-directory: ./backend
+      #   run: npm run build
 
       - name: Install Railway CLI
         run: npm install -g @railway/cli
