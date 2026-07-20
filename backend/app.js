@@ -1,9 +1,10 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import mongoose from "mongoose";
+import path from "path";
+import cookieParser from "cookie-parser";
 
-// --- Your Router Imports ---
+import connectDB from "./connection/dbConnection.js";
 import searchProductRoute from "./routers/searchProduct.route.js";
 import productsRoute from "./routers/products.route.js";
 import ocrRoute from "./routers/ocr_route.js";
@@ -16,42 +17,36 @@ import orderEmail from "./nodemailer/orderEmail.js";
 import addressRoute from "./routers/address.route.js";
 import errorHandleMiddleware from "./middleware/error.js";
 
-import serverlessExpress from "@vendia/serverless-express";
-
 dotenv.config();
 
 const app = express();
+const port = process.env.PORT || 5000;
+const MONGO_URI = process.env.MONGO_URI;
+const __dirname = path.resolve();
 
-// Global MongoDB connection cache
-let isConnected = false;
-const connectDB = async () => {
-  if (isConnected) return;
-  try {
-    await mongoose.connect(process.env.MONGO_URI, { bufferCommands: false });
-    isConnected = true;
-    console.log("MongoDB Connected to Edge");
-  } catch (error) {
-    console.error("MongoDB Connection Error:", error);
-  }
-};
+// Allowed origins for CORS
+const allowedOrigins = [
+  process.env.CLIENT_URL, // http://localhost:5173
+  process.env.DEPLOYMENT_CLIENT_URL, // https://list-karo.vercel.app
+].filter(Boolean); // remove undefined/null
 
-app.use(async (req, res, next) => {
-  await connectDB();
+// console.log("🚀 Allowed origins:", allowedOrigins);
+
+// Log incoming request origins
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  console.log("Incoming request origin:", origin);
   next();
 });
 
-// CORS Configurations
-const allowedOrigins = [
-  process.env.CLIENT_URL,
-  process.env.DEPLOYMENT_CLIENT_URL,
-].filter(Boolean);
-
+// CORS configuration
 app.use(
   cors({
     origin: (origin, callback) => {
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
+        console.warn("CORS Blocked Origin:", origin);
         callback(new Error("Not allowed by CORS"));
       }
     },
@@ -60,65 +55,19 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
+
+// Handle preflight requests (OPTION) — very important for CORS
 app.options("*", cors());
 
-// 🔥 FIXED: Serverless-safe Body and Cookie Parsers (Bypasses iconv-lite bug)
-app.use(async (req, res, next) => {
-  // 1. Safe JSON Parser
-  if (req.headers["content-type"]?.includes("application/json")) {
-    try {
-      let body = "";
-      req.on("data", (chunk) => {
-        body += chunk;
-      });
-      req.on("end", () => {
-        try {
-          req.body = body ? JSON.parse(body) : {};
-        } catch {
-          req.body = {};
-        }
-        next();
-      });
-      return;
-    } catch {
-      /* fallthrough */
-    }
-  }
+// Connect to MongoDB
+connectDB(MONGO_URI);
 
-  // 2. Safe URL Encoded Parser
-  if (
-    req.headers["content-type"]?.includes("application/x-www-form-urlencoded")
-  ) {
-    let body = "";
-    req.on("data", (chunk) => {
-      body += chunk;
-    });
-    req.on("end", () => {
-      const params = new URLSearchParams(body);
-      req.body = Object.fromEntries(params.entries());
-      next();
-    });
-    return;
-  }
-  next();
-});
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
-// 3. Safe Cookie Parser Middleware
-app.use((req, res, next) => {
-  req.cookies = {};
-  const cookieHeader = req.headers.cookie;
-  if (cookieHeader) {
-    cookieHeader.split(";").forEach((cookie) => {
-      const [parts] = cookie.split("=");
-      const name = parts.trim();
-      const value = cookie.substring(name.length + 1).trim();
-      if (name) req.cookies[name] = decodeURIComponent(value);
-    });
-  }
-  next();
-});
-
-// API Routes (Leave exactly as they were)
+// API Routes
 app.use("/api", ocrRoute);
 app.use("/api/cart", cartRoute);
 app.use("/api/search", searchProductRoute);
@@ -130,15 +79,15 @@ app.use("/api", orderRoute);
 app.use("/api", orderEmail);
 app.use("/api", addressRoute);
 
+// Error handler (always last route middleware)
 app.use(errorHandleMiddleware);
 
+// Default route
 app.get("/", (req, res) => {
-  res.send("API is running on Cloudflare...");
+  res.send("API is running...");
 });
 
-// Export wrapping execution loop natively
-export default {
-  async fetch(request, env, ctx) {
-    return serverlessExpress({ app })(request, env, ctx);
-  },
-};
+// Start server
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});

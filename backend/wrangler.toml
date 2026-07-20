@@ -1,8 +1,0 @@
-name = "listkaro-backend" # 🛠️ Changed from list-karo-backend to match your dashboard setting
-main = "app.js"
-compatibility_date = "2026-07-20"
-compatibility_flags = [ "nodejs_compat" ]
-
-[alias]
-# 🔥 This forces the bundler to skip the broken iconv-lite files completely
-"iconv-lite" = "node:buffer"

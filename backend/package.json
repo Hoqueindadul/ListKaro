@@ -36,6 +36,9 @@
     "twilio": "^5.12.1",
     "validator": "^13.15.0"
   },
+  "browser": {
+    "iconv-lite": false
+  },
   "devDependencies": {
     "mongodb-memory-server": "^11.2.0",
     "supertest": "^7.2.2",
