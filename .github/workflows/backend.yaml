@@ -25,15 +25,6 @@ jobs:
         working-directory: ./backend
         run: npm ci
 
-      # - name: Build Project
-      #   working-directory: ./backend
-      #   run: npm run build
-
-      - name: Install Railway CLI
-        run: npm install -g @railway/cli
-
-      - name: Deploy to Railway
+      - name: Build Project
         working-directory: ./backend
-        run: railway up --detach
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN}}
+        run: npm run build
