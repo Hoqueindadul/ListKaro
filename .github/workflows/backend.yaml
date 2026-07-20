@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - main
-    # paths:
-    #   - "backend/**"
+    paths:
+      - "backend/**" # Highly recommended to uncomment this so backend only deploys when backend files change
 
 jobs:
   deploy:
@@ -25,6 +25,15 @@ jobs:
         working-directory: ./backend
         run: npm ci
 
+      # Note: If your package.json doesn't have a "build" script (e.g., if you are running pure JS files),
+      # you can completely delete this build step.
       - name: Build Project
         working-directory: ./backend
         run: npm run build
+
+      # 🔥 THE MISSING STEP: Deploy to Cloudflare Workers
+      - name: Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          workingDirectory: ./backend
